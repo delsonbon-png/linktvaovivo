@@ -3,12 +3,13 @@ import {
   View, Text, TextInput, TouchableOpacity, FlatList,
   StyleSheet, Alert, ActivityIndicator, StatusBar, KeyboardAvoidingView, Platform, ScrollView
 } from 'react-native';
-import { addChannel, deleteChannel, getLocalChannels } from '../utils/storage';
+import { addChannel, deleteChannel, getLocalChannels, getUsers, deleteUser, getGithubToken, saveGithubToken } from '../utils/storage';
 import { fetchChannelsFromGithub, pushChannelsToGithub } from '../utils/github';
-import { getGithubToken, saveGithubToken } from '../utils/storage';
+import { ADMIN_CPF } from '../utils/constants';
 
 export default function AdminPanelScreen({ navigation }) {
   const [channels, setChannels] = useState([]);
+  const [users, setUsers] = useState([]);
   const [channelName, setChannelName] = useState('');
   const [channelUrl, setChannelUrl] = useState('');
   const [githubToken, setGithubToken] = useState('');
@@ -23,6 +24,10 @@ export default function AdminPanelScreen({ navigation }) {
     const result = await fetchChannelsFromGithub();
     setChannels(result.channels || []);
     if (result.sha) setSha(result.sha);
+    
+    const userList = await getUsers();
+    setUsers(userList);
+
     setLoading(false);
   }, []);
 
@@ -45,17 +50,51 @@ export default function AdminPanelScreen({ navigation }) {
   };
 
   const handleDelete = (id) => {
-    Alert.alert('Remover canal', 'Tem certeza?', [
-      { text: 'Cancelar', style: 'cancel' },
-      {
-        text: 'Remover',
-        style: 'destructive',
-        onPress: async () => {
-          const updated = await deleteChannel(id);
-          setChannels(updated);
+    if (Platform.OS === 'web') {
+      if (window.confirm('Tem certeza que deseja remover o canal?')) {
+        deleteChannel(id).then(updated => setChannels(updated));
+      }
+    } else {
+      Alert.alert('Remover canal', 'Tem certeza?', [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Remover',
+          style: 'destructive',
+          onPress: async () => {
+            const updated = await deleteChannel(id);
+            setChannels(updated);
+          },
         },
-      },
-    ]);
+      ]);
+    }
+  };
+
+  const handleDeleteUser = (cpf) => {
+    if (cpf === ADMIN_CPF) {
+      if (Platform.OS === 'web') window.alert('Não é possível remover o administrador.');
+      else Alert.alert('Erro', 'Não é possível remover o administrador.');
+      return;
+    }
+
+    if (Platform.OS === 'web') {
+      if (window.confirm('Tem certeza que deseja remover este usuário?')) {
+        deleteUser(cpf).then(result => {
+          if (result.success) setUsers(result.users);
+        });
+      }
+    } else {
+      Alert.alert('Remover usuário', 'Tem certeza?', [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Remover',
+          style: 'destructive',
+          onPress: async () => {
+            const result = await deleteUser(cpf);
+            if (result.success) setUsers(result.users);
+          },
+        },
+      ]);
+    }
   };
 
   const syncToGitHub = async (list) => {
@@ -193,6 +232,32 @@ export default function AdminPanelScreen({ navigation }) {
                   <TouchableOpacity onPress={() => handleDelete(ch.id)} style={styles.deleteBtn}>
                     <Text style={{ color: '#ff6b6b', fontSize: 18 }}>🗑</Text>
                   </TouchableOpacity>
+                </View>
+              ))
+            )}
+          </View>
+
+          {/* Users List */}
+          <View style={styles.section}>
+            <View style={styles.listHeader}>
+              <Text style={styles.sectionTitle}>👥 Usuários Cadastrados ({users.length})</Text>
+            </View>
+            {loading ? (
+              <ActivityIndicator color="#7c6aff" style={{ marginTop: 20 }} />
+            ) : users.length === 0 ? (
+              <Text style={styles.emptyText}>Nenhum usuário cadastrado.</Text>
+            ) : (
+              users.map((u) => (
+                <View key={u.cpf} style={styles.channelRow}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.chName}>{u.name} {u.isAdmin && '(Admin)'}</Text>
+                    <Text style={styles.chUrl} numberOfLines={1}>CPF: {u.cpf}</Text>
+                  </View>
+                  {!u.isAdmin && (
+                    <TouchableOpacity onPress={() => handleDeleteUser(u.cpf)} style={styles.deleteBtn}>
+                      <Text style={{ color: '#ff6b6b', fontSize: 18 }}>🗑</Text>
+                    </TouchableOpacity>
+                  )}
                 </View>
               ))
             )}

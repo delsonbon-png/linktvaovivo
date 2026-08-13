@@ -32,6 +32,14 @@ export async function registerUser(cpf, password, name) {
   return { success: true };
 }
 
+export async function deleteUser(cpf) {
+  if (cpf === ADMIN_CPF) return { success: false, message: 'Não é possível remover o administrador.' };
+  let users = await getUsers();
+  users = users.filter((u) => u.cpf !== cpf);
+  await AsyncStorage.setItem(USERS_KEY, JSON.stringify(users));
+  return { success: true, users };
+}
+
 export async function loginUser(cpf, password) {
   const users = await getUsers();
   const user = users.find((u) => u.cpf === cpf && u.password === password);
