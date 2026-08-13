@@ -52,7 +52,10 @@ export default function AdminPanelScreen({ navigation }) {
   const handleDelete = (id) => {
     if (Platform.OS === 'web') {
       if (window.confirm('Tem certeza que deseja remover o canal?')) {
-        deleteChannel(id).then(updated => setChannels(updated));
+        deleteChannel(id).then(updated => {
+          setChannels(updated);
+          syncToGitHub(updated);
+        });
       }
     } else {
       Alert.alert('Remover canal', 'Tem certeza?', [
@@ -63,6 +66,7 @@ export default function AdminPanelScreen({ navigation }) {
           onPress: async () => {
             const updated = await deleteChannel(id);
             setChannels(updated);
+            syncToGitHub(updated);
           },
         },
       ]);

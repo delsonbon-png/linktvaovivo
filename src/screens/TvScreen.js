@@ -19,11 +19,13 @@ export default function TvScreen() {
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(true);
+  const shaRef = React.useRef(null);
 
   const loadChannels = useCallback(async () => {
     setLoading(true);
     const result = await fetchChannelsFromGithub();
     const list = result.channels || [];
+    if (result.sha) shaRef.current = result.sha;
 
     // Se GitHub não retornou, usa canais locais
     const finalList = list.length ? list : await getLocalChannels();
@@ -54,6 +56,21 @@ export default function TvScreen() {
     setFiltered(updated);
     if (selected?.id === id) {
       setSelected(updated.length > 0 ? updated[0] : null);
+    }
+    // Sincronizar com GitHub se for admin e tiver token
+    if (isAdmin) {
+      const { getGithubToken } = require('../utils/storage');
+      const token = await getGithubToken();
+      if (token && shaRef.current) {
+        const { pushChannelsToGithub } = require('../utils/github');
+        const pushResult = await pushChannelsToGithub(updated, shaRef.current);
+        if (pushResult.success) {
+           // Atualizar o sha após sucesso
+           const { fetchChannelsFromGithub } = require('../utils/github');
+           const refresh = await fetchChannelsFromGithub();
+           if (refresh.sha) shaRef.current = refresh.sha;
+        }
+      }
     }
   };
 
