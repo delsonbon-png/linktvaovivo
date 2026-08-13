@@ -18,9 +18,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "react-native-webview"
-    ],
+    "plugins": [],
     "extra": {
       "eas": {
         "projectId": "02da1b35-be1d-4b83-9676-67ba25959fb9"
