@@ -29,5 +29,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Initialize EAS Project
+        run: npx eas-cli init --account dexdel1 --non-interactive
+
       - name: Build Android Preview (APK)
         run: npx eas-cli build --platform android --profile preview --non-interactive
