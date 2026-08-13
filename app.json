@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Link TV",
-    "slug": "linktv",
+    "slug": "linktvaovivo",
     "owner": "dexdel1",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -23,7 +23,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "linktv"
+        "projectId": "linktvaovivo"
       }
     }
   }
