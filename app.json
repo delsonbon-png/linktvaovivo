@@ -20,6 +20,11 @@
     },
     "plugins": [
       "react-native-webview"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "linktv"
+      }
+    }
   }
 }
