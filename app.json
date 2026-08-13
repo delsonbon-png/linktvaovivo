@@ -2,6 +2,7 @@
   "expo": {
     "name": "Link TV",
     "slug": "linktv",
+    "owner": "dexdel1",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
