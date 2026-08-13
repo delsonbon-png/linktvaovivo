@@ -3,8 +3,8 @@ export const ADMIN_CPF = '09131915663';
 export const ADMIN_PASSWORD = '132435';
 
 // GitHub configuração para armazenar canais
-export const GITHUB_OWNER = 'seu-usuario-github'; // Altere para seu usuário GitHub
-export const GITHUB_REPO = 'linktv-canais';
+export const GITHUB_OWNER = 'delsonbon-png';
+export const GITHUB_REPO = 'linktvaovivo';
 export const GITHUB_FILE_PATH = 'canais.json';
 export const GITHUB_BRANCH = 'main';
 
