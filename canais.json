@@ -1,10 +1,5 @@
 [
   {
-    "id": "5",
-    "name": "TV Aparecida",
-    "url": "https://tvaparecida.live/tvaparecida/playlist.m3u8"
-  },
-  {
     "id": "1786739825677",
     "name": "SBT",
     "url": "http://srv6.zoeweb.tv:1935/z343-live/stream/playlist.m3u8"
