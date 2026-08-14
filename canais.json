@@ -15,11 +15,6 @@
     "url": "https://canaleducacao-stream.ebc.com.br/index.m3u8"
   },
   {
-    "id": "1786748699844",
-    "name": "Tv ines",
-    "url": "http://slrp.sambavideos.sambatech.com/liveevent/acerpTvINESABR_d360fbbfbf3e5e59a31cf89ec45eb3dc/livestream2/playlist.m3u8"
-  },
-  {
     "id": "1786748746930",
     "name": "Multishow",
     "url": "http://95.141.32.213:8081/look/eimax/playlist.m3u8"
