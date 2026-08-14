@@ -1,12 +1,7 @@
 [
   {
     "id": "2",
-    "name": "TV Brasil (EstÃÂ¡vel)",
+    "name": "TV Brasil (EstÃÂÃÂ¡vel)",
     "url": "https://stream.tvbrasil.ebc.com.br/tvbrasil/smil:tvbrasil.smil/playlist.m3u8"
-  },
-  {
-    "id": "5",
-    "name": "TV Aparecida",
-    "url": "https://tvaparecida.live/tvaparecida/playlist.m3u8"
   }
 ]
