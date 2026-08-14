@@ -15,11 +15,6 @@
     "url": "https://canaleducacao-stream.ebc.com.br/index.m3u8"
   },
   {
-    "id": "1786748746930",
-    "name": "Multishow",
-    "url": "http://95.141.32.213:8081/look/eimax/playlist.m3u8"
-  },
-  {
     "id": "1786748803276",
     "name": "Combate",
     "url": "http://dragoniptv99.dyndns.tv:8505/live/francis/francis/763.ts"
