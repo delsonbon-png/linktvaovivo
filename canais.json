@@ -18,10 +18,5 @@
     "id": "1786749223667",
     "name": "Sportv",
     "url": "http://194.88.105.17/loadbalance/esportehd/chunks.m3u8"
-  },
-  {
-    "id": "1786749422659",
-    "name": "Sbt2",
-    "url": "http://evpp.mm.uol.com.br/ne10/ne10.smil/playlist.m3u8"
   }
 ]
