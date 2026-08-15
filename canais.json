@@ -23,15 +23,5 @@
     "id": "1786792759513",
     "name": "SBT SP",
     "url": "https://cdn.live.br1.jmvstream.com/w/LVW-10801/LVW10801_Xvg4R0u57n/playlist.m3u8"
-  },
-  {
-    "id": "1786796365621",
-    "name": "Record",
-    "url": "http://187.62.68.32:8080/RECORD/index.m3u8"
-  },
-  {
-    "id": "1786796394990",
-    "name": "SBT",
-    "url": "http://187.62.68.32:8084/SBT/index.m3u8"
   }
 ]
