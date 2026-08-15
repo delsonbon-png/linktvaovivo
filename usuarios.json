@@ -11,5 +11,12 @@
     "name": "Thalles",
     "isAdmin": false,
     "idType": "celular"
+  },
+  {
+    "cpf": "11111111111",
+    "password": "12345",
+    "name": "Adao",
+    "isAdmin": false,
+    "idType": "cpf"
   }
 ]
