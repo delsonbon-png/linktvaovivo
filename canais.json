@@ -33,5 +33,10 @@
     "id": "1786793943900",
     "name": "Tv Cultura",
     "url": "https://g1xlmn026c.singularcdn.net.br/playout_01/playlist.m3u8"
+  },
+  {
+    "id": "1786794005367",
+    "name": "Jovem Pan News",
+    "url": "https://jovempan.epicstream.com.br/hls/jovempannews/playlist.m3u8"
   }
 ]
