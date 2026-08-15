@@ -89,7 +89,7 @@ video{width:100%;height:100%;object-fit:contain}
 <body>
 
 <!-- AUTH SCREEN -->
-<div id="authScreen" class="screen" style="">
+<div id="authScreen" class="screen active" style="">
   <div class="logo-box">
     <div class="logo-emoji">📺</div>
     <div class="app-name">Link TV</div>
@@ -127,14 +127,14 @@ video{width:100%;height:100%;object-fit:contain}
     <button class="icon-btn" onclick="goProfile()" title="Perfil">👤</button>
   </div>
   <div class="player-wrap" id="playerWrap">
-    <div id="playerEmpty" style="text-align: center; display: none;">
+    <div id="playerEmpty" style="text-align: center; display: block;">
       <div style="font-size:48px">📺</div>
       <div style="color:#555;margin-top:8px">Selecione um canal</div>
     </div>
-    <video id="videoEl" style="display: block;" controls="" playsinline="" src="blob:null/c8907395-b285-4875-ae26-b9da3f1907ab"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/80c5de09-7012-4223-b39d-da435e9ec90f"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
-  <div class="now-playing" id="nowPlaying" style="display: flex;">
+  <div class="now-playing" id="nowPlaying" style="display: none;">
     <span class="live-badge">AO VIVO</span>
     <span class="now-text" id="nowText">Gospel Cartoon</span>
   </div>
@@ -145,65 +145,11 @@ video{width:100%;height:100%;object-fit:contain}
     </div>
 
   </div>
-  <div class="channel-list" id="channelListEl">
-    <div class="channel-item active" id="chi_1786740687144" onclick="playChannel({&quot;id&quot;:&quot;1786740687144&quot;,&quot;name&quot;:&quot;Gospel Cartoon&quot;,&quot;url&quot;:&quot;https://stmv1.srvif.com/gospelcartoon/gospelcartoon/playlist.m3u8&quot;})">
-      <div class="ch-icon">📺</div>
-      <div class="ch-info">
-        <div class="ch-name">Gospel Cartoon</div>
-
-      </div>
-      <button class="del-btn" onclick="event.stopPropagation();deleteChannelById('1786740687144')">🗑️</button>
-      
-    </div>
-    <div class="channel-item " id="chi_1786746468268" onclick="playChannel({&quot;id&quot;:&quot;1786746468268&quot;,&quot;name&quot;:&quot;Canal Gov&quot;,&quot;url&quot;:&quot;https://canalgov-stream.ebc.com.br/index.m3u8&quot;})">
-      <div class="ch-icon">📺</div>
-      <div class="ch-info">
-        <div class="ch-name">Canal Gov</div>
-
-      </div>
-      <button class="del-btn" onclick="event.stopPropagation();deleteChannelById('1786746468268')">🗑️</button>
-      
-    </div>
-    <div class="channel-item " id="chi_1786746983690" onclick="playChannel({&quot;id&quot;:&quot;1786746983690&quot;,&quot;name&quot;:&quot;Canal Educação&quot;,&quot;url&quot;:&quot;https://canaleducacao-stream.ebc.com.br/index.m3u8&quot;})">
-      <div class="ch-icon">📺</div>
-      <div class="ch-info">
-        <div class="ch-name">Canal Educação</div>
-
-      </div>
-      <button class="del-btn" onclick="event.stopPropagation();deleteChannelById('1786746983690')">🗑️</button>
-      
-    </div>
-    <div class="channel-item " id="chi_1786792702214" onclick="playChannel({&quot;id&quot;:&quot;1786792702214&quot;,&quot;name&quot;:&quot;SBT&quot;,&quot;url&quot;:&quot;http://138.255.2.6:8084/SBT/index.m3u8&quot;})">
-      <div class="ch-icon">📺</div>
-      <div class="ch-info">
-        <div class="ch-name">SBT</div>
-
-      </div>
-      <button class="del-btn" onclick="event.stopPropagation();deleteChannelById('1786792702214')">🗑️</button>
-      
-    </div>
-    <div class="channel-item " id="chi_1786792759513" onclick="playChannel({&quot;id&quot;:&quot;1786792759513&quot;,&quot;name&quot;:&quot;SBT SP&quot;,&quot;url&quot;:&quot;https://cdn.live.br1.jmvstream.com/w/LVW-10801/LVW10801_Xvg4R0u57n/playlist.m3u8&quot;})">
-      <div class="ch-icon">📺</div>
-      <div class="ch-info">
-        <div class="ch-name">SBT SP</div>
-
-      </div>
-      <button class="del-btn" onclick="event.stopPropagation();deleteChannelById('1786792759513')">🗑️</button>
-      
-    </div>
-    <div class="channel-item " id="chi_1786805626903" onclick="playChannel({&quot;id&quot;:&quot;1786805626903&quot;,&quot;name&quot;:&quot;Jovem Pan News&quot;,&quot;url&quot;:&quot;https://www.youtube.com/watch?v=eTz4XgOQaAE&quot;})">
-      <div class="ch-icon">📺</div>
-      <div class="ch-info">
-        <div class="ch-name">Jovem Pan News</div>
-
-      </div>
-      <button class="del-btn" onclick="event.stopPropagation();deleteChannelById('1786805626903')">🗑️</button>
-      
-    </div></div>
+  <div class="channel-list" id="channelListEl"></div>
 </div>
 
 <!-- ADMIN SCREEN -->
-<div id="adminScreen" class="screen active" style="">
+<div id="adminScreen" class="screen" style="">
   <div class="top-bar">
     <button class="back-btn" onclick="goBack()">‹ Voltar</button>
     <span class="top-title" style="font-size:16px">Painel Admin</span>
@@ -227,56 +173,14 @@ video{width:100%;height:100%;object-fit:contain}
     </div>
     <div class="section">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <div class="section-title" style="margin:0" id="chCountTitle">📋 Canais (6)</div>
+        <div class="section-title" style="margin:0" id="chCountTitle">📋 Canais (0)</div>
         <button onclick="loadAdminData()" style="background:none;border:none;color:#7c6aff;font-size:13px;cursor:pointer">Atualizar</button>
       </div>
-      <div id="adminChList">
-    <div class="ch-row">
-      <div class="ch-row-info">
-        <div class="ch-name">Gospel Cartoon</div>
-        <div class="ch-url" style="color:#555;font-size:11px">https://stmv1.srvif.com/gospelcartoon/gospelcartoon/playlist.m3u8</div>
-      </div>
-      <button class="del-btn" onclick="adminDelCh('1786740687144')">🗑</button>
-    </div>
-    <div class="ch-row">
-      <div class="ch-row-info">
-        <div class="ch-name">Canal Gov</div>
-        <div class="ch-url" style="color:#555;font-size:11px">https://canalgov-stream.ebc.com.br/index.m3u8</div>
-      </div>
-      <button class="del-btn" onclick="adminDelCh('1786746468268')">🗑</button>
-    </div>
-    <div class="ch-row">
-      <div class="ch-row-info">
-        <div class="ch-name">Canal Educação</div>
-        <div class="ch-url" style="color:#555;font-size:11px">https://canaleducacao-stream.ebc.com.br/index.m3u8</div>
-      </div>
-      <button class="del-btn" onclick="adminDelCh('1786746983690')">🗑</button>
-    </div>
-    <div class="ch-row">
-      <div class="ch-row-info">
-        <div class="ch-name">SBT</div>
-        <div class="ch-url" style="color:#555;font-size:11px">http://138.255.2.6:8084/SBT/index.m3u8</div>
-      </div>
-      <button class="del-btn" onclick="adminDelCh('1786792702214')">🗑</button>
-    </div>
-    <div class="ch-row">
-      <div class="ch-row-info">
-        <div class="ch-name">SBT SP</div>
-        <div class="ch-url" style="color:#555;font-size:11px">https://cdn.live.br1.jmvstream.com/w/LVW-10801/LVW10801_Xvg4R0u57n/playlist.m3u8</div>
-      </div>
-      <button class="del-btn" onclick="adminDelCh('1786792759513')">🗑</button>
-    </div>
-    <div class="ch-row">
-      <div class="ch-row-info">
-        <div class="ch-name">Jovem Pan News</div>
-        <div class="ch-url" style="color:#555;font-size:11px">https://www.youtube.com/watch?v=eTz4XgOQaAE</div>
-      </div>
-      <button class="del-btn" onclick="adminDelCh('1786805626903')">🗑</button>
-    </div></div>
+      <div id="adminChList"></div>
     </div>
     <div class="section">
-      <div class="section-title" id="usersTitle">👥 Usuários (1)</div>
-      <div id="adminUserList"><div class="user-row"><div style="flex:1"><div class="ch-name">Administrador (Admin)</div><div style="color:#888;font-size:11px;margin-top:2px">CPF: 09131915663</div></div></div></div>
+      <div class="section-title" id="usersTitle">👥 Usuários (0)</div>
+      <div id="adminUserList"></div>
     </div>
   </div>
 </div>
@@ -742,7 +646,37 @@ async function publishAppToGithub(){
   if(!confirm('Isso fará o upload deste aplicativo para ficar acessível na internet. Continuar?'))return;
   toast('🚀 Publicando aplicativo...','loading');
   try{
-    const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+    const clone = document.documentElement.cloneNode(true);
+    // Limpar o estado "ativo" das telas e colocar na tela de login
+    clone.querySelectorAll('.screen').forEach(s => {
+      s.classList.remove('active');
+      s.style.cssText = '';
+    });
+    const auth = clone.querySelector('#authScreen');
+    if(auth) auth.classList.add('active');
+
+    // Limpar conteúdos dinâmicos que foram preenchidos pelo Javascript
+    const chList = clone.querySelector('#channelListEl');
+    if(chList) chList.innerHTML = '';
+    const adChList = clone.querySelector('#adminChList');
+    if(adChList) adChList.innerHTML = '';
+    const adUserList = clone.querySelector('#adminUserList');
+    if(adUserList) adUserList.innerHTML = '';
+    
+    // Restaurar contadores e ocultar player
+    const uTitle = clone.querySelector('#usersTitle');
+    if(uTitle) uTitle.textContent = '👥 Usuários (0)';
+    const cTitle = clone.querySelector('#chCountTitle');
+    if(cTitle) cTitle.textContent = '📋 Canais (0)';
+    clone.querySelector('#videoEl').style.display = 'none';
+    clone.querySelector('#ytFrame').style.display = 'none';
+    clone.querySelector('#playerEmpty').style.display = 'block';
+    clone.querySelector('#nowPlaying').style.display = 'none';
+
+    // Limpar inputs de senha e CPF (vazamento)
+    clone.querySelectorAll('input').forEach(i => { i.removeAttribute('value'); i.textContent = ''; });
+
+    const htmlContent = "<!DOCTYPE html>\n" + clone.outerHTML;
     
     // Verificar arquivo index.html atual
     let sha = null;
