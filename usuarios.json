@@ -1,0 +1,14 @@
+[
+  {
+    "cpf": "09131915663",
+    "password": "132435",
+    "name": "Administrador",
+    "isAdmin": true
+  },
+  {
+    "cpf": "11111111111",
+    "password": "123456",
+    "name": "Test User",
+    "isAdmin": false
+  }
+]
