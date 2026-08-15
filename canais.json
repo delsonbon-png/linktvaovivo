@@ -37,5 +37,11 @@
     "name": "Record News",
     "url": "https://www.youtube.com/live/3-zhAHmvVIw?is=AHSpM7NT9okDMI1Z",
     "category": "Notícias"
+  },
+  {
+    "id": "1786836473929",
+    "name": "Globo",
+    "url": "http://217.23.2.169:8081/edge/globo/playlist.m3u8",
+    "category": "Tv Aberta"
   }
 ]
