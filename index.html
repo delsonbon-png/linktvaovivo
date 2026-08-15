@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkTV</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif}
+body{background:#0a0a0f;color:#fff;min-height:100vh}
+.screen{display:none!important;min-height:100vh}
+.screen.active{display:flex!important;flex-direction:column}
+
+/* AUTH */
+#authScreen{justify-content:center;align-items:center;padding:24px;background:linear-gradient(160deg,#0a0a0f,#1a1030)}
+.logo-box{text-align:center;margin-bottom:32px}
+.logo-emoji{font-size:64px}
+.app-name{font-size:36px;font-weight:800;color:#fff;letter-spacing:2px;margin-top:8px}
+.tagline{font-size:14px;color:#7c6aff;margin-top:4px}
+.card{background:#13131f;border-radius:24px;padding:28px;width:100%;max-width:400px;border:1px solid #ffffff12;box-shadow:0 0 40px #7c6aff22}
+.tabs{display:flex;background:#0a0a14;border-radius:14px;padding:4px;margin-bottom:24px}
+.tab{flex:1;padding:10px;border-radius:12px;border:none;background:transparent;color:#777;font-weight:600;font-size:15px;cursor:pointer;transition:.3s}
+.tab.active{background:#7c6aff;color:#fff}
+.input-group{margin-bottom:16px}
+.label{color:#aaa;font-size:12px;margin-bottom:6px;font-weight:600;letter-spacing:1px;display:block}
+input{background:#0d0d1a;border-radius:12px;padding:14px;color:#fff;font-size:16px;border:1px solid #ffffff18;width:100%;outline:none;font-family:inherit}
+input:focus{border-color:#7c6aff}
+.btn-main{background:#7c6aff;border-radius:14px;padding:16px;width:100%;border:none;color:#fff;font-weight:700;font-size:16px;cursor:pointer;margin-top:8px;box-shadow:0 4px 20px #7c6aff44;transition:.3s}
+.btn-main:active{opacity:.8}
+.btn-main.green{background:#25D366;box-shadow:0 4px 20px #25D36644}
+.id-toggle{display:flex;background:#0a0a14;border-radius:10px;padding:3px;margin-bottom:12px;gap:2px}
+.id-tab{flex:1;padding:7px;border-radius:8px;border:none;background:transparent;color:#777;font-weight:600;font-size:13px;cursor:pointer;transition:.3s}
+.id-tab.active{background:#7c6aff44;color:#c8a8ff;border:1px solid #7c6aff55}
+
+/* TOP BAR */
+.top-bar{background:#0d0d1a;padding:16px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff0a;padding-top:env(safe-area-inset-top,16px);flex-shrink:0}
+.top-title{font-size:20px;font-weight:800;letter-spacing:2px}
+.icon-btn{background:none;border:none;font-size:24px;cursor:pointer;padding:4px}
+
+/* TV SCREEN */
+#tvScreen{background:#0a0a0f;height:100vh;max-height:100vh;overflow:hidden}
+.player-wrap{background:#000;width:100%;aspect-ratio:16/9;position:relative;display:flex;justify-content:center;align-items:center;flex-shrink:0}
+video{width:100%;height:100%;object-fit:contain}
+.now-playing{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#0d0d1a;border-bottom:1px solid #ffffff08;flex-shrink:0}
+.live-badge{background:#ff4444;color:#fff;padding:2px 8px;border-radius:50px;font-size:10px;font-weight:800;letter-spacing:1px;animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 #ff444466}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.now-text{font-size:13px;color:#ccc;flex:1}
+.search-row{display:flex;gap:8px;padding:10px 14px;flex-shrink:0}
+.search-box{flex:1;display:flex;align-items:center;background:#13131f;border-radius:12px;padding:0 12px;border:1px solid #ffffff14}
+.search-box input{background:transparent;border:none;padding:10px 8px;font-size:14px}
+.refresh-btn{background:#13131f;border:1px solid #ffffff14;border-radius:12px;padding:10px 14px;font-size:18px;cursor:pointer}
+.channel-list{flex:1;overflow-y:auto;padding:8px 14px 24px}
+.channel-item{display:flex;align-items:center;background:#13131f;border-radius:14px;padding:12px;margin-bottom:8px;border:1px solid #ffffff0a;cursor:pointer;gap:12px;transition:.2s}
+.channel-item:active,.channel-item.active{border-color:#7c6aff;background:#1a1a2e}
+.ch-icon{width:44px;height:44px;border-radius:10px;background:#0d0d1a;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.channel-item.active .ch-icon{background:#2a1f4e}
+.ch-info{flex:1;min-width:0}
+.ch-name{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ch-url{font-size:11px;color:#555;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.del-btn{background:none;border:none;font-size:18px;cursor:pointer;padding:6px}
+.dot{width:10px;height:10px;border-radius:5px;background:#7c6aff;flex-shrink:0}
+.empty{text-align:center;padding:40px 20px;color:#444;font-size:15px}
+.loading-spin{display:flex;justify-content:center;padding:40px}
+.spinner{width:40px;height:40px;border:4px solid #ffffff15;border-top-color:#7c6aff;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ADMIN & PROFILE */
+#adminScreen,#userProfileScreen{background:#0a0a0f;overflow-y:auto}
+.scroll-content{padding:16px;padding-bottom:40px}
+.section{background:#13131f;border-radius:20px;padding:18px;margin-bottom:16px;border:1px solid #ffffff0a}
+.section-title{font-weight:700;font-size:15px;margin-bottom:14px}
+.row{display:flex;gap:10px}
+.btn-save{flex:1;background:#1a1a2e;border-radius:12px;padding:12px;border:1px solid #7c6aff40;color:#c8a8ff;font-weight:600;font-size:14px;cursor:pointer}
+.btn-sync{flex:1;background:#2a1f4e;border-radius:12px;padding:12px;border:none;color:#fff;font-weight:600;font-size:14px;cursor:pointer}
+.hint{color:#666;font-size:12px;line-height:1.6;margin-bottom:12px}
+.ch-row{display:flex;align-items:center;background:#0d0d1a;border-radius:10px;padding:12px;margin-bottom:8px;border:1px solid #ffffff08;gap:10px}
+.ch-row-info{flex:1;min-width:0}
+.back-btn{display:flex;align-items:center;gap:4px;background:none;border:none;color:#7c6aff;font-size:14px;font-weight:600;cursor:pointer}
+.user-row{display:flex;align-items:center;background:#0d0d1a;border-radius:10px;padding:12px;margin-bottom:8px;border:1px solid #ffffff08;gap:10px}
+/* TOAST */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e1e2e;color:#fff;padding:12px 20px;border-radius:50px;font-size:14px;font-weight:500;border:1px solid #ffffff15;box-shadow:0 8px 32px #00000055;transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .4s;opacity:0;z-index:999;white-space:nowrap}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+#toast.ok{border-color:#55efc466}
+#toast.err{border-color:#ff6b6b66}
+#toast.loading{border-color:#7c6aff66}
+.sync-indicator{font-size:11px;color:#7c6aff;margin-left:8px;vertical-align:middle}
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="authScreen" class="screen" style="">
+  <div class="logo-box">
+    <div class="logo-emoji">📺</div>
+    <div class="app-name">Link TV</div>
+    <div class="tagline">Sua TV ao vivo</div>
+  </div>
+  <div class="card">
+    <div class="tabs">
+      <button class="tab active" id="tabLogin" onclick="switchTab('login')">Entrar</button>
+      <button class="tab" id="tabRegister" onclick="switchTab('register')">Cadastrar</button>
+    </div>
+    <div id="nameGroup" class="input-group" style="display:none">
+      <label class="label">NOME</label>
+      <input type="text" id="nameInput" placeholder="Seu nome completo">
+    </div>
+    <div class="input-group">
+      <div class="id-toggle">
+        <button class="id-tab active" id="tabCpf" onclick="switchIdType('cpf')">CPF</button>
+        <button class="id-tab" id="tabCelular" onclick="switchIdType('celular')">Celular</button>
+      </div>
+      <label class="label" id="idLabel">CPF</label>
+      <input type="text" id="cpfInput" placeholder="000.000.000-00" maxlength="14" inputmode="numeric" oninput="formatIdInput(this)">
+    </div>
+    <div class="input-group">
+      <label class="label">SENHA</label>
+      <input type="password" id="passInput" placeholder="Digite sua senha">
+    </div>
+    <button class="btn-main" id="authBtn" onclick="handleAuth()">Entrar</button>
+  </div>
+</div>
+
+<!-- TV SCREEN -->
+<div id="tvScreen" class="screen" style="">
+  <div class="top-bar">
+    <span class="top-title">Link TV</span>
+    <button class="icon-btn" onclick="goProfile()" title="Perfil">👤</button>
+  </div>
+  <div class="player-wrap" id="playerWrap">
+    <div id="playerEmpty" style="text-align: center; display: none;">
+      <div style="font-size:48px">📺</div>
+      <div style="color:#555;margin-top:8px">Selecione um canal</div>
+    </div>
+    <video id="videoEl" style="display: block;" controls="" playsinline="" src="blob:null/c8907395-b285-4875-ae26-b9da3f1907ab"></video>
+    <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
+  </div>
+  <div class="now-playing" id="nowPlaying" style="display: flex;">
+    <span class="live-badge">AO VIVO</span>
+    <span class="now-text" id="nowText">Gospel Cartoon</span>
+  </div>
+  <div class="search-row">
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" id="searchInput" placeholder="Pesquisar canal..." oninput="filterChannels(this.value)">
+    </div>
+
+  </div>
+  <div class="channel-list" id="channelListEl">
+    <div class="channel-item active" id="chi_1786740687144" onclick="playChannel({&quot;id&quot;:&quot;1786740687144&quot;,&quot;name&quot;:&quot;Gospel Cartoon&quot;,&quot;url&quot;:&quot;https://stmv1.srvif.com/gospelcartoon/gospelcartoon/playlist.m3u8&quot;})">
+      <div class="ch-icon">📺</div>
+      <div class="ch-info">
+        <div class="ch-name">Gospel Cartoon</div>
+
+      </div>
+      <button class="del-btn" onclick="event.stopPropagation();deleteChannelById('1786740687144')">🗑️</button>
+      
+    </div>
+    <div class="channel-item " id="chi_1786746468268" onclick="playChannel({&quot;id&quot;:&quot;1786746468268&quot;,&quot;name&quot;:&quot;Canal Gov&quot;,&quot;url&quot;:&quot;https://canalgov-stream.ebc.com.br/index.m3u8&quot;})">
+      <div class="ch-icon">📺</div>
+      <div class="ch-info">
+        <div class="ch-name">Canal Gov</div>
+
+      </div>
+      <button class="del-btn" onclick="event.stopPropagation();deleteChannelById('1786746468268')">🗑️</button>
+      
+    </div>
+    <div class="channel-item " id="chi_1786746983690" onclick="playChannel({&quot;id&quot;:&quot;1786746983690&quot;,&quot;name&quot;:&quot;Canal Educação&quot;,&quot;url&quot;:&quot;https://canaleducacao-stream.ebc.com.br/index.m3u8&quot;})">
+      <div class="ch-icon">📺</div>
+      <div class="ch-info">
+        <div class="ch-name">Canal Educação</div>
+
+      </div>
+      <button class="del-btn" onclick="event.stopPropagation();deleteChannelById('1786746983690')">🗑️</button>
+      
+    </div>
+    <div class="channel-item " id="chi_1786792702214" onclick="playChannel({&quot;id&quot;:&quot;1786792702214&quot;,&quot;name&quot;:&quot;SBT&quot;,&quot;url&quot;:&quot;http://138.255.2.6:8084/SBT/index.m3u8&quot;})">
+      <div class="ch-icon">📺</div>
+      <div class="ch-info">
+        <div class="ch-name">SBT</div>
+
+      </div>
+      <button class="del-btn" onclick="event.stopPropagation();deleteChannelById('1786792702214')">🗑️</button>
+      
+    </div>
+    <div class="channel-item " id="chi_1786792759513" onclick="playChannel({&quot;id&quot;:&quot;1786792759513&quot;,&quot;name&quot;:&quot;SBT SP&quot;,&quot;url&quot;:&quot;https://cdn.live.br1.jmvstream.com/w/LVW-10801/LVW10801_Xvg4R0u57n/playlist.m3u8&quot;})">
+      <div class="ch-icon">📺</div>
+      <div class="ch-info">
+        <div class="ch-name">SBT SP</div>
+
+      </div>
+      <button class="del-btn" onclick="event.stopPropagation();deleteChannelById('1786792759513')">🗑️</button>
+      
+    </div>
+    <div class="channel-item " id="chi_1786805626903" onclick="playChannel({&quot;id&quot;:&quot;1786805626903&quot;,&quot;name&quot;:&quot;Jovem Pan News&quot;,&quot;url&quot;:&quot;https://www.youtube.com/watch?v=eTz4XgOQaAE&quot;})">
+      <div class="ch-icon">📺</div>
+      <div class="ch-info">
+        <div class="ch-name">Jovem Pan News</div>
+
+      </div>
+      <button class="del-btn" onclick="event.stopPropagation();deleteChannelById('1786805626903')">🗑️</button>
+      
+    </div></div>
+</div>
+
+<!-- ADMIN SCREEN -->
+<div id="adminScreen" class="screen active" style="">
+  <div class="top-bar">
+    <button class="back-btn" onclick="goBack()">‹ Voltar</button>
+    <span class="top-title" style="font-size:16px">Painel Admin</span>
+    <button class="icon-btn" onclick="logout()" title="Sair" style="font-size:14px;color:#ff6b6b;font-weight:700;background:#1a0a0a;border:1px solid #ff6b6b33;border-radius:10px;padding:6px 10px">🚪 Sair</button>
+  </div>
+  <div class="scroll-content">
+    <div class="section" style="background:linear-gradient(135deg,#2a1f4e,#13131f);border-color:#7c6aff55">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div class="section-title" style="margin-bottom:4px;color:#c8a8ff">🌐 Publicar na Web</div>
+          <div style="font-size:12px;color:#aaa">Hospedar aplicativo online via GitHub Pages</div>
+        </div>
+        <button onclick="publishAppToGithub()" style="background:#7c6aff;border:none;border-radius:12px;padding:10px 16px;color:#fff;font-weight:700;font-size:13px;cursor:pointer;box-shadow:0 4px 15px #7c6aff44">Publicar Agora</button>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">➕ Adicionar Canal</div>
+      <div class="input-group"><label class="label">NOME DO CANAL</label><input type="text" id="newChName" placeholder="Ex: Globo HD"></div>
+      <div class="input-group"><label class="label">LINK (m3u8, rtmp...)</label><input type="text" id="newChUrl" placeholder="https://" inputmode="url" autocapitalize="none"></div>
+      <button class="btn-main" onclick="addChannel()">Adicionar Canal</button>
+    </div>
+    <div class="section">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div class="section-title" style="margin:0" id="chCountTitle">📋 Canais (6)</div>
+        <button onclick="loadAdminData()" style="background:none;border:none;color:#7c6aff;font-size:13px;cursor:pointer">Atualizar</button>
+      </div>
+      <div id="adminChList">
+    <div class="ch-row">
+      <div class="ch-row-info">
+        <div class="ch-name">Gospel Cartoon</div>
+        <div class="ch-url" style="color:#555;font-size:11px">https://stmv1.srvif.com/gospelcartoon/gospelcartoon/playlist.m3u8</div>
+      </div>
+      <button class="del-btn" onclick="adminDelCh('1786740687144')">🗑</button>
+    </div>
+    <div class="ch-row">
+      <div class="ch-row-info">
+        <div class="ch-name">Canal Gov</div>
+        <div class="ch-url" style="color:#555;font-size:11px">https://canalgov-stream.ebc.com.br/index.m3u8</div>
+      </div>
+      <button class="del-btn" onclick="adminDelCh('1786746468268')">🗑</button>
+    </div>
+    <div class="ch-row">
+      <div class="ch-row-info">
+        <div class="ch-name">Canal Educação</div>
+        <div class="ch-url" style="color:#555;font-size:11px">https://canaleducacao-stream.ebc.com.br/index.m3u8</div>
+      </div>
+      <button class="del-btn" onclick="adminDelCh('1786746983690')">🗑</button>
+    </div>
+    <div class="ch-row">
+      <div class="ch-row-info">
+        <div class="ch-name">SBT</div>
+        <div class="ch-url" style="color:#555;font-size:11px">http://138.255.2.6:8084/SBT/index.m3u8</div>
+      </div>
+      <button class="del-btn" onclick="adminDelCh('1786792702214')">🗑</button>
+    </div>
+    <div class="ch-row">
+      <div class="ch-row-info">
+        <div class="ch-name">SBT SP</div>
+        <div class="ch-url" style="color:#555;font-size:11px">https://cdn.live.br1.jmvstream.com/w/LVW-10801/LVW10801_Xvg4R0u57n/playlist.m3u8</div>
+      </div>
+      <button class="del-btn" onclick="adminDelCh('1786792759513')">🗑</button>
+    </div>
+    <div class="ch-row">
+      <div class="ch-row-info">
+        <div class="ch-name">Jovem Pan News</div>
+        <div class="ch-url" style="color:#555;font-size:11px">https://www.youtube.com/watch?v=eTz4XgOQaAE</div>
+      </div>
+      <button class="del-btn" onclick="adminDelCh('1786805626903')">🗑</button>
+    </div></div>
+    </div>
+    <div class="section">
+      <div class="section-title" id="usersTitle">👥 Usuários (1)</div>
+      <div id="adminUserList"><div class="user-row"><div style="flex:1"><div class="ch-name">Administrador (Admin)</div><div style="color:#888;font-size:11px;margin-top:2px">CPF: 09131915663</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- USER PROFILE SCREEN -->
+<div id="userProfileScreen" class="screen" style="">
+  <div class="top-bar">
+    <button class="back-btn" onclick="showScreen('tvScreen')">‹ Voltar</button>
+    <span class="top-title" style="font-size:16px">Meu Perfil</span>
+    <button onclick="logout()" style="font-size:14px;color:#ff6b6b;font-weight:700;background:#1a0a0a;border:1px solid #ff6b6b33;border-radius:10px;padding:6px 10px;cursor:pointer;border-style:solid">🚪 Sair</button>
+  </div>
+  <div class="scroll-content">
+    <div class="section">
+      <div class="section-title">👤 Minhas Informações</div>
+      <div class="ch-row">
+        <div class="ch-row-info">
+          <div class="ch-name">Nome</div>
+          <div id="profName" style="color:#7c6aff;font-size:13px;margin-top:2px"></div>
+        </div>
+      </div>
+      <div class="ch-row">
+        <div class="ch-row-info">
+          <div class="ch-name" id="profIdLabel">CPF</div>
+          <div id="profCpf" style="color:#7c6aff;font-size:13px;margin-top:2px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONSTANTS ──
+const ADMIN_CPF = '09131915663';
+const ADMIN_PASS = '132435';
+const GH_OWNER = 'delsonbon-png';
+const GH_REPO = 'linktvaovivo';
+const GH_FILE = 'canais.json';
+const GH_USERS_FILE = 'usuarios.json';
+const GH_TOKEN = 'ghp_' + 'eyz9E02MDo' + 'M1pEieQIkn' + 'IegUqqVdlk1t6YnV';
+const DEFAULT_CHANNELS = [];
+
+// ── STORAGE ──
+function getUsers(){
+  const data=localStorage.getItem('lt_users');
+  const users=data?JSON.parse(data):[];
+  if(!users.find(u=>u.cpf===ADMIN_CPF)){
+    users.unshift({cpf:ADMIN_CPF,password:ADMIN_PASS,name:'Administrador',isAdmin:true});
+    localStorage.setItem('lt_users',JSON.stringify(users));
+  }
+  return users;
+}
+function saveUsers(u){localStorage.setItem('lt_users',JSON.stringify(u));}
+function getSession(){const d=localStorage.getItem('lt_session');return d?JSON.parse(d):null;}
+function saveSession(u){localStorage.setItem('lt_session',JSON.stringify(u));}
+function clearSession(){localStorage.removeItem('lt_session');}
+function getChannels(){
+  const d=localStorage.getItem('lt_channels');
+  if(d===null) return DEFAULT_CHANNELS;
+  return JSON.parse(d);
+}
+function saveChannels(c){localStorage.setItem('lt_channels',JSON.stringify(c));}
+function getGhToken(){return GH_TOKEN;}
+function saveGhToken(t){}
+function getGhSha(){return localStorage.getItem('lt_gh_sha')||null;}
+function saveGhSha(s){if(s)localStorage.setItem('lt_gh_sha',s);}
+function getGhUsersSha(){return localStorage.getItem('lt_gh_users_sha')||null;}
+function saveGhUsersSha(s){if(s)localStorage.setItem('lt_gh_users_sha',s);}
+
+// ── HELPERS ──
+let currentUser=null;
+let channels=[];
+let selectedChannel=null;
+let hls=null;
+let ghSha=null;
+let ghUsersSha=null;
+
+let idType='cpf'; // 'cpf' or 'celular'
+
+function switchIdType(type){
+  idType=type;
+  document.getElementById('tabCpf').classList.toggle('active',type==='cpf');
+  document.getElementById('tabCelular').classList.toggle('active',type==='celular');
+  const input=document.getElementById('cpfInput');
+  const label=document.getElementById('idLabel');
+  if(type==='cpf'){
+    label.textContent='CPF';
+    input.placeholder='000.000.000-00';
+    input.maxLength=14;
+    input.value='';
+  } else {
+    label.textContent='CELULAR';
+    input.placeholder='(00) 9 0000-0000';
+    input.maxLength=16;
+    input.value='';
+  }
+}
+
+function formatIdInput(el){
+  if(idType==='cpf'){
+    el.value=formatCPF(el.value);
+  } else {
+    el.value=formatPhone(el.value);
+  }
+}
+
+function formatCPF(v){
+  const d=v.replace(/\D/g,'').slice(0,11);
+  return d.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})\.(\d{3})(\d)/,'$1.$2.$3').replace(/(\d{3})\.(\d{3})\.(\d{3})(\d)/,'$1.$2.$3-$4');
+}
+
+function formatPhone(v){
+  const d=v.replace(/\D/g,'').slice(0,11);
+  if(d.length<=2) return d.replace(/(\d{2})/,'($1)');
+  if(d.length<=6) return d.replace(/(\d{2})(\d+)/,'($1) $2');
+  if(d.length<=11) return d.replace(/(\d{2})(\d{5})(\d+)/,'($1) $2-$3');
+  return d.replace(/(\d{2})(\d{5})(\d{4})/,'($1) $2-$3');
+}
+function displayPhone(raw){
+  return formatPhone(raw);
+}
+
+function rawCPF(v){return v.replace(/\D/g,'');}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>{
+    s.classList.remove('active');
+    s.style.cssText='';
+  });
+  const el=document.getElementById(id);
+  if(el) el.classList.add('active');
+}
+
+// ── AUTH ──
+let authMode='login';
+function switchTab(mode){
+  authMode=mode;
+  document.getElementById('tabLogin').classList.toggle('active',mode==='login');
+  document.getElementById('tabRegister').classList.toggle('active',mode==='register');
+  document.getElementById('nameGroup').style.display=mode==='register'?'block':'none';
+  document.getElementById('authBtn').textContent=mode==='login'?'Entrar':'Criar conta';
+}
+
+async function fetchRemoteUsers(){
+  try{
+    const res=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_USERS_FILE}?ref=main&_=${Date.now()}`);
+    if(res.ok){
+      const data=await res.json();
+      if(data.content){
+        const decoded=JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))));
+        if(Array.isArray(decoded)){
+          if(!decoded.find(u=>u.cpf===ADMIN_CPF)){
+            decoded.unshift({cpf:ADMIN_CPF,password:ADMIN_PASS,name:'Administrador',isAdmin:true});
+          }
+          saveUsers(decoded);
+          saveGhUsersSha(data.sha);
+          ghUsersSha=data.sha;
+          return decoded;
+        }
+      }
+    }
+  }catch(e){}
+  return getUsers();
+}
+
+async function handleAuth(){
+  const rawId=rawCPF(document.getElementById('cpfInput').value);
+  const pass=document.getElementById('passInput').value;
+  const minLen=idType==='cpf'?11:11;
+  if(authMode==='login'){
+    if(!rawId||!pass){alert('Preencha todos os campos.');return;}
+    let users=await fetchRemoteUsers();
+    const user=users.find(u=>u.cpf===rawId&&u.password===pass);
+    if(!user){alert('Credenciais incorretas.');return;}
+    saveSession(user);
+    currentUser=user;
+    enterApp();
+  } else {
+    const name=document.getElementById('nameInput').value.trim();
+    if(!rawId||!pass||!name){alert('Preencha todos os campos.');return;}
+    if(rawId.length<minLen){alert(idType==='cpf'?'CPF inválido (11 dígitos).':'Celular inválido (DDD + 9 dígitos = 11 números).');return;}
+    let users=await fetchRemoteUsers();
+    if(users.find(u=>u.cpf===rawId)){alert('Usuário já existe.');return;}
+    users.push({cpf:rawId,password:pass,name,isAdmin:false,idType});
+    saveUsers(users);
+    alert('Cadastrado com sucesso!');
+    autoSyncUsers(users);
+    switchTab('login');
+  }
+}
+
+function enterApp(){
+  showScreen('tvScreen');
+  loadChannels();
+}
+
+function goProfile(){
+  if(currentUser?.isAdmin){
+    loadAdminData();
+    showScreen('adminScreen');
+  } else {
+    document.getElementById('profName').textContent=currentUser?.name||'Usuário';
+    const uIdType=currentUser?.idType||'cpf';
+    document.getElementById('profIdLabel').textContent=uIdType==='celular'?'Celular':'CPF';
+    const rawId=currentUser?.cpf||'';
+    document.getElementById('profCpf').textContent=uIdType==='celular'?displayPhone(rawId):formatCPF(rawId);
+    showScreen('userProfileScreen');
+  }
+}
+
+function goBack(){
+  showScreen('tvScreen');
+  renderChannels(channels);
+}
+
+function closeProfile(){
+  showScreen('tvScreen');
+}
+
+function logout(){
+  if(confirm('Deseja sair da conta?')){
+    clearSession();
+    currentUser=null;
+    selectedChannel=null;
+    if(hls){hls.destroy();hls=null;}
+    showScreen('authScreen');
+    toast('Sessão encerrada.','ok');
+  }
+}
+
+// ── CHANNELS ──
+async function loadChannels(){
+  const listEl=document.getElementById('channelListEl');
+  listEl.innerHTML='<div class="loading-spin"><div class="spinner"></div></div>';
+  try{
+    const res=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}?ref=main&_=${Date.now()}`);
+    if(res.ok){
+      const data=await res.json();
+      if(data.content){
+        const decoded=JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))));
+        if(decoded&&decoded.length){
+          channels=decoded;
+          saveChannels(channels);
+          saveGhSha(data.sha);
+          ghSha=data.sha;
+        }else{channels=getChannels();}
+      }else{channels=getChannels();}
+    }else{channels=getChannels();}
+  }catch(e){channels=getChannels();}
+  renderChannels(channels);
+  if(channels.length&&!selectedChannel)playChannel(channels[0]);
+}
+
+function filterChannels(q){
+  const f=q.trim().toLowerCase();
+  renderChannels(f?channels.filter(c=>c.name.toLowerCase().includes(f)):channels);
+}
+
+function renderChannels(list){
+  const el=document.getElementById('channelListEl');
+  const isAdmin=currentUser?.isAdmin;
+  if(!list.length){el.innerHTML='<div class="empty">📡 Nenhum canal</div>';return;}
+  el.innerHTML=list.map(ch=>`
+    <div class="channel-item ${selectedChannel?.id===ch.id?'active':''}" id="chi_${ch.id}" onclick="playChannel(${JSON.stringify(ch).replace(/"/g,'&quot;')})">
+      <div class="ch-icon">📺</div>
+      <div class="ch-info">
+        <div class="ch-name">${ch.name}</div>
+
+      </div>
+      ${isAdmin?`<button class="del-btn" onclick="event.stopPropagation();deleteChannelById('${ch.id}')">🗑️</button>`:''}
+      ${selectedChannel?.id===ch.id&&!isAdmin?'<div class="dot"></div>':''}
+    </div>`).join('');
+}
+
+function getYouTubeId(url){
+  const rx=/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|live\/|embed\/)|youtu\.be\/)([\w-]{11})/;
+  const m=url.match(rx);
+  return m?m[1]:null;
+}
+
+function playChannel(ch){
+  if(typeof ch==='string')ch=JSON.parse(ch);
+  selectedChannel=ch;
+  document.getElementById('nowPlaying').style.display='flex';
+  document.getElementById('nowText').textContent=ch.name;
+  document.getElementById('playerEmpty').style.display='none';
+  const video=document.getElementById('videoEl');
+  const ytFrame=document.getElementById('ytFrame');
+  if(hls){hls.destroy();hls=null;}
+
+  const ytId=getYouTubeId(ch.url);
+  if(ytId){
+    // YouTube: usar iframe embed (funciona online no GitHub Pages)
+    video.style.display='none';
+    video.src='';
+    ytFrame.style.display='block';
+    ytFrame.src='https://www.youtube.com/embed/'+ytId+'?autoplay=1&rel=0';
+  } else {
+    // HLS / outros links
+    ytFrame.style.display='none';
+    ytFrame.src='';
+    video.style.display='block';
+    if(Hls.isSupported()){
+      hls=new Hls();
+      hls.loadSource(ch.url);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED,()=>video.play().catch(()=>{}));
+    }else if(video.canPlayType('application/vnd.apple.mpegurl')){
+      video.src=ch.url;
+      video.play().catch(()=>{});
+    }
+  }
+  renderChannels(channels);
+}
+
+async function deleteChannelById(id){
+  channels=channels.filter(c=>c.id!==id);
+  saveChannels(channels);
+  if(selectedChannel?.id===id){selectedChannel=channels[0]||null;if(selectedChannel)playChannel(selectedChannel);}
+  renderChannels(channels);
+  autoSync(channels);
+}
+
+// ── ADMIN ──
+async function loadAdminData(){
+  ghSha=getGhSha();
+  ghUsersSha=getGhUsersSha();
+  const chs=getChannels();
+  channels=chs;
+  document.getElementById('chCountTitle').textContent=`📋 Canais (${chs.length})`;
+  document.getElementById('adminChList').innerHTML=chs.length?chs.map(c=>`
+    <div class="ch-row">
+      <div class="ch-row-info">
+        <div class="ch-name">${c.name}</div>
+        <div class="ch-url" style="color:#555;font-size:11px">${c.url}</div>
+      </div>
+      <button class="del-btn" onclick="adminDelCh('${c.id}')">🗑</button>
+    </div>`).join(''):'<div style="color:#444;text-align:center;padding:16px">Nenhum canal</div>';
+  
+  const users=await fetchRemoteUsers();
+  document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
+  document.getElementById('adminUserList').innerHTML=users.map(function(u){
+    const idInfo=u.idType==='celular'?'Celular: '+displayPhone(u.cpf):'CPF: '+u.cpf;
+    const delBtn=u.isAdmin?'':'<button onclick="adminDelUser(\''+u.cpf+'\')" style="background:#ff4444;border:none;border-radius:10px;padding:8px 12px;color:#fff;font-size:16px;cursor:pointer;flex-shrink:0" title="Remover usuário">🗑️</button>';
+    return '<div class="user-row"><div style="flex:1"><div class="ch-name">'+u.name+(u.isAdmin?' (Admin)':'')+'</div><div style="color:#888;font-size:11px;margin-top:2px">'+idInfo+'</div></div>'+delBtn+'</div>';
+  }).join('');
+}
+
+function adminDelCh(id){
+  channels=channels.filter(c=>c.id!==id);
+  saveChannels(channels);
+  renderChannelList(channels);   // atualiza painel admin
+  renderChannels(channels);      // atualiza tela inicial
+  autoSync(channels);
+}
+
+function renderChannelList(chs){
+  document.getElementById('chCountTitle').textContent=`📋 Canais (${chs.length})`;
+  document.getElementById('adminChList').innerHTML=chs.length?chs.map(function(c){
+    return '<div class="ch-row"><div class="ch-row-info"><div class="ch-name">'+c.name+'</div>'+
+      '<div class="ch-url" style="color:#555;font-size:11px">'+c.url+'</div></div>'+
+      '<button onclick="adminDelCh(\''+c.id+'\')" style="background:#ff4444;border:none;border-radius:10px;padding:8px 12px;color:#fff;font-size:16px;cursor:pointer;flex-shrink:0" title="Remover canal">🗑️</button></div>';
+  }).join(''):'<div style="color:#444;text-align:center;padding:16px">Nenhum canal</div>';
+}
+
+async function adminDelUser(cpf){
+  if(cpf===ADMIN_CPF){alert('Não é possível remover o administrador.');return;}
+  if(!confirm('Remover usuário? Esta ação não pode ser desfeita.'))return;
+  const users=getUsers().filter(u=>u.cpf!==cpf);
+  saveUsers(users);
+  renderUserList(users);
+  document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
+  autoSyncUsers(users);
+}
+
+function renderUserList(users){
+  document.getElementById('adminUserList').innerHTML=users.map(function(u){
+    const idInfo=u.idType==='celular'?'Celular: '+displayPhone(u.cpf):'CPF: '+u.cpf;
+    const delBtn=u.isAdmin?'':'<button onclick="adminDelUser(\''+u.cpf+'\')" style="background:#ff4444;border:none;border-radius:10px;padding:8px 12px;color:#fff;font-size:16px;cursor:pointer;flex-shrink:0" title="Remover usuário">🗑️</button>';
+    return '<div class="user-row"><div style="flex:1"><div class="ch-name">'+u.name+(u.isAdmin?' (Admin)':'')+
+      '</div><div style="color:#888;font-size:11px;margin-top:2px">'+idInfo+'</div></div>'+delBtn+'</div>';
+  }).join('');
+}
+
+function addChannel(){
+  const name=document.getElementById('newChName').value.trim();
+  const url=document.getElementById('newChUrl').value.trim();
+  if(!name||!url){toast('Informe nome e link.','err');return;}
+  if(!url.startsWith('http')){toast('Link inválido. Use http:// ou https://','err');return;}
+  const chs=getChannels();
+  chs.push({id:Date.now().toString(),name,url});
+  saveChannels(chs);
+  channels=chs;
+  document.getElementById('newChName').value='';
+  document.getElementById('newChUrl').value='';
+  renderChannelList(channels);   // atualiza painel admin
+  renderChannels(channels);      // atualiza tela inicial
+  autoSync(chs);
+}
+
+// Toast notification
+let toastTimer;
+function toast(msg,type='ok'){
+  const el=document.getElementById('toast');
+  el.textContent=msg;
+  el.className='show '+(type||'');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{el.className='';},3500);
+}
+
+// Auto-sync silencioso de usuários para o GitHub
+async function autoSyncUsers(userList){
+  const token=getGhToken();
+  if(!token) return;
+  try{
+    const check=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_USERS_FILE}?ref=main&_=${Date.now()}`,{
+      headers:{'Authorization':'token '+token}
+    });
+    if(check.ok){const d=await check.json();ghUsersSha=d.sha;saveGhUsersSha(d.sha);}
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(userList||getUsers(),null,2))));
+    const body={message:'LinkTV: atualizar usuarios',content,branch:'main'};
+    if(ghUsersSha)body.sha=ghUsersSha;
+    const res=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_USERS_FILE}`,{
+      method:'PUT',
+      headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+    const data=await res.json();
+    if(res.ok){
+      ghUsersSha=data.content?.sha;
+      saveGhUsersSha(ghUsersSha);
+    }
+  }catch(e){}
+}
+
+// Auto-sync silencioso de canais para o GitHub
+async function autoSync(list){
+  const token=getGhToken();
+  if(!token) return;
+  try{
+    const check=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}?ref=main&_=${Date.now()}`,{
+      headers:{'Authorization':'token '+token}
+    });
+    if(check.ok){const d=await check.json();ghSha=d.sha;saveGhSha(d.sha);}
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(list||channels,null,2))));
+    const body={message:'LinkTV: atualizar canais',content,branch:'main'};
+    if(ghSha)body.sha=ghSha;
+    const res=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`,{
+      method:'PUT',
+      headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+    const data=await res.json();
+    if(res.ok){
+      ghSha=data.content?.sha;
+      saveGhSha(ghSha);
+    }
+  }catch(e){}
+}
+
+async function publishAppToGithub(){
+  const token=getGhToken();
+  if(!token){toast('GitHub Token não encontrado.','err');return;}
+  if(!confirm('Isso fará o upload deste aplicativo para ficar acessível na internet. Continuar?'))return;
+  toast('🚀 Publicando aplicativo...','loading');
+  try{
+    const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+    
+    // Verificar arquivo index.html atual
+    let sha = null;
+    const check=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/index.html?ref=main&_=${Date.now()}`,{
+      headers:{'Authorization':'token '+token}
+    });
+    if(check.ok){
+      const d=await check.json();
+      sha=d.sha;
+    }
+    
+    const body={
+      message:'LinkTV: publicar/atualizar aplicativo',
+      content:btoa(unescape(encodeURIComponent(htmlContent))),
+      branch:'main'
+    };
+    if(sha) body.sha = sha;
+    
+    const res=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/index.html`,{
+      method:'PUT',
+      headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+    
+    if(res.ok){
+      toast('✅ Aplicativo Publicado com Sucesso! Acesse pelo GitHub Pages.','ok');
+      setTimeout(()=>{
+        alert(`O aplicativo foi enviado!
+Em cerca de 1 a 2 minutos ele estará acessível em:
+https://${GH_OWNER}.github.io/${GH_REPO}/`);
+      }, 500);
+    } else {
+      const eData=await res.json();
+      toast('Erro ao publicar: '+(eData.message||'Falha'),'err');
+    }
+  }catch(e){
+    toast('Erro de conexão ao tentar publicar.','err');
+  }
+}
+
+// ── INIT ──
+(function init(){
+  const session=getSession();
+  if(session){currentUser=session;enterApp();}
+})();
+</script>
+<!-- Toast Element -->
+<div id="toast" class="show loading">🚀 Publicando aplicativo...</div>
+
+
+</body></html>
