@@ -131,7 +131,7 @@ video{width:100%;height:100%;object-fit:contain}
       <div style="font-size:48px">📺</div>
       <div style="color:#555;margin-top:8px">Selecione um canal</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/80c5de09-7012-4223-b39d-da435e9ec90f"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/e4029001-be4e-45c6-ab63-8354a888051c"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
@@ -644,7 +644,7 @@ async function publishAppToGithub(){
   const token=getGhToken();
   if(!token){toast('GitHub Token não encontrado.','err');return;}
   if(!confirm('Isso fará o upload deste aplicativo para ficar acessível na internet. Continuar?'))return;
-  toast('🚀 Publicando aplicativo...','loading');
+  // toast removido a pedido do usuário
   try{
     const clone = document.documentElement.cloneNode(true);
     // Limpar o estado "ativo" das telas e colocar na tela de login
@@ -702,7 +702,6 @@ async function publishAppToGithub(){
     });
     
     if(res.ok){
-      toast('✅ Aplicativo Publicado com Sucesso! Acesse pelo GitHub Pages.','ok');
       setTimeout(()=>{
         alert(`O aplicativo foi enviado!
 Em cerca de 1 a 2 minutos ele estará acessível em:
@@ -710,10 +709,10 @@ https://${GH_OWNER}.github.io/${GH_REPO}/`);
       }, 500);
     } else {
       const eData=await res.json();
-      toast('Erro ao publicar: '+(eData.message||'Falha'),'err');
+      alert('Erro ao publicar: '+(eData.message||'Falha'));
     }
   }catch(e){
-    toast('Erro de conexão ao tentar publicar.','err');
+    alert('Erro de conexão ao tentar publicar.');
   }
 }
 
@@ -724,7 +723,7 @@ https://${GH_OWNER}.github.io/${GH_REPO}/`);
 })();
 </script>
 <!-- Toast Element -->
-<div id="toast" class="show loading">🚀 Publicando aplicativo...</div>
+<div id="toast"></div>
 
 
 </body></html>
