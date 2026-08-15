@@ -37,5 +37,11 @@
     "name": "Record News",
     "url": "https://www.youtube.com/live/3-zhAHmvVIw?is=AHSpM7NT9okDMI1Z",
     "category": "Notícias"
+  },
+  {
+    "id": "1786836523536",
+    "name": "Globo",
+    "url": "http://91.205.174.38:8081/live/sptv/chunks.m3u8",
+    "category": "Tv Aberta"
   }
 ]
