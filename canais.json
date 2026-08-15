@@ -37,5 +37,11 @@
     "name": "Record News",
     "url": "https://www.youtube.com/live/3-zhAHmvVIw?is=AHSpM7NT9okDMI1Z",
     "category": "Notícias"
+  },
+  {
+    "id": "1786836389149",
+    "name": "Globo RJ",
+    "url": "http://live.video.globo.com/h/1402196682759012345678915746027599876543210hM4EA1neMoQoIiUyVn1TNg/k/app/a/A/u/anyone/d/s/hls-globo-rj/hls-globo-rj_2359/playlist.m3u8",
+    "category": "Tv Aberta"
   }
 ]
