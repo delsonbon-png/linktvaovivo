@@ -2,13 +2,13 @@
 <html lang="pt-BR"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LinkTV</title>
+<title>LinkTV Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&amp;display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif}
 body{background:#0a0a0f;color:#fff;min-height:100vh}
-.screen{display:none!important;min-height:100vh}
+.screen{display:none!important;min-height:100vh;max-height:100vh}
 .screen.active{display:flex!important;flex-direction:column}
 
 /* AUTH */
@@ -32,6 +32,17 @@ input:focus{border-color:#7c6aff}
 .id-tab{flex:1;padding:7px;border-radius:8px;border:none;background:transparent;color:#777;font-weight:600;font-size:13px;cursor:pointer;transition:.3s}
 .id-tab.active{background:#7c6aff44;color:#c8a8ff;border:1px solid #7c6aff55}
 
+/* CATEGORIES */
+.category-bar{display:flex;gap:8px;padding:12px 14px 4px;overflow-x:auto;white-space:nowrap;flex-shrink:0}
+.category-bar::-webkit-scrollbar{display:none}
+.cat-pill{background:#13131f;border:1px solid #ffffff14;border-radius:20px;padding:8px 16px;color:#ccc;font-weight:600;font-size:13px;cursor:pointer;transition:.2s}
+.cat-pill.active{background:#7c6aff;color:#fff;border-color:#7c6aff}
+.cat-select{background:#0d0d1a;border-radius:12px;padding:14px;color:#fff;font-size:15px;border:1px solid #ffffff18;width:100%;outline:none;font-family:inherit;appearance:none}
+.cat-badge{font-size:10px;background:#2a1f4e;color:#c8a8ff;padding:2px 8px;border-radius:6px;display:inline-block;margin-top:4px;font-weight:700}
+.admin-edit-input{background:#0d0d1a;border:1px solid #ffffff14;border-radius:8px;color:#fff;padding:8px 10px;font-size:14px;width:100%;margin-bottom:6px;outline:none}
+.admin-edit-input:focus{border-color:#7c6aff}
+.admin-edit-select{background:#0d0d1a;border:1px solid #ffffff14;border-radius:8px;color:#c8a8ff;padding:6px 10px;font-size:13px;width:100%;outline:none}
+
 /* TOP BAR */
 .top-bar{background:#0d0d1a;padding:16px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff0a;padding-top:env(safe-area-inset-top,16px);flex-shrink:0}
 .top-title{font-size:20px;font-weight:800;letter-spacing:2px}
@@ -45,10 +56,9 @@ video{width:100%;height:100%;object-fit:contain}
 .live-badge{background:#ff4444;color:#fff;padding:2px 8px;border-radius:50px;font-size:10px;font-weight:800;letter-spacing:1px;animation:pulse 2s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 #ff444466}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
 .now-text{font-size:13px;color:#ccc;flex:1}
-.search-row{display:flex;gap:8px;padding:10px 14px;flex-shrink:0}
+.search-row{display:flex;gap:8px;padding:8px 14px 4px;flex-shrink:0}
 .search-box{flex:1;display:flex;align-items:center;background:#13131f;border-radius:12px;padding:0 12px;border:1px solid #ffffff14}
 .search-box input{background:transparent;border:none;padding:10px 8px;font-size:14px}
-.refresh-btn{background:#13131f;border:1px solid #ffffff14;border-radius:12px;padding:10px 14px;font-size:18px;cursor:pointer}
 .channel-list{flex:1;overflow-y:auto;padding:8px 14px 24px}
 .channel-item{display:flex;align-items:center;background:#13131f;border-radius:14px;padding:12px;margin-bottom:8px;border:1px solid #ffffff0a;cursor:pointer;gap:12px;transition:.2s}
 .channel-item:active,.channel-item.active{border-color:#7c6aff;background:#1a1a2e}
@@ -56,7 +66,6 @@ video{width:100%;height:100%;object-fit:contain}
 .channel-item.active .ch-icon{background:#2a1f4e}
 .ch-info{flex:1;min-width:0}
 .ch-name{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ch-url{font-size:11px;color:#555;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .del-btn{background:none;border:none;font-size:18px;cursor:pointer;padding:6px}
 .dot{width:10px;height:10px;border-radius:5px;background:#7c6aff;flex-shrink:0}
 .empty{text-align:center;padding:40px 20px;color:#444;font-size:15px}
@@ -70,20 +79,18 @@ video{width:100%;height:100%;object-fit:contain}
 .section{background:#13131f;border-radius:20px;padding:18px;margin-bottom:16px;border:1px solid #ffffff0a}
 .section-title{font-weight:700;font-size:15px;margin-bottom:14px}
 .row{display:flex;gap:10px}
-.btn-save{flex:1;background:#1a1a2e;border-radius:12px;padding:12px;border:1px solid #7c6aff40;color:#c8a8ff;font-weight:600;font-size:14px;cursor:pointer}
-.btn-sync{flex:1;background:#2a1f4e;border-radius:12px;padding:12px;border:none;color:#fff;font-weight:600;font-size:14px;cursor:pointer}
 .hint{color:#666;font-size:12px;line-height:1.6;margin-bottom:12px}
-.ch-row{display:flex;align-items:center;background:#0d0d1a;border-radius:10px;padding:12px;margin-bottom:8px;border:1px solid #ffffff08;gap:10px}
+.ch-row{display:flex;align-items:center;background:#0d0d1a;border-radius:14px;padding:12px;margin-bottom:10px;border:1px solid #ffffff08;gap:12px}
 .ch-row-info{flex:1;min-width:0}
 .back-btn{display:flex;align-items:center;gap:4px;background:none;border:none;color:#7c6aff;font-size:14px;font-weight:600;cursor:pointer}
 .user-row{display:flex;align-items:center;background:#0d0d1a;border-radius:10px;padding:12px;margin-bottom:8px;border:1px solid #ffffff08;gap:10px}
+
 /* TOAST */
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e1e2e;color:#fff;padding:12px 20px;border-radius:50px;font-size:14px;font-weight:500;border:1px solid #ffffff15;box-shadow:0 8px 32px #00000055;transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .4s;opacity:0;z-index:999;white-space:nowrap}
 #toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 #toast.ok{border-color:#55efc466}
 #toast.err{border-color:#ff6b6b66}
 #toast.loading{border-color:#7c6aff66}
-.sync-indicator{font-size:11px;color:#7c6aff;margin-left:8px;vertical-align:middle}
 </style>
 </head>
 <body>
@@ -131,19 +138,32 @@ video{width:100%;height:100%;object-fit:contain}
       <div style="font-size:48px">📺</div>
       <div style="color:#555;margin-top:8px">Selecione um canal</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/e4029001-be4e-45c6-ab63-8354a888051c"></video>
-    <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
+    <video id="videoEl" style="display:none" controls="" playsinline="" src=""></video>
+    <iframe id="ytFrame" style="display: none; width: 100%; height: 100%; border-width: medium; border-style: none; border-color: currentcolor; border-image: none;" allowfullscreen="" allow="autoplay; encrypted-media" src="https://www.youtube.com/embed/WLwpLy86DUw?autoplay=1&amp;rel=0"></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
     <span class="live-badge">AO VIVO</span>
-    <span class="now-text" id="nowText">Gospel Cartoon</span>
+    <span class="now-text" id="nowText">Bob Esponja</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;padding:10px 14px 4px;flex-shrink:0">
+    <span style="font-size:13px;color:#888;font-weight:600;white-space:nowrap">📂 Categoria:</span>
+    <select id="categorySelect" onchange="setCategory(this.value)" style="flex:1;background:#13131f;color:#fff;border:1px solid #7c6aff55;border-radius:12px;padding:10px 14px;font-size:14px;font-weight:600;outline:none;cursor:pointer;font-family:inherit">
+      <option value="Todos">🔵 Todos</option>
+      <option value="Tv Aberta">📡 Tv Aberta</option>
+      <option value="Documentários">🎞 Documentários</option>
+      <option value="Filmes">🎬 Filmes</option>
+      <option value="Esportes">⚽ Esportes</option>
+      <option value="Kids">🧒 Kids</option>
+      <option value="Notícias">📰 Notícias</option>
+      <option value="Variedades">🎭 Variedades</option>
+      <option value="Outros">📦 Outros</option>
+    </select>
   </div>
   <div class="search-row">
     <div class="search-box">
       <span>🔍</span>
-      <input type="text" id="searchInput" placeholder="Pesquisar canal..." oninput="filterChannels(this.value)">
+      <input type="text" id="searchInput" placeholder="Pesquisar canal..." oninput="onSearchInput(this.value)">
     </div>
-
   </div>
   <div class="channel-list" id="channelListEl"></div>
 </div>
@@ -160,15 +180,28 @@ video{width:100%;height:100%;object-fit:contain}
       <div style="display:flex;justify-content:space-between;align-items:center">
         <div>
           <div class="section-title" style="margin-bottom:4px;color:#c8a8ff">🌐 Publicar na Web</div>
-          <div style="font-size:12px;color:#aaa">Hospedar aplicativo online via GitHub Pages</div>
+          <div style="font-size:12px;color:#aaa">Atualizar index.html (App2)</div>
         </div>
-        <button onclick="publishAppToGithub()" style="background:#7c6aff;border:none;border-radius:12px;padding:10px 16px;color:#fff;font-weight:700;font-size:13px;cursor:pointer;box-shadow:0 4px 15px #7c6aff44">Publicar Agora</button>
+        <button onclick="publishAppToGithub()" style="background:#7c6aff;border:none;border-radius:12px;padding:10px 16px;color:#fff;font-weight:700;font-size:13px;cursor:pointer;box-shadow:0 4px 15px #7c6aff44">Publicar</button>
       </div>
     </div>
     <div class="section">
       <div class="section-title">➕ Adicionar Canal</div>
       <div class="input-group"><label class="label">NOME DO CANAL</label><input type="text" id="newChName" placeholder="Ex: Globo HD"></div>
-      <div class="input-group"><label class="label">LINK (m3u8, rtmp...)</label><input type="text" id="newChUrl" placeholder="https://" inputmode="url" autocapitalize="none"></div>
+      <div class="input-group"><label class="label">LINK</label><input type="text" id="newChUrl" placeholder="https://" inputmode="url" autocapitalize="none"></div>
+      <div class="input-group">
+        <label class="label">CATEGORIA</label>
+        <select id="newChCat" class="cat-select" style="padding-right: 32px; background-image: url('data:image/svg+xml;utf8,&lt;svg fill=%22%23fff%22 height=%2224%22 viewBox=%220 0 24 24%22 width=%2224%22 xmlns=%22http://www.w3.org/2000/svg%22&gt;&lt;path d=%22M7 10l5 5 5-5z%22/&gt;&lt;/svg&gt;'); background-repeat: no-repeat; background-position-x: 96%; background-position-y: center;">
+          <option value="Tv Aberta">Tv Aberta</option>
+          <option value="Documentários">Documentários</option>
+          <option value="Filmes">Filmes</option>
+          <option value="Esportes">Esportes</option>
+          <option value="Kids">Kids</option>
+          <option value="Notícias">Notícias</option>
+          <option value="Variedades">Variedades</option>
+          <option value="Outros">Outros</option>
+        </select>
+      </div>
       <button class="btn-main" onclick="addChannel()">Adicionar Canal</button>
     </div>
     <div class="section">
@@ -243,7 +276,6 @@ function getChannels(){
 }
 function saveChannels(c){localStorage.setItem('lt_channels',JSON.stringify(c));}
 function getGhToken(){return GH_TOKEN;}
-function saveGhToken(t){}
 function getGhSha(){return localStorage.getItem('lt_gh_sha')||null;}
 function saveGhSha(s){if(s)localStorage.setItem('lt_gh_sha',s);}
 function getGhUsersSha(){return localStorage.getItem('lt_gh_users_sha')||null;}
@@ -256,8 +288,9 @@ let selectedChannel=null;
 let hls=null;
 let ghSha=null;
 let ghUsersSha=null;
+let currentCategory = 'Todos';
 
-let idType='cpf'; // 'cpf' or 'celular'
+let idType='cpf'; 
 
 function switchIdType(type){
   idType=type;
@@ -279,18 +312,13 @@ function switchIdType(type){
 }
 
 function formatIdInput(el){
-  if(idType==='cpf'){
-    el.value=formatCPF(el.value);
-  } else {
-    el.value=formatPhone(el.value);
-  }
+  if(idType==='cpf') el.value=formatCPF(el.value);
+  else el.value=formatPhone(el.value);
 }
-
 function formatCPF(v){
   const d=v.replace(/\D/g,'').slice(0,11);
   return d.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})\.(\d{3})(\d)/,'$1.$2.$3').replace(/(\d{3})\.(\d{3})\.(\d{3})(\d)/,'$1.$2.$3-$4');
 }
-
 function formatPhone(v){
   const d=v.replace(/\D/g,'').slice(0,11);
   if(d.length<=2) return d.replace(/(\d{2})/,'($1)');
@@ -298,17 +326,11 @@ function formatPhone(v){
   if(d.length<=11) return d.replace(/(\d{2})(\d{5})(\d+)/,'($1) $2-$3');
   return d.replace(/(\d{2})(\d{5})(\d{4})/,'($1) $2-$3');
 }
-function displayPhone(raw){
-  return formatPhone(raw);
-}
-
+function displayPhone(raw){ return formatPhone(raw); }
 function rawCPF(v){return v.replace(/\D/g,'');}
 
 function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>{
-    s.classList.remove('active');
-    s.style.cssText='';
-  });
+  document.querySelectorAll('.screen').forEach(s=>{ s.classList.remove('active'); s.style.cssText=''; });
   const el=document.getElementById(id);
   if(el) el.classList.add('active');
 }
@@ -359,8 +381,8 @@ async function handleAuth(){
     enterApp();
   } else {
     const name=document.getElementById('nameInput').value.trim();
-    if(!rawId||!pass||!name){alert('Preencha todos os campos.');return;}
-    if(rawId.length<minLen){alert(idType==='cpf'?'CPF inválido (11 dígitos).':'Celular inválido (DDD + 9 dígitos = 11 números).');return;}
+    if(!rawId||!pass||!name){alert('Preencha os campos.');return;}
+    if(rawId.length<minLen){alert('CPF ou Celular inválido.');return;}
     let users=await fetchRemoteUsers();
     if(users.find(u=>u.cpf===rawId)){alert('Usuário já existe.');return;}
     users.push({cpf:rawId,password:pass,name,isAdmin:false,idType});
@@ -384,19 +406,14 @@ function goProfile(){
     document.getElementById('profName').textContent=currentUser?.name||'Usuário';
     const uIdType=currentUser?.idType||'cpf';
     document.getElementById('profIdLabel').textContent=uIdType==='celular'?'Celular':'CPF';
-    const rawId=currentUser?.cpf||'';
-    document.getElementById('profCpf').textContent=uIdType==='celular'?displayPhone(rawId):formatCPF(rawId);
+    document.getElementById('profCpf').textContent=uIdType==='celular'?displayPhone(currentUser?.cpf||''):formatCPF(currentUser?.cpf||'');
     showScreen('userProfileScreen');
   }
 }
 
 function goBack(){
   showScreen('tvScreen');
-  renderChannels(channels);
-}
-
-function closeProfile(){
-  showScreen('tvScreen');
+  filterChannels();
 }
 
 function logout(){
@@ -410,7 +427,7 @@ function logout(){
   }
 }
 
-// ── CHANNELS ──
+// ── CHANNELS FRONTEND ──
 async function loadChannels(){
   const listEl=document.getElementById('channelListEl');
   listEl.innerHTML='<div class="loading-spin"><div class="spinner"></div></div>';
@@ -425,33 +442,66 @@ async function loadChannels(){
           saveChannels(channels);
           saveGhSha(data.sha);
           ghSha=data.sha;
-        }else{channels=getChannels();}
-      }else{channels=getChannels();}
-    }else{channels=getChannels();}
+        }else channels=getChannels();
+      }else channels=getChannels();
+    }else channels=getChannels();
   }catch(e){channels=getChannels();}
-  renderChannels(channels);
-  if(channels.length&&!selectedChannel)playChannel(channels[0]);
+  
+  filterChannels();
+  // Se abrir e nao tiver canal selecionado, toca o primeiro visivel (se houver)
+  if(channels.length && !selectedChannel){
+    const sorted = [...channels].sort((a,b)=>a.name.localeCompare(b.name));
+    playChannel(sorted[0]);
+  }
 }
 
-function filterChannels(q){
-  const f=q.trim().toLowerCase();
-  renderChannels(f?channels.filter(c=>c.name.toLowerCase().includes(f)):channels);
+function setCategory(cat){
+  currentCategory = cat;
+  const sel = document.getElementById('categorySelect');
+  if(sel && sel.value !== cat) sel.value = cat;
+  filterChannels();
 }
 
-function renderChannels(list){
+function onSearchInput(q){
+  filterChannels();
+}
+
+function filterChannels(){
+  const q = document.getElementById('searchInput').value;
+  const f = q.trim().toLowerCase();
+  
+  let list = channels.filter(c => {
+    // Fallback pra canais velhos sem categoria (são Tv Aberta por padrão visual e lógica)
+    let cat = c.category || 'Tv Aberta';
+    if(currentCategory !== 'Todos' && cat !== currentCategory) return false;
+    if(f && !c.name.toLowerCase().includes(f)) return false;
+    return true;
+  });
+  
+  // Ordem Alfabética
+  list.sort((a,b) => a.name.localeCompare(b.name));
+  
+  renderChannelsRaw(list);
+}
+
+function renderChannelsRaw(list){
   const el=document.getElementById('channelListEl');
   const isAdmin=currentUser?.isAdmin;
-  if(!list.length){el.innerHTML='<div class="empty">📡 Nenhum canal</div>';return;}
-  el.innerHTML=list.map(ch=>`
+  if(!list.length){el.innerHTML='<div class="empty">📺 Nenhum canal encontrado</div>';return;}
+  
+  el.innerHTML=list.map(ch=>{
+    const cat = ch.category || 'Tv Aberta';
+    return `
     <div class="channel-item ${selectedChannel?.id===ch.id?'active':''}" id="chi_${ch.id}" onclick="playChannel(${JSON.stringify(ch).replace(/"/g,'&quot;')})">
       <div class="ch-icon">📺</div>
       <div class="ch-info">
         <div class="ch-name">${ch.name}</div>
-
+        <div class="cat-badge">${cat}</div>
       </div>
-      ${isAdmin?`<button class="del-btn" onclick="event.stopPropagation();deleteChannelById('${ch.id}')">🗑️</button>`:''}
+      ${isAdmin?`<button class="del-btn" onclick="event.stopPropagation();adminDelCh('${ch.id}')">🗑️</button>`:''}
       ${selectedChannel?.id===ch.id&&!isAdmin?'<div class="dot"></div>':''}
-    </div>`).join('');
+    </div>`
+  }).join('');
 }
 
 function getYouTubeId(url){
@@ -472,13 +522,11 @@ function playChannel(ch){
 
   const ytId=getYouTubeId(ch.url);
   if(ytId){
-    // YouTube: usar iframe embed (funciona online no GitHub Pages)
     video.style.display='none';
     video.src='';
     ytFrame.style.display='block';
     ytFrame.src='https://www.youtube.com/embed/'+ytId+'?autoplay=1&rel=0';
   } else {
-    // HLS / outros links
     ytFrame.style.display='none';
     ytFrame.src='';
     video.style.display='block';
@@ -492,95 +540,108 @@ function playChannel(ch){
       video.play().catch(()=>{});
     }
   }
-  renderChannels(channels);
-}
-
-async function deleteChannelById(id){
-  channels=channels.filter(c=>c.id!==id);
-  saveChannels(channels);
-  if(selectedChannel?.id===id){selectedChannel=channels[0]||null;if(selectedChannel)playChannel(selectedChannel);}
-  renderChannels(channels);
-  autoSync(channels);
+  filterChannels(); // re-render para mostrar dot do canal ativo
 }
 
 // ── ADMIN ──
 async function loadAdminData(){
   ghSha=getGhSha();
   ghUsersSha=getGhUsersSha();
-  const chs=getChannels();
-  channels=chs;
-  document.getElementById('chCountTitle').textContent=`📋 Canais (${chs.length})`;
-  document.getElementById('adminChList').innerHTML=chs.length?chs.map(c=>`
+  channels=getChannels(); // resync from localstorage
+  
+  document.getElementById('chCountTitle').textContent=`📋 Canais (${channels.length})`;
+  
+  // Render canais em Ordem Alfabética e Editáveis
+  const sorted = [...channels].sort((a,b) => a.name.localeCompare(b.name));
+  
+  document.getElementById('adminChList').innerHTML=sorted.length?sorted.map(c=>{
+    const cat = c.category || 'Tv Aberta';
+    return `
     <div class="ch-row">
       <div class="ch-row-info">
-        <div class="ch-name">${c.name}</div>
-        <div class="ch-url" style="color:#555;font-size:11px">${c.url}</div>
+        <input type="text" id="edit_name_${c.id}" value="${c.name}" class="admin-edit-input" placeholder="Nome">
+        <div style="display:flex;gap:6px">
+          <select id="edit_cat_${c.id}" class="admin-edit-select">
+            <option value="Tv Aberta" ${cat=='Tv Aberta'?'selected':''}>Tv Aberta</option>
+            <option value="Documentários" ${cat=='Documentários'?'selected':''}>Documentários</option>
+            <option value="Filmes" ${cat=='Filmes'?'selected':''}>Filmes</option>
+            <option value="Esportes" ${cat=='Esportes'?'selected':''}>Esportes</option>
+            <option value="Kids" ${cat=='Kids'?'selected':''}>Kids</option>
+            <option value="Notícias" ${cat=='Notícias'?'selected':''}>Notícias</option>
+            <option value="Variedades" ${cat=='Variedades'?'selected':''}>Variedades</option>
+            <option value="Outros" ${cat=='Outros'?'selected':''}>Outros</option>
+          </select>
+          <button onclick="adminSaveCh('${c.id}')" style="background:#2a1f4e;border:1px solid #7c6aff55;border-radius:8px;padding:4px 12px;color:#fff;font-size:16px;cursor:pointer" title="Salvar Alterações">💾</button>
+        </div>
+        <div style="color:#555;font-size:11px;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.url}</div>
       </div>
-      <button class="del-btn" onclick="adminDelCh('${c.id}')">🗑</button>
-    </div>`).join(''):'<div style="color:#444;text-align:center;padding:16px">Nenhum canal</div>';
+      <button onclick="adminDelCh('${c.id}')" style="background:#ff444433;border:1px solid #ff444455;border-radius:10px;padding:8px 12px;color:#ff6b6b;font-size:16px;cursor:pointer;flex-shrink:0" title="Apagar">🗑</button>
+    </div>`
+  }).join(''):'<div style="color:#444;text-align:center;padding:16px">Nenhum canal</div>';
   
   const users=await fetchRemoteUsers();
   document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
   document.getElementById('adminUserList').innerHTML=users.map(function(u){
     const idInfo=u.idType==='celular'?'Celular: '+displayPhone(u.cpf):'CPF: '+u.cpf;
-    const delBtn=u.isAdmin?'':'<button onclick="adminDelUser(\''+u.cpf+'\')" style="background:#ff4444;border:none;border-radius:10px;padding:8px 12px;color:#fff;font-size:16px;cursor:pointer;flex-shrink:0" title="Remover usuário">🗑️</button>';
+    const delBtn=u.isAdmin?'':'<button onclick="adminDelUser(\''+u.cpf+'\')" style="background:#ff444433;border:1px solid #ff444455;border-radius:10px;padding:8px 12px;color:#ff6b6b;font-size:16px;cursor:pointer;flex-shrink:0">🗑️</button>';
     return '<div class="user-row"><div style="flex:1"><div class="ch-name">'+u.name+(u.isAdmin?' (Admin)':'')+'</div><div style="color:#888;font-size:11px;margin-top:2px">'+idInfo+'</div></div>'+delBtn+'</div>';
   }).join('');
 }
 
-function adminDelCh(id){
-  channels=channels.filter(c=>c.id!==id);
-  saveChannels(channels);
-  renderChannelList(channels);   // atualiza painel admin
-  renderChannels(channels);      // atualiza tela inicial
-  autoSync(channels);
+function adminSaveCh(id){
+  const name = document.getElementById('edit_name_'+id).value.trim();
+  const cat = document.getElementById('edit_cat_'+id).value;
+  const idx = channels.findIndex(c=>c.id===id);
+  if(idx > -1){
+    channels[idx].name = name;
+    channels[idx].category = cat;
+    saveChannels(channels);
+    toast('Canal salvo e ordenado!','ok');
+    autoSync(channels);
+    loadAdminData(); // realoca ordem alfabetica
+  }
 }
 
-function renderChannelList(chs){
-  document.getElementById('chCountTitle').textContent=`📋 Canais (${chs.length})`;
-  document.getElementById('adminChList').innerHTML=chs.length?chs.map(function(c){
-    return '<div class="ch-row"><div class="ch-row-info"><div class="ch-name">'+c.name+'</div>'+
-      '<div class="ch-url" style="color:#555;font-size:11px">'+c.url+'</div></div>'+
-      '<button onclick="adminDelCh(\''+c.id+'\')" style="background:#ff4444;border:none;border-radius:10px;padding:8px 12px;color:#fff;font-size:16px;cursor:pointer;flex-shrink:0" title="Remover canal">🗑️</button></div>';
-  }).join(''):'<div style="color:#444;text-align:center;padding:16px">Nenhum canal</div>';
+function adminDelCh(id){
+  if(!confirm('Certeza que deseja remover este canal?')) return;
+  channels=channels.filter(c=>c.id!==id);
+  saveChannels(channels);
+  if(selectedChannel?.id===id){selectedChannel=null;}
+  autoSync(channels);
+  loadAdminData();
+  filterChannels(); 
 }
 
 async function adminDelUser(cpf){
-  if(cpf===ADMIN_CPF){alert('Não é possível remover o administrador.');return;}
+  if(cpf===ADMIN_CPF){alert('Administrador raiz intocável.');return;}
   if(!confirm('Remover usuário? Esta ação não pode ser desfeita.'))return;
   const users=getUsers().filter(u=>u.cpf!==cpf);
   saveUsers(users);
-  renderUserList(users);
-  document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
   autoSyncUsers(users);
-}
-
-function renderUserList(users){
-  document.getElementById('adminUserList').innerHTML=users.map(function(u){
-    const idInfo=u.idType==='celular'?'Celular: '+displayPhone(u.cpf):'CPF: '+u.cpf;
-    const delBtn=u.isAdmin?'':'<button onclick="adminDelUser(\''+u.cpf+'\')" style="background:#ff4444;border:none;border-radius:10px;padding:8px 12px;color:#fff;font-size:16px;cursor:pointer;flex-shrink:0" title="Remover usuário">🗑️</button>';
-    return '<div class="user-row"><div style="flex:1"><div class="ch-name">'+u.name+(u.isAdmin?' (Admin)':'')+
-      '</div><div style="color:#888;font-size:11px;margin-top:2px">'+idInfo+'</div></div>'+delBtn+'</div>';
-  }).join('');
+  loadAdminData();
 }
 
 function addChannel(){
   const name=document.getElementById('newChName').value.trim();
   const url=document.getElementById('newChUrl').value.trim();
+  const category=document.getElementById('newChCat').value;
+  
   if(!name||!url){toast('Informe nome e link.','err');return;}
-  if(!url.startsWith('http')){toast('Link inválido. Use http:// ou https://','err');return;}
+  if(!url.startsWith('http')){toast('Link inválido.','err');return;}
+  
   const chs=getChannels();
-  chs.push({id:Date.now().toString(),name,url});
+  chs.push({id:Date.now().toString(), name, url, category});
   saveChannels(chs);
   channels=chs;
+  
   document.getElementById('newChName').value='';
   document.getElementById('newChUrl').value='';
-  renderChannelList(channels);   // atualiza painel admin
-  renderChannels(channels);      // atualiza tela inicial
   autoSync(chs);
+  loadAdminData();
+  toast('Canal Adicionado!','ok');
 }
 
-// Toast notification
+// ── TOAST / SYNC ──
 let toastTimer;
 function toast(msg,type='ok'){
   const el=document.getElementById('toast');
@@ -590,130 +651,78 @@ function toast(msg,type='ok'){
   toastTimer=setTimeout(()=>{el.className='';},3500);
 }
 
-// Auto-sync silencioso de usuários para o GitHub
 async function autoSyncUsers(userList){
   const token=getGhToken();
   if(!token) return;
   try{
-    const check=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_USERS_FILE}?ref=main&_=${Date.now()}`,{
-      headers:{'Authorization':'token '+token}
-    });
+    const check=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_USERS_FILE}?ref=main&_=${Date.now()}`,{ headers:{'Authorization':'token '+token} });
     if(check.ok){const d=await check.json();ghUsersSha=d.sha;saveGhUsersSha(d.sha);}
     const content=btoa(unescape(encodeURIComponent(JSON.stringify(userList||getUsers(),null,2))));
     const body={message:'LinkTV: atualizar usuarios',content,branch:'main'};
     if(ghUsersSha)body.sha=ghUsersSha;
     const res=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_USERS_FILE}`,{
-      method:'PUT',
-      headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
-      body:JSON.stringify(body)
+      method:'PUT', headers:{'Authorization':'token '+token,'Content-Type':'application/json'}, body:JSON.stringify(body)
     });
     const data=await res.json();
-    if(res.ok){
-      ghUsersSha=data.content?.sha;
-      saveGhUsersSha(ghUsersSha);
-    }
+    if(res.ok){ ghUsersSha=data.content?.sha; saveGhUsersSha(ghUsersSha); }
   }catch(e){}
 }
 
-// Auto-sync silencioso de canais para o GitHub
 async function autoSync(list){
   const token=getGhToken();
   if(!token) return;
   try{
-    const check=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}?ref=main&_=${Date.now()}`,{
-      headers:{'Authorization':'token '+token}
-    });
+    const check=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}?ref=main&_=${Date.now()}`,{ headers:{'Authorization':'token '+token} });
     if(check.ok){const d=await check.json();ghSha=d.sha;saveGhSha(d.sha);}
     const content=btoa(unescape(encodeURIComponent(JSON.stringify(list||channels,null,2))));
     const body={message:'LinkTV: atualizar canais',content,branch:'main'};
     if(ghSha)body.sha=ghSha;
     const res=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`,{
-      method:'PUT',
-      headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
-      body:JSON.stringify(body)
+      method:'PUT', headers:{'Authorization':'token '+token,'Content-Type':'application/json'}, body:JSON.stringify(body)
     });
     const data=await res.json();
-    if(res.ok){
-      ghSha=data.content?.sha;
-      saveGhSha(ghSha);
-    }
+    if(res.ok){ ghSha=data.content?.sha; saveGhSha(ghSha); }
   }catch(e){}
 }
 
 async function publishAppToGithub(){
   const token=getGhToken();
   if(!token){toast('GitHub Token não encontrado.','err');return;}
-  if(!confirm('Isso fará o upload deste aplicativo para ficar acessível na internet. Continuar?'))return;
-  // toast removido a pedido do usuário
+  if(!confirm('Pública nova versão html?'))return;
   try{
     const clone = document.documentElement.cloneNode(true);
-    // Limpar o estado "ativo" das telas e colocar na tela de login
-    clone.querySelectorAll('.screen').forEach(s => {
-      s.classList.remove('active');
-      s.style.cssText = '';
-    });
+    clone.querySelectorAll('.screen').forEach(s => { s.classList.remove('active'); s.style.cssText = ''; });
     const auth = clone.querySelector('#authScreen');
     if(auth) auth.classList.add('active');
 
-    // Limpar conteúdos dinâmicos que foram preenchidos pelo Javascript
-    const chList = clone.querySelector('#channelListEl');
-    if(chList) chList.innerHTML = '';
-    const adChList = clone.querySelector('#adminChList');
-    if(adChList) adChList.innerHTML = '';
-    const adUserList = clone.querySelector('#adminUserList');
-    if(adUserList) adUserList.innerHTML = '';
+    const chList = clone.querySelector('#channelListEl'); if(chList) chList.innerHTML = '';
+    const adChList = clone.querySelector('#adminChList'); if(adChList) adChList.innerHTML = '';
+    const adUserList = clone.querySelector('#adminUserList'); if(adUserList) adUserList.innerHTML = '';
     
-    // Restaurar contadores e ocultar player
-    const uTitle = clone.querySelector('#usersTitle');
-    if(uTitle) uTitle.textContent = '👥 Usuários (0)';
-    const cTitle = clone.querySelector('#chCountTitle');
-    if(cTitle) cTitle.textContent = '📋 Canais (0)';
+    const uTitle = clone.querySelector('#usersTitle'); if(uTitle) uTitle.textContent = '👥 Usuários (0)';
+    const cTitle = clone.querySelector('#chCountTitle'); if(cTitle) cTitle.textContent = '📋 Canais (0)';
     clone.querySelector('#videoEl').style.display = 'none';
     clone.querySelector('#ytFrame').style.display = 'none';
     clone.querySelector('#playerEmpty').style.display = 'block';
     clone.querySelector('#nowPlaying').style.display = 'none';
 
-    // Limpar inputs de senha e CPF (vazamento)
     clone.querySelectorAll('input').forEach(i => { i.removeAttribute('value'); i.textContent = ''; });
 
     const htmlContent = "<!DOCTYPE html>\n" + clone.outerHTML;
     
-    // Verificar arquivo index.html atual
     let sha = null;
-    const check=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/index.html?ref=main&_=${Date.now()}`,{
-      headers:{'Authorization':'token '+token}
-    });
-    if(check.ok){
-      const d=await check.json();
-      sha=d.sha;
-    }
+    const check=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/index.html?ref=main&_=${Date.now()}`,{ headers:{'Authorization':'token '+token} });
+    if(check.ok){ const d=await check.json(); sha=d.sha; }
     
-    const body={
-      message:'LinkTV: publicar/atualizar aplicativo',
-      content:btoa(unescape(encodeURIComponent(htmlContent))),
-      branch:'main'
-    };
+    const body={ message:'LinkTV: update app2 web', content:btoa(unescape(encodeURIComponent(htmlContent))), branch:'main' };
     if(sha) body.sha = sha;
     
     const res=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/index.html`,{
-      method:'PUT',
-      headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
-      body:JSON.stringify(body)
+      method:'PUT', headers:{'Authorization':'token '+token,'Content-Type':'application/json'}, body:JSON.stringify(body)
     });
     
-    if(res.ok){
-      setTimeout(()=>{
-        alert(`O aplicativo foi enviado!
-Em cerca de 1 a 2 minutos ele estará acessível em:
-https://${GH_OWNER}.github.io/${GH_REPO}/`);
-      }, 500);
-    } else {
-      const eData=await res.json();
-      alert('Erro ao publicar: '+(eData.message||'Falha'));
-    }
-  }catch(e){
-    alert('Erro de conexão ao tentar publicar.');
-  }
+    if(res.ok){ alert('App publicado!'); } else { alert('Erro ao publicar'); }
+  }catch(e){ alert('Erro de conexão'); }
 }
 
 // ── INIT ──
