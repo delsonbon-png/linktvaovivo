@@ -79,11 +79,5 @@
     "name": "Tv Pantanal",
     "url": "https://5a2b083e9f360.streamlock.net/tvpantanal/tvpantanal.sdp/playlist.m3u8",
     "category": "Tv Aberta"
-  },
-  {
-    "id": "1786883936864",
-    "name": "ESPN 4",
-    "url": "http://181.78.197.59:8000/play/a07n/index.m3u8",
-    "category": "Esportes"
   }
 ]
