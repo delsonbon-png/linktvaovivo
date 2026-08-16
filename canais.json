@@ -103,5 +103,11 @@
     "name": "RT Doc",
     "url": "http://RTCDN.api.visionip.tv/live/ASHTTP/rtcdn-rtcdn-doc-hsslive-25f-16x9-MB/playlist.m3u8",
     "category": "Documentários"
+  },
+  {
+    "id": "1786901212622",
+    "name": "A",
+    "url": "http://cors.tundracast.com:2000/https://streamer2.nexgen.bz/77-TELEMUNDO/index.m3u8",
+    "category": "Documentários"
   }
 ]
