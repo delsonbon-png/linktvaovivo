@@ -4,12 +4,5 @@
     "password": "132435",
     "name": "Administrador",
     "isAdmin": true
-  },
-  {
-    "cpf": "99999999999",
-    "password": "12345",
-    "name": "Thalles",
-    "isAdmin": false,
-    "idType": "celular"
   }
 ]
