@@ -612,7 +612,7 @@ async function loadAdminData(){
           </select>
           <button onclick="adminSaveCh('${c.id}')" style="background:#2a1f4e;border:1px solid #7c6aff55;border-radius:8px;padding:4px 12px;color:#fff;font-size:16px;cursor:pointer" title="Salvar Alterações">💾</button>
         </div>
-        <div style="color:#555;font-size:11px;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.url}</div>
+        <input type="text" id="edit_url_${c.id}" value="${c.url}" class="admin-edit-input" placeholder="Link do Canal" style="margin-top:6px;font-size:12px;color:#aaa;margin-bottom:0">
       </div>
       <button onclick="adminDelCh('${c.id}')" style="background:#ff444433;border:1px solid #ff444455;border-radius:10px;padding:8px 12px;color:#ff6b6b;font-size:16px;cursor:pointer;flex-shrink:0" title="Apagar">🗑</button>
     </div>`
@@ -630,10 +630,12 @@ async function loadAdminData(){
 function adminSaveCh(id){
   const name = document.getElementById('edit_name_'+id).value.trim();
   const cat = document.getElementById('edit_cat_'+id).value;
+  const url = document.getElementById('edit_url_'+id).value.trim();
   const idx = channels.findIndex(c=>c.id===id);
   if(idx > -1){
     channels[idx].name = name;
     channels[idx].category = cat;
+    channels[idx].url = url;
     saveChannels(channels);
     toast('Canal salvo e ordenado!','ok');
     autoSync(channels);
