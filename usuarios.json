@@ -4,5 +4,12 @@
     "password": "132435",
     "name": "Administrador",
     "isAdmin": true
+  },
+  {
+    "cpf": "09131916635",
+    "password": "261548db",
+    "name": "Douglas Bonfim",
+    "isAdmin": false,
+    "idType": "cpf"
   }
 ]
