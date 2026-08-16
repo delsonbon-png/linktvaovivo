@@ -13,9 +13,9 @@
     "idType": "celular"
   },
   {
-    "cpf": "11111111111",
+    "cpf": "22222222222",
     "password": "12345",
-    "name": "Adao",
+    "name": "joao",
     "isAdmin": false,
     "idType": "cpf"
   }
