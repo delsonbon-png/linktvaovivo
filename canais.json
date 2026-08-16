@@ -103,11 +103,5 @@
     "name": "Rede Bull Tv",
     "url": "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8",
     "category": "Documentários"
-  },
-  {
-    "id": "1786901857208",
-    "name": "History 2",
-    "url": "http://138.255.2.6:8084/H2/index.m3u8",
-    "category": "Documentários"
   }
 ]
