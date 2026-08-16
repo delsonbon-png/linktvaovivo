@@ -61,5 +61,11 @@
     "name": "Universal Tv",
     "url": "https://sitetv.brasilstream.com.br/hls/sitetv/index.m3u8?token=",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1786883020010",
+    "name": "Tv Comunitária",
+    "url": "https://5b7f3c45ab7c2.streamlock.net/8008/smil:8008.smil/playlist.m3u8?DVR=",
+    "category": "Tv Aberta"
   }
 ]
