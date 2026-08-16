@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
+<html lang="pt-BR" data-theme="dark"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LinkTV Pro</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&amp;display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script src="https://cdn.jsdelivr.net/npm/mpegts.js@1.7.3/dist/mpegts.min.js"></script>
 <style>
@@ -197,7 +196,7 @@ video{width:100%;height:100%;object-fit:contain}
 <body>
 
 <!-- AUTH SCREEN -->
-<div id="authScreen" class="screen active">
+<div id="authScreen" class="screen active" style="">
   <div class="logo-box">
     <div class="logo-emoji" style="color:var(--primary)">▶️</div>
     <div class="app-name">Link TV</div>
@@ -229,27 +228,27 @@ video{width:100%;height:100%;object-fit:contain}
 </div>
 
 <!-- TV SCREEN -->
-<div id="tvScreen" class="screen">
+<div id="tvScreen" class="screen" style="">
   <div class="top-bar">
     <span class="top-title">Link TV</span>
     
     <div style="display:flex;gap:8px;align-items:center">
-      <button class="icon-btn" onclick="toggleTheme()" id="themeToggleBtn" title="Mudar Tema" style="color:var(--text-sec);display:flex;align-items:center;padding:4px"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="20" width="20"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></button>
+      <button class="icon-btn" onclick="toggleTheme()" id="themeToggleBtn" title="Mudar Tema" style="color:var(--text-sec);display:flex;align-items:center;padding:4px"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="20" width="20"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></button>
       <button class="icon-btn" onclick="goProfile()" title="Perfil">👤</button>
     </div>
 
   </div>
   <div class="player-wrap" id="playerWrap">
-    <div id="playerEmpty" style="text-align:center;color:var(--text-main)">
+    <div id="playerEmpty" style="text-align: center; color: var(--text-main); display: block;">
       <div style="font-size:48px">📺</div>
       <div style="color:var(--text-sec);margin-top:8px">Selecione um canal</div>
     </div>
-    <video id="videoEl" style="display:none" controls playsinline></video>
-    <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/1bc213d0-7962-40f4-a134-d260567f215d"></video>
+    <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
-  <div class="now-playing" id="nowPlaying" style="display:none">
+  <div class="now-playing" id="nowPlaying" style="display: none;">
     <span class="live-badge">AO VIVO</span>
-    <span class="now-text" id="nowText"></span>
+    <span class="now-text" id="nowText">Globo</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px;padding:10px 14px 4px;flex-shrink:0">
     <span style="font-size:13px;color:var(--text-sec);font-weight:600;white-space:nowrap">📂 Categoria:</span>
@@ -275,7 +274,7 @@ video{width:100%;height:100%;object-fit:contain}
 </div>
 
 <!-- ADMIN SCREEN -->
-<div id="adminScreen" class="screen">
+<div id="adminScreen" class="screen" style="">
   <div class="top-bar">
     <button class="back-btn" onclick="goBack()">‹ Voltar</button>
     <span class="top-title" style="font-size:16px">Painel Admin</span>
@@ -297,7 +296,7 @@ video{width:100%;height:100%;object-fit:contain}
       <div class="input-group"><label class="label">LINK</label><input type="text" id="newChUrl" placeholder="https://" inputmode="url" autocapitalize="none"></div>
       <div class="input-group">
         <label class="label">CATEGORIA</label>
-        <select id="newChCat" class="cat-select" style="padding-right: 32px; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230F0F0F%22 height=%2224%22 viewBox=%220 0 24 24%22 width=%2224%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position-x: 96%; background-position-y: center;">
+        <select id="newChCat" class="cat-select" style="padding-right: 32px; background-image: url('data:image/svg+xml;utf8,&lt;svg fill=%22%230F0F0F%22 height=%2224%22 viewBox=%220 0 24 24%22 width=%2224%22 xmlns=%22http://www.w3.org/2000/svg%22&gt;&lt;path d=%22M7 10l5 5 5-5z%22/&gt;&lt;/svg&gt;'); background-repeat: no-repeat; background-position-x: 96%; background-position-y: center;">
           <option value="Tv Aberta">Tv Aberta</option>
           <option value="Documentários">Documentários</option>
           <option value="Filmes">Filmes</option>
@@ -325,7 +324,7 @@ video{width:100%;height:100%;object-fit:contain}
 </div>
 
 <!-- USER PROFILE SCREEN -->
-<div id="userProfileScreen" class="screen">
+<div id="userProfileScreen" class="screen" style="">
   <div class="top-bar">
     <button class="back-btn" onclick="showScreen('tvScreen')">‹ Voltar</button>
     <span class="top-title" style="font-size:16px">Meu Perfil</span>
@@ -917,5 +916,6 @@ async function publishAppToGithub(){
 </script>
 <!-- Toast Element -->
 <div id="toast"></div>
-</body>
-</html>
+
+
+</body></html>
