@@ -18,12 +18,5 @@
     "name": "Adao",
     "isAdmin": false,
     "idType": "cpf"
-  },
-  {
-    "cpf": "22222222222",
-    "password": "12345",
-    "name": "joao",
-    "isAdmin": false,
-    "idType": "cpf"
   }
 ]
