@@ -5,6 +5,7 @@
 <title>LinkTV Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&amp;display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/mpegts.js@1.7.3/dist/mpegts.min.js"></script>
 <style>
 
 :root {
@@ -147,13 +148,15 @@ video{width:100%;height:100%;object-fit:contain}
     background: #000 !important;
     padding: 0 !important;
     margin: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
   }
   .player-wrap {
     position: relative !important;
-    width: 100% !important;
-    height: 100% !important;
-    max-width: 100% !important;
-    max-height: 100% !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
     aspect-ratio: auto !important;
     flex: 1 !important;
     background: #000 !important;
@@ -164,12 +167,25 @@ video{width:100%;height:100%;object-fit:contain}
     margin: 0 !important;
     padding: 0 !important;
   }
-  .player-wrap #ytFrame, .player-wrap video {
+  .player-wrap video {
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
     width: 100% !important;
     height: 100% !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .player-wrap #ytFrame {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: calc(100vh * (16 / 9)) !important;
+    max-height: calc(100vw * (9 / 16)) !important;
     border: none !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -227,12 +243,12 @@ video{width:100%;height:100%;object-fit:contain}
       <div style="font-size:48px">📺</div>
       <div style="color:var(--text-sec);margin-top:8px">Selecione um canal</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/e9bb0ab7-f4a8-466e-acf5-2476bee74c1b"></video>
-    <iframe id="ytFrame" style="display: none; width: 100%; height: 100%; border-width: medium; border-style: none; border-color: currentcolor; border-image: none;" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src=""></video>
+    <iframe id="ytFrame" style="display: none; width: 100%; height: 100%; border-width: medium; border-style: none; border-color: currentcolor; border-image: none;" allowfullscreen="" allow="autoplay; encrypted-media" src="https://www.youtube.com/embed/WLwpLy86DUw?autoplay=1&amp;rel=0&amp;playsinline=1"></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
     <span class="live-badge">AO VIVO</span>
-    <span class="now-text" id="nowText">Gospel Cartoon</span>
+    <span class="now-text" id="nowText">Bob Esponja</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px;padding:10px 14px 4px;flex-shrink:0">
     <span style="font-size:13px;color:var(--text-sec);font-weight:600;white-space:nowrap">📂 Categoria:</span>
@@ -639,25 +655,59 @@ function playChannel(ch){
   const video=document.getElementById('videoEl');
   const ytFrame=document.getElementById('ytFrame');
   if(hls){hls.destroy();hls=null;}
+  if(window.mpegtsPlayer){window.mpegtsPlayer.destroy();window.mpegtsPlayer=null;}
 
   const ytId=getYouTubeId(ch.url);
   if(ytId){
     video.style.display='none';
     video.src='';
     ytFrame.style.display='block';
-    ytFrame.src='https://www.youtube.com/embed/'+ytId+'?autoplay=1&rel=0';
+    ytFrame.src='https://www.youtube.com/embed/'+ytId+'?autoplay=1&rel=0&playsinline=1';
   } else {
     ytFrame.style.display='none';
     ytFrame.src='';
     video.style.display='block';
-    if(Hls.isSupported()){
-      hls=new Hls();
-      hls.loadSource(ch.url);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED,()=>video.play().catch(()=>{}));
-    }else if(video.canPlayType('application/vnd.apple.mpegurl')){
-      video.src=ch.url;
-      video.play().catch(()=>{});
+    
+    let originalUrl = ch.url;
+    let isTs = originalUrl.split('?')[0].toLowerCase().endsWith('.ts');
+
+    if (isTs && typeof mpegts !== 'undefined' && mpegts.getFeatureList().mseLivePlayback) {
+       window.mpegtsPlayer = mpegts.createPlayer({
+           type: 'mpegts',
+           isLive: true,
+           url: originalUrl
+       });
+       window.mpegtsPlayer.attachMediaElement(video);
+       window.mpegtsPlayer.load();
+       window.mpegtsPlayer.play().catch(()=>{});
+    } else {
+       let streamUrl = originalUrl;
+       if(isTs){
+         streamUrl = streamUrl.replace(/\.ts(\?|$)/i, '.m3u8$1');
+         try {
+           let u = new URL(streamUrl);
+           if (/^\/[^/]+\/[^/]+\/\d+\.m3u8$/.test(u.pathname)) {
+             u.pathname = '/live' + u.pathname;
+             streamUrl = u.toString();
+           }
+         } catch(e) {}
+       }
+
+       if(Hls.isSupported()){
+         hls=new Hls({
+           enableWorker: true,
+           lowLatencyMode: true,
+           liveSyncDurationCount: 2,
+           liveMaxLatencyDurationCount: 5,
+           startLevel: -1
+         });
+         hls.loadSource(streamUrl);
+         hls.attachMedia(video);
+         hls.on(Hls.Events.MANIFEST_PARSED,()=>video.play().catch(()=>{}));
+       }else if(video.canPlayType('application/vnd.apple.mpegurl')){
+         video.src=streamUrl;
+         video.play().catch(()=>{});
+       }
     }
   }
   filterChannels(); // re-render para mostrar dot do canal ativo
@@ -854,7 +904,7 @@ async function publishAppToGithub(){
 })();
 </script>
 <!-- Toast Element -->
-<div id="toast"></div>
+<div id="toast" class="">Canal Adicionado!</div>
 
 
 </body></html>
