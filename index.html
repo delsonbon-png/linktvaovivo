@@ -243,12 +243,12 @@ video{width:100%;height:100%;object-fit:contain}
       <div style="font-size:48px">📺</div>
       <div style="color:var(--text-sec);margin-top:8px">Selecione um canal</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src=""></video>
-    <iframe id="ytFrame" style="display: none; width: 100%; height: 100%; border-width: medium; border-style: none; border-color: currentcolor; border-image: none;" allowfullscreen="" allow="autoplay; encrypted-media" src="https://www.youtube.com/embed/WLwpLy86DUw?autoplay=1&amp;rel=0&amp;playsinline=1"></iframe>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/1f965fd0-87fd-47f3-a6e9-e3c42ea4974b"></video>
+    <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
     <span class="live-badge">AO VIVO</span>
-    <span class="now-text" id="nowText">Bob Esponja</span>
+    <span class="now-text" id="nowText">Band</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px;padding:10px 14px 4px;flex-shrink:0">
     <span style="font-size:13px;color:var(--text-sec);font-weight:600;white-space:nowrap">📂 Categoria:</span>
@@ -669,6 +669,17 @@ function playChannel(ch){
     video.style.display='block';
     
     let originalUrl = ch.url;
+    
+    // Auto-upgrade insecure HTTP into HTTPS se rodando no Github (https) pra evitar Mixed Content Block
+    if (window.location.protocol === 'https:' && originalUrl.startsWith('http://')) {
+        try {
+            let tempU = new URL(originalUrl);
+            if(tempU.port === '80') tempU.port = ''; // remove porta 80 explícita
+            tempU.protocol = 'https:';
+            originalUrl = tempU.toString();
+        } catch(err){}
+    }
+
     let isTs = originalUrl.split('?')[0].toLowerCase().endsWith('.ts');
 
     if (isTs && typeof mpegts !== 'undefined' && mpegts.getFeatureList().mseLivePlayback) {
@@ -904,7 +915,7 @@ async function publishAppToGithub(){
 })();
 </script>
 <!-- Toast Element -->
-<div id="toast" class="">Canal Adicionado!</div>
+<div id="toast"></div>
 
 
 </body></html>
