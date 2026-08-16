@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
+<html lang="pt-BR"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LinkTV Pro</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&amp;display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif}
@@ -51,7 +50,7 @@ input:focus{border-color:#7c6aff}
 
 /* TV SCREEN */
 #tvScreen{background:#0a0a0f;height:100vh;max-height:100vh;overflow:hidden}
-.player-wrap{background:#000;width:100%;aspect-ratio:16/9;position:relative;display:flex;justify-content:center;align-items:center;flex-shrink:0}
+.player-wrap{background:#000;width:100%;aspect-ratio:16/9;position:relative;display:flex;justify-content:center;align-items:center;flex-shrink:0;overflow:hidden}
 video{width:100%;height:100%;object-fit:contain}
 .now-playing{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#0d0d1a;border-bottom:1px solid #ffffff08;flex-shrink:0}
 .live-badge{background:#ff4444;color:#fff;padding:2px 8px;border-radius:50px;font-size:10px;font-weight:800;letter-spacing:1px;animation:pulse 2s infinite}
@@ -92,12 +91,54 @@ video{width:100%;height:100%;object-fit:contain}
 #toast.ok{border-color:#55efc466}
 #toast.err{border-color:#ff6b6b66}
 #toast.loading{border-color:#7c6aff66}
+
+/* LANDSCAPE FIX */
+@media (orientation: landscape) and (max-height: 500px) {
+  #tvScreen {
+    flex-direction: row !important;
+    overflow: hidden;
+  }
+  .player-wrap {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    aspect-ratio: unset !important;
+    z-index: 100;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .player-wrap #ytFrame {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    border: none;
+  }
+  .player-wrap video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
+  }
+  .top-bar, .now-playing, .search-row, .channel-list, #categorySelect, [style*='📂'] {
+    display: none !important;
+  }
+  /* Container do select de categoria */
+  #tvScreen > div:nth-child(3),
+  #tvScreen > div:nth-child(4) {
+    display: none !important;
+  }
+}
 </style>
 </head>
 <body>
 
 <!-- AUTH SCREEN -->
-<div id="authScreen" class="screen active">
+<div id="authScreen" class="screen active" style="">
   <div class="logo-box">
     <div class="logo-emoji">📺</div>
     <div class="app-name">Link TV</div>
@@ -129,22 +170,22 @@ video{width:100%;height:100%;object-fit:contain}
 </div>
 
 <!-- TV SCREEN -->
-<div id="tvScreen" class="screen">
+<div id="tvScreen" class="screen" style="">
   <div class="top-bar">
     <span class="top-title">Link TV</span>
     <button class="icon-btn" onclick="goProfile()" title="Perfil">👤</button>
   </div>
   <div class="player-wrap" id="playerWrap">
-    <div id="playerEmpty" style="text-align:center">
+    <div id="playerEmpty" style="text-align: center; display: block;">
       <div style="font-size:48px">📺</div>
       <div style="color:#555;margin-top:8px">Selecione um canal</div>
     </div>
-    <video id="videoEl" style="display:none" controls playsinline></video>
-    <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+    <video id="videoEl" style="display:none" controls="" playsinline="" src=""></video>
+    <iframe id="ytFrame" style="display: none; width: 100%; height: 100%; border-width: medium; border-style: none; border-color: currentcolor; border-image: none;" allowfullscreen="" allow="autoplay; encrypted-media" src="https://www.youtube.com/embed/WLwpLy86DUw?autoplay=1&amp;rel=0"></iframe>
   </div>
-  <div class="now-playing" id="nowPlaying" style="display:none">
+  <div class="now-playing" id="nowPlaying" style="display: none;">
     <span class="live-badge">AO VIVO</span>
-    <span class="now-text" id="nowText"></span>
+    <span class="now-text" id="nowText">Bob Esponja</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px;padding:10px 14px 4px;flex-shrink:0">
     <span style="font-size:13px;color:#888;font-weight:600;white-space:nowrap">📂 Categoria:</span>
@@ -170,7 +211,7 @@ video{width:100%;height:100%;object-fit:contain}
 </div>
 
 <!-- ADMIN SCREEN -->
-<div id="adminScreen" class="screen">
+<div id="adminScreen" class="screen" style="">
   <div class="top-bar">
     <button class="back-btn" onclick="goBack()">‹ Voltar</button>
     <span class="top-title" style="font-size:16px">Painel Admin</span>
@@ -192,7 +233,7 @@ video{width:100%;height:100%;object-fit:contain}
       <div class="input-group"><label class="label">LINK</label><input type="text" id="newChUrl" placeholder="https://" inputmode="url" autocapitalize="none"></div>
       <div class="input-group">
         <label class="label">CATEGORIA</label>
-        <select id="newChCat" class="cat-select" style="padding-right: 32px; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%23fff%22 height=%2224%22 viewBox=%220 0 24 24%22 width=%2224%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position-x: 96%; background-position-y: center;">
+        <select id="newChCat" class="cat-select" style="padding-right: 32px; background-image: url('data:image/svg+xml;utf8,&lt;svg fill=%22%23fff%22 height=%2224%22 viewBox=%220 0 24 24%22 width=%2224%22 xmlns=%22http://www.w3.org/2000/svg%22&gt;&lt;path d=%22M7 10l5 5 5-5z%22/&gt;&lt;/svg&gt;'); background-repeat: no-repeat; background-position-x: 96%; background-position-y: center;">
           <option value="Tv Aberta">Tv Aberta</option>
           <option value="Documentários">Documentários</option>
           <option value="Filmes">Filmes</option>
@@ -220,7 +261,7 @@ video{width:100%;height:100%;object-fit:contain}
 </div>
 
 <!-- USER PROFILE SCREEN -->
-<div id="userProfileScreen" class="screen">
+<div id="userProfileScreen" class="screen" style="">
   <div class="top-bar">
     <button class="back-btn" onclick="showScreen('tvScreen')">‹ Voltar</button>
     <span class="top-title" style="font-size:16px">Meu Perfil</span>
@@ -734,5 +775,6 @@ async function publishAppToGithub(){
 </script>
 <!-- Toast Element -->
 <div id="toast"></div>
-</body>
-</html>
+
+
+</body></html>
