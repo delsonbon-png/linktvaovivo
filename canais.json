@@ -55,5 +55,11 @@
     "name": "Ph Sinuca",
     "url": "https://www.youtube.com/live/SnxWVwc-xjU?is=wQNDOdMmU_8m1tUO",
     "category": "Esportes"
+  },
+  {
+    "id": "1786882942467",
+    "name": "Universal Tv",
+    "url": "https://sitetv.brasilstream.com.br/hls/sitetv/index.m3u8?token=",
+    "category": "Tv Aberta"
   }
 ]
