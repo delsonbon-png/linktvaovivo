@@ -2,7 +2,7 @@
   "expo": {
     "name": "Link TV",
     "slug": "linktvaovivo",
-    "owner": "dexdel1",
+    "owner": "dexdel12",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,12 +13,22 @@
         "backgroundColor": "#0a0a0f"
       },
       "package": "com.linktv.app",
-      "permissions": ["android.permission.INTERNET"]
+      "permissions": ["android.permission.INTERNET"],
+      "usesCleartextTraffic": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [],
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ],
     "extra": {
       "eas": {
         "projectId": "02da1b35-be1d-4b83-9676-67ba25959fb9"
