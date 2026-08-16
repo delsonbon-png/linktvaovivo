@@ -103,5 +103,11 @@
     "name": "Rede Bull Tv",
     "url": "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8",
     "category": "Documentários"
+  },
+  {
+    "id": "1786901857208",
+    "name": "History Channel",
+    "url": "http://138.121.15.230:9002/HISTORY-CHANNEL/index.m3u8",
+    "category": "Documentários"
   }
 ]
