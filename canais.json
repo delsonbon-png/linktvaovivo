@@ -97,5 +97,11 @@
     "name": "Jovem Pam Esportes",
     "url": "https://www.youtube.com/live/f3vmkwuvDHY?is=RokWj_eH3iUiXNRp",
     "category": "Esportes"
+  },
+  {
+    "id": "1786901344471",
+    "name": "Rede Bull Tv",
+    "url": "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8",
+    "category": "Documentários"
   }
 ]
