@@ -57,12 +57,6 @@
     "category": "Esportes"
   },
   {
-    "id": "1786881217940",
-    "name": "Desenho",
-    "url": "https://livepush.io/hlsplayer/index.html?src=https%3A%2F%2Fhls-harbor-livepush.akamaized.net%2Flive_cdn%2FnsqIStpj8PaG-Ev%2FemcQJ0pGpremocy%2Findex.m3u8",
-    "category": "Kids"
-  },
-  {
     "id": "1786881337330",
     "name": "Desenho",
     "url": "https://hls-harbor-livepush.akamaized.net/live_cdn/nsqIStpj8PaG-Ev/emcQJ0pGpremocy/index.mpd",
