@@ -11,12 +11,5 @@
     "name": "Douglas Bonfim",
     "isAdmin": false,
     "idType": "cpf"
-  },
-  {
-    "cpf": "22222222222",
-    "password": "123456",
-    "name": "asd",
-    "isAdmin": false,
-    "idType": "cpf"
   }
 ]
