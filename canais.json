@@ -91,11 +91,5 @@
     "name": "Rede Bull Tv",
     "url": "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8",
     "category": "Documentários"
-  },
-  {
-    "id": "1786916733577",
-    "name": "globo",
-    "url": "http://hightechtvr1.online:80/32279852/14789165/660.ts",
-    "category": "Tv Aberta"
   }
 ]
