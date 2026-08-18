@@ -403,5 +403,11 @@
     "name": "Runtime Família",
     "url": "https://stream.ads.ottera.tv/playlist.m3u8?network_id=5589",
     "category": "Filmes"
+  },
+  {
+    "id": "1787029388299",
+    "name": "Runtime Romance",
+    "url": "https://stream.ads.ottera.tv/playlist.m3u8?network_id=4866",
+    "category": "Filmes"
   }
 ]
