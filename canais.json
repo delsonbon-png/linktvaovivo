@@ -367,5 +367,11 @@
     "name": "Toocast",
     "url": "http://138.255.2.6:8084/TOONCAST/index.m3u8",
     "category": "Kids"
+  },
+  {
+    "id": "1787028703169",
+    "name": "Discovery Kids",
+    "url": "http://streamer.sattvacabo.com.br/DISCOVERY_KIDS_HD/index.m3u8?token=TLGacFXd0gIXIuo2u8Zj7f4FE5J2vtgf",
+    "category": "Kids"
   }
 ]
