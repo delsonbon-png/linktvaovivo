@@ -115,5 +115,11 @@
     "name": "Record",
     "url": "https://tvconquistalrv.duckdns.org:3334/hls/tvconquistalrv.m3u8?ManoTV",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787022824252",
+    "name": "Band",
+    "url": "http://gerenciar.vivatele.com/viva_padrao/viva2384/3",
+    "category": "Tv Aberta"
   }
 ]
