@@ -223,5 +223,11 @@
     "name": "TNT HD",
     "url": "https://megaflix.mgfiles.lat/483d948d625b1ac4182c3d6f2266d9ce/file.m3u8",
     "category": "Filmes"
+  },
+  {
+    "id": "1787026622150",
+    "name": "Space",
+    "url": "http://45.162.64.114/SPACE/index.m3u8",
+    "category": "Variedades"
   }
 ]
