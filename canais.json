@@ -385,5 +385,11 @@
     "name": "Ministério Infantil TV",
     "url": "http://stmv4.voxtvhd.com.br/1990/1990/playlist.m3u8",
     "category": "Kids"
+  },
+  {
+    "id": "1787029127968",
+    "name": "Huntime Ação",
+    "url": "https://stream.ads.ottera.tv/playlist.m3u8?network_id=2552",
+    "category": "Documentários"
   }
 ]
