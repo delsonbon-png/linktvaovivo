@@ -391,5 +391,11 @@
     "name": "Cartoon Network",
     "url": "http://45.162.64.114/CARTOON_NETWORK/index.m3u8",
     "category": "Kids"
+  },
+  {
+    "id": "1787028478417",
+    "name": "Cartoonito",
+    "url": "http://45.162.231.38:7779/Cartoonito/index.m3u8",
+    "category": "Kids"
   }
 ]
