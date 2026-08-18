@@ -319,5 +319,11 @@
     "name": "HBO+",
     "url": "https://megaflix.mgfiles.lat/63920faf8ee4fd6f0fb603688a1ca16f/file.m3u8",
     "category": "Filmes"
+  },
+  {
+    "id": "1787027852543",
+    "name": "HBO2",
+    "url": "https://megaflix.mgfiles.lat/271358327102dbcb00df1e1b08f2298e/file.m3u8",
+    "category": "Filmes"
   }
 ]
