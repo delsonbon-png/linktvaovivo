@@ -289,5 +289,11 @@
     "name": "AMC",
     "url": "https://megaflix.mgfiles.lat/3513f168d2eda5dd82e5b2191ed5492e/file.m3u8",
     "category": "Filmes"
+  },
+  {
+    "id": "1787027567749",
+    "name": "Sony Channel",
+    "url": "https://megaflix.mgfiles.lat/93cb77850b77a9a454a853cb38158f55/file.m3u8",
+    "category": "Filmes"
   }
 ]
