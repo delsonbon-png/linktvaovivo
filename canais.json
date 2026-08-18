@@ -259,5 +259,11 @@
     "name": "Tele Cine Pipoca",
     "url": "http://s2.micineovs.com/TELECINEPIPOCA/index.m3u8?token=16FOTt9Ae2m8",
     "category": "Filmes"
+  },
+  {
+    "id": "1787027277158",
+    "name": "Tele Cine Premium",
+    "url": "http://s2.micineovs.com/TELECINEPREMIUM/index.m3u8?token=16FOTt9Ae2m8",
+    "category": "Filmes"
   }
 ]
