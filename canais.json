@@ -139,5 +139,11 @@
     "name": "Sportv 2",
     "url": "http://s2.micineovs.com/SPTV2/index.m3u8?token=16FOTt9Ae2m8",
     "category": "Esportes"
+  },
+  {
+    "id": "1787023706955",
+    "name": "ESPN",
+    "url": "https://cr7v.short.gy/live25/spn/Index.m3u8",
+    "category": "Esportes"
   }
 ]
