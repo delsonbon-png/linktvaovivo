@@ -385,5 +385,11 @@
     "name": "Ministério Infantil TV",
     "url": "http://stmv4.voxtvhd.com.br/1990/1990/playlist.m3u8",
     "category": "Kids"
+  },
+  {
+    "id": "1787029032972",
+    "name": "Halo Doc",
+    "url": "https://cdn-5.nxplay.com.br/HALLODOC/index.m3u8?token=cdntv_62qwd7eSv1Ihnlni",
+    "category": "Documentários"
   }
 ]
