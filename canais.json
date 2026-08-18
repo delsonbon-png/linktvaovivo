@@ -133,5 +133,11 @@
     "name": "Rede Tv",
     "url": "https://tv02.zas.media:1936/redetvparana/redetvparana/playlist.m3u8?ManoTV",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787023459387",
+    "name": "Sportv",
+    "url": "https://cr7v.short.gy/manoiTVOP1/sptv1/75991634025/index.m3u8",
+    "category": "Esportes"
   }
 ]
