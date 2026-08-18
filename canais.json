@@ -103,5 +103,11 @@
     "name": "Rede Bull Tv",
     "url": "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8",
     "category": "Documentários"
+  },
+  {
+    "id": "1787022678685",
+    "name": "Globo",
+    "url": "https://cdn-sp2.satlabscloud.com.br/GLOBO_HD/index.m3u8",
+    "category": "Tv Aberta"
   }
 ]
