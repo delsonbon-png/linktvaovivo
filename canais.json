@@ -325,5 +325,11 @@
     "name": "HBO2",
     "url": "https://megaflix.mgfiles.lat/271358327102dbcb00df1e1b08f2298e/file.m3u8",
     "category": "Filmes"
+  },
+  {
+    "id": "1787027896626",
+    "name": "HBO Family",
+    "url": "https://megaflix.mgfiles.lat/8ea50dc6ffce55fe09cf2468ab78d9c7/file.m3u8",
+    "category": "Filmes"
   }
 ]
