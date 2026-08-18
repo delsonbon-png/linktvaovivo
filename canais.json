@@ -163,5 +163,11 @@
     "name": "Tv Camara",
     "url": "https://stream3.camara.gov.br/tv1/manifest.m3u8?ManoTV",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787025266628",
+    "name": "Tv Senado",
+    "url": "https://stream1.freetv.fun/tv-senado-1.m3u8",
+    "category": "Tv Aberta"
   }
 ]
