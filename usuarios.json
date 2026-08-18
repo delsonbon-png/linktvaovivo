@@ -25,5 +25,12 @@
     "name": "Delson Bonfim",
     "isAdmin": true,
     "idType": "celular"
+  },
+  {
+    "cpf": "38999342675",
+    "password": "12345",
+    "name": "Leodan Pimentel Cutino",
+    "isAdmin": false,
+    "idType": "celular"
   }
 ]
