@@ -139,5 +139,11 @@
     "name": "ESPN 2",
     "url": "https://megaflix.mgfiles.lat/cadf8e414c69e94d452c511a9ee0870b/file.m3u8",
     "category": "Esportes"
+  },
+  {
+    "id": "1787023865964",
+    "name": "ESPN 3",
+    "url": "http://45.162.64.114:80/ESPN_4/index.m3u8",
+    "category": "Esportes"
   }
 ]
