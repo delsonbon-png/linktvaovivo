@@ -18,5 +18,12 @@
     "name": "123",
     "isAdmin": false,
     "idType": "cpf"
+  },
+  {
+    "cpf": "38999179868",
+    "password": "132435",
+    "name": "Delson Bonfim",
+    "isAdmin": false,
+    "idType": "celular"
   }
 ]
