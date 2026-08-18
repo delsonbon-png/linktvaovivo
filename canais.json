@@ -265,5 +265,11 @@
     "name": "Tele Cine Premium",
     "url": "http://s2.micineovs.com/TELECINEPREMIUM/index.m3u8?token=16FOTt9Ae2m8",
     "category": "Filmes"
+  },
+  {
+    "id": "1787027393378",
+    "name": "Telecine Touch",
+    "url": "https://megaflix.mgfiles.lat/34f4b5965b98afabeaa49f3d96533a56/file.m3u8",
+    "category": "Filmes"
   }
 ]
