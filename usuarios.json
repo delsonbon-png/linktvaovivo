@@ -23,7 +23,7 @@
     "cpf": "38999179868",
     "password": "132435",
     "name": "Delson Bonfim",
-    "isAdmin": false,
+    "isAdmin": true,
     "idType": "celular"
   }
 ]
