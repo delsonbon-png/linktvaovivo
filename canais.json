@@ -295,5 +295,11 @@
     "name": "Sony Channel",
     "url": "https://megaflix.mgfiles.lat/93cb77850b77a9a454a853cb38158f55/file.m3u8",
     "category": "Filmes"
+  },
+  {
+    "id": "1787027596992",
+    "name": "Sony Movies",
+    "url": "http://45.162.64.114:80/SONY_MOVIES/index.m3u8",
+    "category": "Filmes"
   }
 ]
