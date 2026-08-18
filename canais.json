@@ -229,5 +229,11 @@
     "name": "Space",
     "url": "http://45.162.64.114/SPACE/index.m3u8",
     "category": "Variedades"
+  },
+  {
+    "id": "1787026643798",
+    "name": "TNT",
+    "url": "http://s2.micineovs.com/TNT/index.m3u8?token=16FOTt9Ae2m8",
+    "category": "Variedades"
   }
 ]
