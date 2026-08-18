@@ -121,5 +121,11 @@
     "name": "Band",
     "url": "https://megaflix.mgfiles.lat/baf6746727bd762be4571e2e4fb62cde/file.m3u8",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787022928297",
+    "name": "Band HD",
+    "url": "http://184.154.244.75:14006/",
+    "category": "Tv Aberta"
   }
 ]
