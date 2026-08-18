@@ -391,5 +391,11 @@
     "name": "Huntime Ação",
     "url": "https://stream.ads.ottera.tv/playlist.m3u8?network_id=2552",
     "category": "Filmes"
+  },
+  {
+    "id": "1787029210557",
+    "name": "Runtime Comédia",
+    "url": "https://stream.ads.ottera.tv/playlist.m3u8?network_id=2553",
+    "category": "Filmes"
   }
 ]
