@@ -361,5 +361,11 @@
     "name": "Kids Mais",
     "url": "https://video03.logicahost.com.br/novafamilia01/novafamilia01/playlist.m3u8",
     "category": "Kids"
+  },
+  {
+    "id": "1787028314749",
+    "name": "Kuriakos Kids",
+    "url": "https://w2.manasat.com/kkids/smil:kkids.smil/playlist.m3u8",
+    "category": "Kids"
   }
 ]
