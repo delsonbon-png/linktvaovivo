@@ -301,5 +301,11 @@
     "name": "Cinemax",
     "url": "https://megaflix.mgfiles.lat/3b8b64555fa7b54bd2219c85929f14c0/file.m3u8",
     "category": "Filmes"
+  },
+  {
+    "id": "1787027801813",
+    "name": "Megapix",
+    "url": "http://s2.micineovs.com/MEGAPIX/index.m3u8?token=16FOTt9Ae2m8",
+    "category": "Filmes"
   }
 ]
