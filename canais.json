@@ -193,5 +193,11 @@
     "name": "Food Network",
     "url": "http://200.229.190.189:8001/play/a01g",
     "category": "Variedades"
+  },
+  {
+    "id": "1787025461373",
+    "name": "Discovery Turbo",
+    "url": "http://185.152.67.187:14367/",
+    "category": "Documentários"
   }
 ]
