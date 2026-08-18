@@ -217,5 +217,11 @@
     "name": "Trace Brasil",
     "url": "https://trace-brazuca-lg-br.amagi.tv/hls/amagi_hls_data_tracetvAA-trace-brazuca-lg-br/CDN/master.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.coppa=0&ads.targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&givn=[NONCE]",
     "category": "Documentários"
+  },
+  {
+    "id": "1787026469437",
+    "name": "Novelas",
+    "url": "https://megaflix.mgfiles.lat/483d948d625b1ac4182c3d6f2266d9ce/file.m3u8",
+    "category": "Variedades"
   }
 ]
