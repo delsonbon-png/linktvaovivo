@@ -69,12 +69,6 @@
     "category": "Tv Aberta"
   },
   {
-    "id": "1786891312638",
-    "name": "Tv Aparecida",
-    "url": "http://168.197.104.22:80/TV_APARECIDA/index.m3u8",
-    "category": "Tv Aberta"
-  },
-  {
     "id": "1786901344471",
     "name": "Rede Bull Tv",
     "url": "https://srv1.zcast.com.br/igo8807/igo8807/playlist.m3u8",
