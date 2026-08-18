@@ -145,5 +145,11 @@
     "name": "ESPN 6",
     "url": "https://megaflix.mgfiles.lat/9a37513b3ad67a23f63482a05b7c4c14/file.m3u8",
     "category": "Esportes"
+  },
+  {
+    "id": "1787024124919",
+    "name": "ESPN 4",
+    "url": "http://45.162.231.38:7779/ESPN_4/mpegts",
+    "category": "Esportes"
   }
 ]
