@@ -127,5 +127,11 @@
     "name": "Band HD",
     "url": "https://5b7f3c45ab7c2.streamlock.net/arapuan/ngrp:arapuan_all/chunklist.m3u8",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787023170329",
+    "name": "Globo HD",
+    "url": "https://megaflix.mgfiles.lat/2db28a8006379b00ea3eec4872d9d449/file.m3u8",
+    "category": "Tv Aberta"
   }
 ]
