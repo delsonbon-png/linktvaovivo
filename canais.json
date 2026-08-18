@@ -373,5 +373,11 @@
     "name": "Toon Googles",
     "url": "https://stream.ads.ottera.tv/playlist.m3u8?network_id=5442",
     "category": "Kids"
+  },
+  {
+    "id": "1787028398883",
+    "name": "Os Jetsons",
+    "url": "https://stmv1.srvif.com/jetsontv/jetsontv/chunklist.m3u8?ManoTV",
+    "category": "Kids"
   }
 ]
