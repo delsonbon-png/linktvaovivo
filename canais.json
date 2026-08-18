@@ -169,5 +169,11 @@
     "name": "Tv Senado",
     "url": "https://stream1.freetv.fun/tv-senado-1.m3u8",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787025321954",
+    "name": "Retro Música",
+    "url": "https://stream.mediawork.cz/retrotv/retrotvHQ1/playlist.m3u8",
+    "category": "Variedades"
   }
 ]
