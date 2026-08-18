@@ -271,5 +271,11 @@
     "name": "Telecine Touch",
     "url": "https://megaflix.mgfiles.lat/34f4b5965b98afabeaa49f3d96533a56/file.m3u8",
     "category": "Filmes"
+  },
+  {
+    "id": "1787027472501",
+    "name": "Telecine Cult",
+    "url": "https://megaflix.mgfiles.lat/ccd1fb9d27cc8388fd1b4499ba20b971/file.m3u8",
+    "category": "Filmes"
   }
 ]
