@@ -181,5 +181,11 @@
     "name": "Discovery H&H",
     "url": "https://megaflix.mgfiles.lat/37a0a53a454048db23150f64817cfa37/file.m3u8",
     "category": "Documentários"
+  },
+  {
+    "id": "1787025924680",
+    "name": "Discovery Channel",
+    "url": "http://hls1.sua.tv:80/live/discoverychannelfhd/s.m3u8",
+    "category": "Documentários"
   }
 ]
