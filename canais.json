@@ -457,5 +457,11 @@
     "name": "Axn",
     "url": "http://50.7.120.34:8080/AXN_BLACK/index.m3u8",
     "category": "Outros"
+  },
+  {
+    "id": "1787105147835",
+    "name": "Disney Channel",
+    "url": "http://151.80.18.177:86/Disney_Channel_HD/index.m3u8",
+    "category": "Kids"
   }
 ]
