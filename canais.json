@@ -409,5 +409,11 @@
     "name": "SBT",
     "url": "http://s2.micineovs.com/SBT/index.m3u8?token=16FOTt9Ae2m8",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787104183046",
+    "name": "Conbatv",
+    "url": "https://aym-cbtv.otteravision.com/aym/cbtv/cbtv_480p.m3u8",
+    "category": "Esportes"
   }
 ]
