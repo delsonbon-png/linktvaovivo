@@ -493,5 +493,11 @@
     "name": "Gospel Cartoon",
     "url": "https://stmv1.srvif.com/gospelcartoon/gospelcartoon/playlist.m3u8",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787105651889",
+    "name": "Igreja Universal",
+    "url": "https://644398c.ha.azioncdn.net/primary/tvuniversal_480p.sdp/playlist.m3u8",
+    "category": "Tv Aberta"
   }
 ]
