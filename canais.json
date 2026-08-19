@@ -499,5 +499,11 @@
     "name": "Rit Tv",
     "url": "https://acesso.ecast.site:3648/live/ritlive.m3u8",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787105798384",
+    "name": "Tv Mais",
+    "url": "https://video01.soultv.com.br/tvmaisabc/tvmaisabc/playlist.m3u8",
+    "category": "Tv Aberta"
   }
 ]
