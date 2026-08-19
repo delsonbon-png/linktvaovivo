@@ -421,11 +421,5 @@
     "name": "Las Estrelas",
     "url": "https://aym-cbtv.otteravision.com/aym/cbtv/cbtv_480p.m3u8",
     "category": "Esportes"
-  },
-  {
-    "id": "1787104379471",
-    "name": "Hola! Play",
-    "url": "https://022d66c197dd4a1e9008e0134a74f34e.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/Samsung-es_HolaPlay/playlist.m3u8?ads.wurl_channel=790&ads.wurl_name=HolaPlay&ads.coppa=0&ads.psid=%7BPSID%7D&ads.targetopt=%7BTARGETOPT%7D&ads.app_domain=%7BAPP_DOMAIN%7D&ads.app_name=%7BAPP_NAME%7D&ads.consent=%7BTC_STRING%7D",
-    "category": "Esportes"
   }
 ]
