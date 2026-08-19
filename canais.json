@@ -445,5 +445,11 @@
     "name": "Demand Africa HD",
     "url": "https://demandafrica-por-samsungbr.amagi.tv/playlist.m3u8",
     "category": "Documentários"
+  },
+  {
+    "id": "1787105034173",
+    "name": "TeleSur",
+    "url": "https://mblesmain01.telesur.ultrabase.net/mbliveMain/hd/playlist.m3u8",
+    "category": "Outros"
   }
 ]
