@@ -469,5 +469,11 @@
     "name": "Rede Minas",
     "url": "https://8hzcavccys.zoeweb.tv/redeminas/ngrp:redeminas_all/playlist.m3u8",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787105451060",
+    "name": "TvE RS",
+    "url": "http://streaming.procergs.com.br:1935/tve/stve/playlist.m3u8",
+    "category": "Tv Aberta"
   }
 ]
