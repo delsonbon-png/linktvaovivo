@@ -268,7 +268,7 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus { outline: 3p
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/464b36c3-a319-43ce-9d43-a26830839064"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/9cf14581-f302-4e4a-8272-7cf8c48c0559"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
@@ -984,6 +984,32 @@ document.addEventListener('keydown', e => {
     }
   }
 });
+
+// ── EXPIRATION HEARTBEAT ──
+setInterval(() => {
+  if (currentUser && !currentUser.isAdmin) {
+    const localUsers = getUsers();
+    const updatedUser = localUsers.find(u => u.cpf === currentUser.cpf);
+    if (updatedUser) { currentUser.expiresAt = updatedUser.expiresAt; }
+    
+    if (currentUser.expiresAt && new Date(currentUser.expiresAt).getTime() < Date.now()) {
+      const playerBlocked = document.getElementById('playerBlocked');
+      const nowPlaying = document.getElementById('nowPlaying');
+      const playerEmpty = document.getElementById('playerEmpty');
+      if (playerBlocked && playerBlocked.style.display !== 'block' && playerEmpty.style.display !== 'block') {
+         if(typeof hls !== 'undefined' && hls){hls.destroy();hls=null;}
+         if(window.mpegtsPlayer){window.mpegtsPlayer.destroy();window.mpegtsPlayer=null;}
+         const video = document.getElementById('videoEl');
+         if (video) { video.pause(); video.src=''; video.style.display='none'; }
+         const ytFrame = document.getElementById('ytFrame');
+         if (ytFrame) { ytFrame.src=''; ytFrame.style.display='none'; }
+         
+         if (nowPlaying) nowPlaying.style.display='none';
+         playerBlocked.style.display='block';
+      }
+    }
+  }
+}, 3000);
 
 // ── INIT ──
 (function init(){
