@@ -441,18 +441,6 @@
     "category": "Outros"
   },
   {
-    "id": "1787105099334",
-    "name": "Axn",
-    "url": "http://50.7.120.34:8080/AXN_BLACK/index.m3u8",
-    "category": "Outros"
-  },
-  {
-    "id": "1787105147835",
-    "name": "Disney Channel",
-    "url": "http://151.80.18.177:86/Disney_Channel_HD/index.m3u8",
-    "category": "Kids"
-  },
-  {
     "id": "1787105381692",
     "name": "Rede Minas",
     "url": "https://8hzcavccys.zoeweb.tv/redeminas/ngrp:redeminas_all/playlist.m3u8",
