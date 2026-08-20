@@ -17,7 +17,8 @@
     "password": "123456",
     "name": "123",
     "isAdmin": false,
-    "idType": "cpf"
+    "idType": "cpf",
+    "expiresAt": "0001-01-01T00:00"
   },
   {
     "cpf": "38999179868",
