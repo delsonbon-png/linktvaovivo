@@ -33,5 +33,13 @@
     "name": "Leodan Pimentel Cutino",
     "isAdmin": false,
     "idType": "celular"
+  },
+  {
+    "cpf": "11111111111",
+    "password": "123456",
+    "name": "111",
+    "isAdmin": false,
+    "idType": "cpf",
+    "expiresAt": "2026-08-23T20:51"
   }
 ]
