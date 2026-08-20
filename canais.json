@@ -493,11 +493,5 @@
     "name": "Pix Tv",
     "url": "https://mpix05.tmwpix.com:6516/pix/pixtv_hi.m3u8",
     "category": "Tv Aberta"
-  },
-  {
-    "id": "1787189524587",
-    "name": "SBT Novelas",
-    "url": "https://upload.wikimedia.org/wikipedia/pt/thumb/6/60/%2BSBT_2024.svg/960px-%2BSBT_2024.svg.png",
-    "category": "Tv Aberta"
   }
 ]
