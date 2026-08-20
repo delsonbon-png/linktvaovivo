@@ -119,6 +119,11 @@ video{width:100%;height:100%;object-fit:contain}
 .spinner{width:40px;height:40px;border:4px solid var(--border-strong);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* TV REMOTE FOCUS */
+:focus { outline: none; }
+button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus { outline: 3px solid var(--primary); outline-offset: -2px; border-radius: inherit; }
+.channel-item:focus { border-color: var(--primary); background: var(--bg-active); outline: 3px solid var(--primary); outline-offset: -1px; }
+
 /* ADMIN & PROFILE */
 #adminScreen,#userProfileScreen{background:var(--bg-main);overflow-y:auto}
 .scroll-content{padding:16px;padding-bottom:40px}
@@ -258,7 +263,7 @@ video{width:100%;height:100%;object-fit:contain}
       <div style="font-size:48px">📺</div>
       <div style="color:var(--text-sec);margin-top:8px">Selecione um canal</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/b7919bc1-1e06-4328-8d2e-42e974fb8654"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/d8a75c82-56a1-40cb-8929-747b2b3195a0"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
@@ -643,7 +648,7 @@ function renderChannelsRaw(list){
   el.innerHTML=list.map(ch=>{
     const cat = ch.category || 'Tv Aberta';
     return `
-    <div class="channel-item ${selectedChannel?.id===ch.id?'active':''}" id="chi_${ch.id}" onclick="playChannel(${JSON.stringify(ch).replace(/"/g,'&quot;')})">
+    <div class="channel-item ${selectedChannel?.id===ch.id?'active':''}" id="chi_${ch.id}" tabindex="0" onclick="playChannel(${JSON.stringify(ch).replace(/"/g,'&quot;')})">
       <div class="ch-icon">📺</div>
       <div class="ch-info">
         <div class="ch-name">${ch.name}</div>
@@ -927,6 +932,16 @@ async function publishAppToGithub(){
     if(res.ok){ alert('App publicado!'); } else { alert('Erro ao publicar'); }
   }catch(e){ alert('Erro de conexão'); }
 }
+
+// ── TV REMOTE SUPPORT ──
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const active = document.activeElement;
+    if (active && active.tagName !== 'BUTTON' && active.tagName !== 'INPUT' && typeof active.click === 'function') {
+      active.click();
+    }
+  }
+});
 
 // ── INIT ──
 (function init(){
