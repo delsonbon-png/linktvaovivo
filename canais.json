@@ -429,12 +429,6 @@
     "category": "Outros"
   },
   {
-    "id": "1787104654951",
-    "name": "La Liga",
-    "url": "https://d3bb58xoj568xi.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-don7i7nmbho0q/index.m3u8?ads.device_did=%7BPSID%7D&ads.device_dnt=%7BTARGETOPT%7D&ads.app_domain=%7BAPP_DOMAIN%7D&ads.app_name=%7BAPP_NAME%7D&ads.consent=%7BTC_STRING%7D&ads.ssai_vendor=SSSLIVE&ads.service_id=ESBD3600001Q1",
-    "category": "Outros"
-  },
-  {
     "id": "1787104763025",
     "name": "Sportv 1",
     "url": "http://peaky.techcoder40.workers.dev:80/1393.m3u8",
