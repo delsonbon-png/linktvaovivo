@@ -140,33 +140,44 @@ video{width:100%;height:100%;object-fit:contain}
 
 /* LANDSCAPE FIX */
 @media (orientation: landscape) {
-  #tvScreen > div:not(#playerWrap) {
-    display: none !important;
-  }
-  #tvScreen {
-    display: flex !important;
-    background: #000 !important;
+  #tvScreen.active {
+    display: grid !important;
+    grid-template-columns: minmax(260px, 30vw) 1fr;
+    grid-template-rows: auto auto auto 1fr;
+    grid-template-areas: 
+      "topbar player"
+      "category player"
+      "search player"
+      "list player";
+    height: 100vh !important;
+    width: 100vw !important;
     padding: 0 !important;
     margin: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
+    overflow: hidden;
+    background: var(--bg-main) !important;
   }
+  
+  .top-bar { grid-area: topbar; border-right: 1px solid var(--border-light); }
+  #categoryRow { grid-area: category; border-right: 1px solid var(--border-light); }
+  .search-row { grid-area: search; border-right: 1px solid var(--border-light); }
+  #channelListEl { grid-area: list; border-right: 1px solid var(--border-light); padding-bottom: 20px; }
+  
   .player-wrap {
+    grid-area: player;
     position: relative !important;
-    width: 100vw !important;
+    width: 100% !important;
     height: 100vh !important;
-    max-width: 100vw !important;
+    max-width: none !important;
     max-height: 100vh !important;
     aspect-ratio: auto !important;
-    flex: 1 !important;
     background: #000 !important;
-    z-index: 9999 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     margin: 0 !important;
     padding: 0 !important;
   }
+  
   .player-wrap video {
     position: absolute !important;
     top: 0 !important;
@@ -176,7 +187,9 @@ video{width:100%;height:100%;object-fit:contain}
     border: none !important;
     margin: 0 !important;
     padding: 0 !important;
+    object-fit: contain !important;
   }
+  
   .player-wrap #ytFrame {
     position: absolute !important;
     top: 50% !important;
@@ -184,12 +197,14 @@ video{width:100%;height:100%;object-fit:contain}
     transform: translate(-50%, -50%) !important;
     width: 100% !important;
     height: 100% !important;
-    max-width: calc(100vh * (16 / 9)) !important;
-    max-height: calc(100vw * (9 / 16)) !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
     border: none !important;
     margin: 0 !important;
     padding: 0 !important;
   }
+  
+  #nowPlaying { display: none !important; }
 }
 </style>
 </head>
@@ -243,14 +258,14 @@ video{width:100%;height:100%;object-fit:contain}
       <div style="font-size:48px">📺</div>
       <div style="color:var(--text-sec);margin-top:8px">Selecione um canal</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/0820bad4-2e91-47cb-827f-36ff7e62689a"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/18aa7b6e-d851-4191-b7bb-295b2c186e3a"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
     <span class="live-badge">AO VIVO</span>
     <span class="now-text" id="nowText">A&amp;E</span>
   </div>
-  <div style="display:flex;align-items:center;gap:10px;padding:10px 14px 4px;flex-shrink:0">
+  <div id="categoryRow" style="display:flex;align-items:center;gap:10px;padding:10px 14px 4px;flex-shrink:0">
     <span style="font-size:13px;color:var(--text-sec);font-weight:600;white-space:nowrap">📂 Categoria:</span>
     <select id="categorySelect" onchange="setCategory(this.value)" style="flex:1;background:var(--bg-card);color:var(--text-main);border:1px solid var(--primary)33;border-radius:12px;padding:10px 14px;font-size:14px;font-weight:600;outline:none;cursor:pointer;font-family:inherit">
       <option value="Todos">🔵 Todos</option>
