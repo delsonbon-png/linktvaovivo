@@ -271,5 +271,11 @@
     "name": "Rede Tv",
     "url": "https://tv01.zas.media:1936/redetvparana/redetvparana/playlist.m3u8",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787194160251",
+    "name": "iCarly",
+    "url": "https://jmp2.uk/plu-620ff46e0a576e0007dc2f89.m3u8",
+    "category": "Filmes"
   }
 ]
