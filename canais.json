@@ -493,5 +493,11 @@
     "name": "Pix Tv",
     "url": "https://mpix05.tmwpix.com:6516/pix/pixtv_hi.m3u8",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787191055683",
+    "name": "Jovem Pan News",
+    "url": "https://d6yfbj4xxtrod.cloudfront.net/out/v1/7836eb391ec24452b149f3dc6df15bbd/index.m3u8",
+    "category": "Tv Aberta"
   }
 ]
