@@ -271,11 +271,5 @@
     "name": "Rede Tv",
     "url": "https://tv01.zas.media:1936/redetvparana/redetvparana/playlist.m3u8",
     "category": "Tv Aberta"
-  },
-  {
-    "id": "1787193883444",
-    "name": "Nickelodeon",
-    "url": "https://jmp2.uk/plu-6824ce10c5d53e1351ceb8d1.m3u8",
-    "category": "Filmes"
   }
 ]
