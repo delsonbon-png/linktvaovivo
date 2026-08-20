@@ -268,7 +268,7 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus { outline: 3p
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/9cf14581-f302-4e4a-8272-7cf8c48c0559"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/eadfd87f-d3ef-40ef-818b-51683fa89470"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
@@ -546,7 +546,9 @@ async function handleAuth(){
     if(rawId.length<minLen){alert('CPF ou Celular inválido.');return;}
     let users=await fetchRemoteUsers();
     if(users.find(u=>u.cpf===rawId)){alert('Usuário já existe.');return;}
-    users.push({cpf:rawId,password:pass,name,isAdmin:false,idType});
+    const trialExpiry = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000);
+    const trialStr = trialExpiry.toISOString().slice(0,16); // formato datetime-local
+    users.push({cpf:rawId,password:pass,name,isAdmin:false,idType,expiresAt:trialStr});
     saveUsers(users);
     alert('Cadastrado com sucesso!');
     autoSyncUsers(users);
