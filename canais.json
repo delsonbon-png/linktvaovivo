@@ -265,5 +265,11 @@
     "name": "Igreja Universal",
     "url": "https://644398c.ha.azioncdn.net/primary/tvuniversal_480p.sdp/playlist.m3u8",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787193559923",
+    "name": "Rede Tv",
+    "url": "http://45.190.28.50/REDE_TV_HD/index.m3u8",
+    "category": "Tv Aberta"
   }
 ]
