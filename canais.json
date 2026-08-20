@@ -277,11 +277,5 @@
     "name": "Igreja Universal",
     "url": "https://644398c.ha.azioncdn.net/primary/tvuniversal_480p.sdp/playlist.m3u8",
     "category": "Tv Aberta"
-  },
-  {
-    "id": "1787105773929",
-    "name": "Rit Tv",
-    "url": "https://acesso.ecast.site:3648/live/ritlive.m3u8",
-    "category": "Tv Aberta"
   }
 ]
