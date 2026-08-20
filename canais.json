@@ -283,11 +283,5 @@
     "name": "Rit Tv",
     "url": "https://acesso.ecast.site:3648/live/ritlive.m3u8",
     "category": "Tv Aberta"
-  },
-  {
-    "id": "1787105815041",
-    "name": "Pix Tv",
-    "url": "https://mpix05.tmwpix.com:6516/pix/pixtv_hi.m3u8",
-    "category": "Tv Aberta"
   }
 ]
