@@ -289,11 +289,5 @@
     "name": "Band HD teste",
     "url": "https://hightechtvr1.online:80/17678985/39733986/1681.ts",
     "category": "Tv Aberta"
-  },
-  {
-    "id": "1787343643361",
-    "name": "DAZN 2",
-    "url": "https://dcs-ac-live.cdn.indazn.com/dash/dazn-linear-213/stream.mpd?p=web",
-    "category": "Esportes"
   }
 ]
