@@ -71,8 +71,9 @@
     "name": "Mônica Carolina Silva",
     "isAdmin": false,
     "idType": "celular",
-    "expiresAt": "2026-08-21T04:53",
+    "expiresAt": "",
     "isTrial": false,
-    "isUnlimited": false
+    "isUnlimited": true,
+    "savedExpiresAt": "2026-08-21T04:53"
   }
 ]
