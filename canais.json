@@ -295,11 +295,5 @@
     "name": "Dazn 3",
     "url": "http://148.63.206.254:8000/play/a007/index.m3u8",
     "category": "Esportes"
-  },
-  {
-    "id": "1787356074206",
-    "name": "DAZN 2 HD",
-    "url": "http://185.228.155.93:8000/play/a03r/index.m3u8",
-    "category": "Esportes"
   }
 ]
