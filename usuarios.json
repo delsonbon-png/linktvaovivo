@@ -10,7 +10,10 @@
     "password": "261548db",
     "name": "Douglas Bonfim",
     "isAdmin": false,
-    "idType": "cpf"
+    "idType": "cpf",
+    "expiresAt": "",
+    "isUnlimited": true,
+    "isTrial": false
   },
   {
     "cpf": "22222222222",
