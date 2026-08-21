@@ -295,5 +295,11 @@
     "name": "Dazn 3",
     "url": "http://148.63.206.254:8000/play/a007/index.m3u8",
     "category": "Esportes"
+  },
+  {
+    "id": "1787355787396",
+    "name": "TNT HD",
+    "url": "http://185.21.35.18:4022/udp/239.0.5.87:8208?nsukey=Ip7VoFanG%2BL7dgCV%2BJSwYl%2Fa57Q8TtjKws1OkS1rQBvea%2FagWNCUWrSzXUKNfctBoth03NqBx3NKeuC8zlKjQcwnJ30KSF5wC%2FjqS1oP43jfkSNOeR2ElylDE7cU%2BLjHeS5%2FuWPAW4Mqrfy0BABi1Jqj1LM9LivxHsShfR28EIx5kTDsl2b5wfoUJtdOUsxAs5qOvfW6Rj5UiaFIKC0kng%3D%3D",
+    "category": "Filmes"
   }
 ]
