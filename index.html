@@ -268,7 +268,7 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus { outline: 3p
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/eadfd87f-d3ef-40ef-818b-51683fa89470"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/a87eed40-70f7-4cc6-9e2f-fd7b19098dfe"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
@@ -339,11 +339,19 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus { outline: 3p
         <div class="section-title" style="margin:0" id="chCountTitle">📋 Canais (0)</div>
         <button onclick="loadAdminData()" style="background:none;border:none;color:var(--primary);font-size:13px;cursor:pointer">Atualizar</button>
       </div>
-      <div id="adminChList"></div>
+      <div class="search-box" style="margin-bottom:10px">
+        <span>🔍</span>
+        <input type="text" id="adminChSearch" placeholder="Pesquisar canal..." oninput="filterAdminChannels()" style="background:transparent;border:none;padding:10px 8px;font-size:14px;width:100%;outline:none;color:var(--text-main)">
+      </div>
+      <div id="adminChList" style="max-height:520px;overflow-y:auto"></div>
     </div>
     <div class="section">
       <div class="section-title" id="usersTitle">👥 Usuários (0)</div>
-      <div id="adminUserList"></div>
+      <div class="search-box" style="margin:10px 0">
+        <span>🔍</span>
+        <input type="text" id="adminUserSearch" placeholder="Pesquisar usuário..." oninput="filterAdminUsers()" style="background:transparent;border:none;padding:10px 8px;font-size:14px;width:100%;outline:none;color:var(--text-main)">
+      </div>
+      <div id="adminUserList" style="max-height:520px;overflow-y:auto"></div>
     </div>
   </div>
 </div>
@@ -368,6 +376,12 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus { outline: 3p
         <div class="ch-row-info">
           <div class="ch-name" id="profIdLabel">CPF</div>
           <div id="profCpf" style="color:var(--primary);font-size:13px;margin-top:2px"></div>
+        </div>
+      </div>
+      <div class="ch-row" id="profExpiryRow">
+        <div class="ch-row-info">
+          <div class="ch-name">⏳ Validade do Acesso</div>
+          <div id="profExpiry" style="font-size:13px;margin-top:4px;font-weight:700"></div>
         </div>
       </div>
     </div>
@@ -570,6 +584,22 @@ function goProfile(){
     const uIdType=currentUser?.idType||'cpf';
     document.getElementById('profIdLabel').textContent=uIdType==='celular'?'Celular':'CPF';
     document.getElementById('profCpf').textContent=uIdType==='celular'?displayPhone(currentUser?.cpf||''):formatCPF(currentUser?.cpf||'');
+    
+    const expiryEl = document.getElementById('profExpiry');
+    const expiryRow = document.getElementById('profExpiryRow');
+    if (currentUser?.expiresAt) {
+      const expDate = new Date(currentUser.expiresAt);
+      const now = Date.now();
+      const expired = expDate.getTime() < now;
+      const formatted = expDate.toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+      expiryEl.textContent = expired ? '❌ EXPIRADO em ' + formatted : '✅ Ativo até ' + formatted;
+      expiryEl.style.color = expired ? '#ff4444' : '#25D366';
+      expiryRow.style.display = 'flex';
+    } else {
+      expiryEl.textContent = '✅ Acesso Ilimitado';
+      expiryEl.style.color = '#25D366';
+      expiryRow.style.display = 'flex';
+    }
     showScreen('userProfileScreen');
   }
 }
@@ -783,10 +813,19 @@ async function loadAdminData(){
   
   document.getElementById('chCountTitle').textContent=`📋 Canais (${channels.length})`;
   
-  // Render canais em Ordem Alfabética e Editáveis
-  const sorted = [...channels].sort((a,b) => a.name.localeCompare(b.name));
+  // salva canais ordenados globalmente para filtro posterior
+  window._adminSortedChannels = [...channels].sort((a,b) => a.name.localeCompare(b.name));
+  filterAdminChannels();
   
-  document.getElementById('adminChList').innerHTML=sorted.length?sorted.map(c=>{
+  const users=await fetchRemoteUsers();
+  window._adminUsers = users;
+  document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
+  filterAdminUsers();
+}
+
+function renderAdminChannels(list){
+  const PAGE = 10;
+  document.getElementById('adminChList').innerHTML=list.length ? list.slice(0,PAGE).map(c=>{
     const cat = c.category || 'Tv Aberta';
     return `
     <div class="ch-row">
@@ -808,12 +847,21 @@ async function loadAdminData(){
         <input type="text" id="edit_url_${c.id}" value="${c.url}" class="admin-edit-input" placeholder="Link do Canal" style="margin-top:6px;font-size:12px;color:var(--text-sec);margin-bottom:0">
       </div>
       <button onclick="adminDelCh('${c.id}')" style="background:#ff444433;border:1px solid #ff444455;border-radius:10px;padding:8px 12px;color:#ff6b6b;font-size:16px;cursor:pointer;flex-shrink:0" title="Apagar">🗑</button>
-    </div>`
-  }).join(''):'<div style="color:var(--text-sec);text-align:center;padding:16px">Nenhum canal</div>';
-  
-  const users=await fetchRemoteUsers();
-  document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
-  document.getElementById('adminUserList').innerHTML=users.map(function(u){
+    </div>`;
+  }).join('') + (list.length > PAGE ? `<div style="text-align:center;padding:8px;color:var(--text-sec);font-size:12px">Mostrando 10 de ${list.length}. Refine a pesquisa para ver mais.</div>` : '')
+  : '<div style="color:var(--text-sec);text-align:center;padding:16px">Nenhum canal encontrado</div>';
+}
+
+function filterAdminChannels(){
+  const q = (document.getElementById('adminChSearch')?.value || '').trim().toLowerCase();
+  const all = window._adminSortedChannels || [];
+  const filtered = q ? all.filter(c => c.name.toLowerCase().includes(q)) : all;
+  renderAdminChannels(filtered);
+}
+
+function renderAdminUsers(list){
+  const PAGE = 10;
+  document.getElementById('adminUserList').innerHTML = list.length ? list.slice(0, PAGE).map(function(u){
     const idInfo=u.idType==='celular'?'Celular: '+displayPhone(u.cpf):'CPF: '+u.cpf;
     let limitControls = '';
     let delBtn = '';
@@ -822,7 +870,15 @@ async function loadAdminData(){
       limitControls = `<div style="display:flex;gap:6px;margin-top:8px;align-items:center"><input type="datetime-local" id="exp_${u.cpf}" value="${u.expiresAt||''}" class="admin-edit-input" style="margin:0;font-size:11.5px;padding:4px"><button onclick="adminSetExpiry('${u.cpf}')" style="background:var(--bg-active);border:1px solid var(--primary)33;border-radius:6px;padding:4px 8px;color:var(--text-main);font-size:11px;cursor:pointer;font-weight:600">Salvar Limite</button></div>`;
     }
     return `<div class="user-row"><div style="flex:1"><div class="ch-name">${u.name}${u.isAdmin?' (Admin)':''}</div><div style="color:var(--text-sec);font-size:11px;margin-top:2px">${idInfo}</div>${limitControls}</div>${delBtn}</div>`;
-  }).join('');
+  }).join('') + (list.length > PAGE ? `<div style="text-align:center;padding:8px;color:var(--text-sec);font-size:12px">Mostrando 10 de ${list.length}. Refine a pesquisa para ver mais.</div>` : '')
+  : '<div style="color:var(--text-sec);text-align:center;padding:16px">Nenhum usuário encontrado</div>';
+}
+
+function filterAdminUsers(){
+  const q = (document.getElementById('adminUserSearch')?.value || '').trim().toLowerCase();
+  const all = window._adminUsers || [];
+  const filtered = q ? all.filter(u => u.name.toLowerCase().includes(q) || u.cpf.includes(q)) : all;
+  renderAdminUsers(filtered);
 }
 
 function adminSaveCh(id){
