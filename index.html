@@ -650,10 +650,13 @@ async function loadChannels(){
       const decoded=await res.json();
       if(decoded&&decoded.length){
         channels=decoded;
-        saveChannels(channels);
+        // Evita salvar no localStorage pelo tamanho e QuotaExceededError
       }else channels=getChannels();
     }else channels=getChannels();
-  }catch(e){channels=getChannels();}
+  }catch(e){
+    console.warn("Erro ao buscar canais remotamente:", e);
+    channels=getChannels();
+  }
   
   filterChannels();
   // Se abrir e nao tiver canal selecionado, toca o primeiro visivel (se houver)
@@ -697,7 +700,10 @@ function renderChannelsRaw(list){
   const isAdmin=currentUser?.isAdmin;
   if(!list.length){el.innerHTML='<div class="empty">📺 Nenhum canal encontrado</div>';return;}
   
-  el.innerHTML=list.map(ch=>{
+  // Limitação de exibição no DOM (Virtualization rudimentar)
+  const renderList = list.slice(0, 100);
+  
+  el.innerHTML = renderList.map(ch=>{
     const cat = ch.category || 'Tv Aberta';
     return `
     <div class="channel-item ${selectedChannel?.id===ch.id?'active':''}" id="chi_${ch.id}" tabindex="0" onclick="playChannel(${JSON.stringify(ch).replace(/"/g,'&quot;')})">
@@ -709,7 +715,7 @@ function renderChannelsRaw(list){
       ${isAdmin?`<button class="del-btn" onclick="event.stopPropagation();adminDelCh('${ch.id}')">🗑️</button>`:''}
       ${selectedChannel?.id===ch.id&&!isAdmin?'<div class="dot"></div>':''}
     </div>`
-  }).join('');
+  }).join('') + (list.length > 100 ? `<div style="text-align:center;padding:12px;color:var(--text-sec);font-size:13px">Mostrando os 100 primeiros resultados de ${list.length}. Use a barra de pesquisa para achar mais!</div>` : '');
 }
 
 function getYouTubeId(url){
