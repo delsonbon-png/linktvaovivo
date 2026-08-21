@@ -289,5 +289,11 @@
     "name": "Band HD teste",
     "url": "https://hightechtvr1.online:80/17678985/39733986/1681.ts",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787348221416",
+    "name": "Dazn 3",
+    "url": "http://148.63.206.254:8000/play/a007/index.m3u8",
+    "category": "Esportes"
   }
 ]
