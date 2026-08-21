@@ -41,5 +41,13 @@
     "isAdmin": false,
     "idType": "cpf",
     "expiresAt": "2026-08-23T20:51"
+  },
+  {
+    "cpf": "33333333333",
+    "password": "123456",
+    "name": "333",
+    "isAdmin": false,
+    "idType": "cpf",
+    "expiresAt": "2026-08-24T01:32"
   }
 ]
