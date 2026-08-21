@@ -51,9 +51,9 @@
     "name": "2",
     "isAdmin": false,
     "idType": "cpf",
-    "expiresAt": "2026-08-21T02:38",
+    "expiresAt": "",
     "isTrial": false,
-    "savedExpiresAt": "2026-08-24T01:58",
-    "isUnlimited": false
+    "savedExpiresAt": "2026-08-21T02:38",
+    "isUnlimited": true
   }
 ]
