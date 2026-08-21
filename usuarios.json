@@ -45,17 +45,6 @@
     "savedExpiresAt": "2026-08-21T04:49"
   },
   {
-    "cpf": "11111111111",
-    "password": "123456",
-    "name": "111",
-    "isAdmin": false,
-    "idType": "cpf",
-    "expiresAt": "2026-08-21T04:50",
-    "savedExpiresAt": "2026-08-23T20:51",
-    "isUnlimited": false,
-    "isTrial": false
-  },
-  {
     "cpf": "38999505376",
     "password": "1316",
     "name": "Mônica Carolina Silva",
