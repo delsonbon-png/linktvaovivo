@@ -18,7 +18,10 @@
     "name": "123",
     "isAdmin": false,
     "idType": "cpf",
-    "expiresAt": "2026-08-20T15:03"
+    "expiresAt": "",
+    "savedExpiresAt": "2026-08-20T15:03",
+    "isUnlimited": true,
+    "isTrial": false
   },
   {
     "cpf": "38999179868",
@@ -56,9 +59,8 @@
     "name": "Mônica Carolina Silva",
     "isAdmin": false,
     "idType": "celular",
-    "expiresAt": "",
+    "expiresAt": "2026-08-28T01:48",
     "isTrial": false,
-    "isUnlimited": true,
-    "savedExpiresAt": "2026-08-28T01:48"
+    "isUnlimited": false
   }
 ]
