@@ -6,63 +6,12 @@
     "isAdmin": true
   },
   {
-    "cpf": "09131916635",
-    "password": "261548db",
-    "name": "Douglas Bonfim",
-    "isAdmin": false,
-    "idType": "cpf",
-    "expiresAt": "",
-    "isUnlimited": true,
-    "isTrial": false,
-    "savedExpiresAt": "2026-08-21T02:00"
-  },
-  {
-    "cpf": "38999179868",
-    "password": "132435",
-    "name": "Delson Bonfim",
-    "isAdmin": true,
-    "idType": "celular"
-  },
-  {
-    "cpf": "38999342675",
-    "password": "12345",
-    "name": "Leodan Pimentel Cutino",
+    "cpf": "38999999999",
+    "password": "123456",
+    "name": "pedro",
     "isAdmin": false,
     "idType": "celular",
-    "expiresAt": "",
-    "isUnlimited": true,
-    "isTrial": false,
-    "savedExpiresAt": "2026-08-21T09:48"
-  },
-  {
-    "cpf": "38999505376",
-    "password": "1316",
-    "name": "Mônica Carolina Silva",
-    "isAdmin": false,
-    "idType": "celular",
-    "expiresAt": "",
-    "isTrial": false,
-    "isUnlimited": true,
-    "savedExpiresAt": "2026-08-24T01:56"
-  },
-  {
-    "cpf": "22222222222",
-    "password": "123456",
-    "name": "2",
-    "isAdmin": false,
-    "idType": "cpf",
-    "expiresAt": "",
-    "isTrial": false,
-    "savedExpiresAt": "2026-08-21T02:49",
-    "isUnlimited": true
-  },
-  {
-    "cpf": "11111111111",
-    "password": "123456",
-    "name": "adao",
-    "isAdmin": false,
-    "idType": "cpf",
-    "expiresAt": "2026-08-24T12:12",
+    "expiresAt": "2026-08-24T18:28",
     "isTrial": true
   }
 ]
