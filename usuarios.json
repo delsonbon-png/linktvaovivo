@@ -55,5 +55,14 @@
     "isTrial": false,
     "savedExpiresAt": "2026-08-21T02:49",
     "isUnlimited": true
+  },
+  {
+    "cpf": "11111111111",
+    "password": "123456",
+    "name": "adao",
+    "isAdmin": false,
+    "idType": "cpf",
+    "expiresAt": "2026-08-24T12:12",
+    "isTrial": true
   }
 ]
