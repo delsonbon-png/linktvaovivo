@@ -35,7 +35,10 @@
     "password": "12345",
     "name": "Leodan Pimentel Cutino",
     "isAdmin": false,
-    "idType": "celular"
+    "idType": "celular",
+    "expiresAt": "",
+    "isUnlimited": true,
+    "isTrial": false
   },
   {
     "cpf": "11111111111",
