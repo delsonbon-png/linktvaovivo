@@ -36,8 +36,8 @@
     "name": "Leodan Pimentel Cutino",
     "isAdmin": false,
     "idType": "celular",
-    "expiresAt": "",
-    "isUnlimited": true,
+    "expiresAt": "2026-08-21T04:49",
+    "isUnlimited": false,
     "isTrial": false,
     "savedExpiresAt": "2026-08-21T04:49"
   },
