@@ -289,5 +289,11 @@
     "name": "Band HD teste",
     "url": "https://hightechtvr1.online:80/17678985/39733986/1681.ts",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787343450623",
+    "name": "DAZN",
+    "url": "https://dazn-daznwomensfootball-rakuten.amagi.tv/hls/amagi_hls_data_rakutenAA-dazn-daznwomensfootball-rakuten/CDN/master.m3u8",
+    "category": "Esportes"
   }
 ]
