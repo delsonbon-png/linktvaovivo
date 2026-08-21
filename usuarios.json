@@ -16,17 +16,6 @@
     "isTrial": false
   },
   {
-    "cpf": "22222222222",
-    "password": "123456",
-    "name": "123",
-    "isAdmin": false,
-    "idType": "cpf",
-    "expiresAt": "",
-    "savedExpiresAt": "2026-08-20T15:03",
-    "isUnlimited": true,
-    "isTrial": false
-  },
-  {
     "cpf": "38999179868",
     "password": "132435",
     "name": "Delson Bonfim",
