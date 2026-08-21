@@ -11,9 +11,10 @@
     "name": "Douglas Bonfim",
     "isAdmin": false,
     "idType": "cpf",
-    "expiresAt": "2026-08-21T02:00",
-    "isUnlimited": false,
-    "isTrial": false
+    "expiresAt": "",
+    "isUnlimited": true,
+    "isTrial": false,
+    "savedExpiresAt": "2026-08-21T02:00"
   },
   {
     "cpf": "38999179868",
