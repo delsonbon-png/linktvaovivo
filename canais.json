@@ -283,5 +283,11 @@
     "name": "Tv Max",
     "url": "https://5cf4a2c2512a2.streamlock.net/tvmax/tvmax/playlist.m3u8",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787335608083",
+    "name": "Band HD teste",
+    "url": "https://hightechtvr1.online:80/17678985/39733986/1681.ts",
+    "category": "Tv Aberta"
   }
 ]
