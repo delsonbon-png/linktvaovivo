@@ -270,12 +270,12 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/3178cec0-4cc0-4a22-b282-0f4707a6b199"></video>
-    <iframe id="ytFrame" style="display: none; width: 100%; height: 100%; border-width: medium; border-style: none; border-color: currentcolor; border-image: none;" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/9db60296-4318-4efb-9f5a-07aa38c3ad4e"></video>
+    <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
     <span class="live-badge">AO VIVO</span>
-    <span class="now-text" id="nowText">Canal Educação</span>
+    <span class="now-text" id="nowText">Megapix</span>
   </div>
   <div id="categoryRow" style="display:flex;align-items:center;gap:10px;padding:10px 14px 4px;flex-shrink:0">
     <span style="font-size:13px;color:var(--text-sec);font-weight:600;white-space:nowrap">📂 Categoria:</span>
@@ -715,6 +715,10 @@ function filterChannels(){
 function renderChannelsRaw(list){
   const el=document.getElementById('channelListEl');
   const isAdmin=currentUser?.isAdmin;
+  
+  // Salva elemento que tinha foco (para nao rebater o scroll para cima no primeiro enter)
+  const prevFocusId = document.activeElement ? document.activeElement.id : null;
+  
   if(!list.length){el.innerHTML='<div class="empty">📺 Nenhum canal encontrado</div>';return;}
   
   // Limitação de exibição no DOM (Virtualization rudimentar)
@@ -733,6 +737,12 @@ function renderChannelsRaw(list){
       ${selectedChannel?.id===ch.id&&!isAdmin?'<div class="dot"></div>':''}
     </div>`
   }).join('') + (list.length > 100 ? `<div style="text-align:center;padding:12px;color:var(--text-sec);font-size:13px">Mostrando os 100 primeiros resultados de ${list.length}. Use a barra de pesquisa para achar mais!</div>` : '');
+  
+  // Retorna o foco pro cara editado/clicado simulando state reativo
+  if (prevFocusId) {
+    const toFocus = document.getElementById(prevFocusId);
+    if (toFocus) toFocus.focus();
+  }
 }
 
 function getYouTubeId(url){
@@ -1251,6 +1261,22 @@ function toggleFullScreenPlayer() {
    } else {
        if(document.exitFullscreen) document.exitFullscreen();
        else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+   }
+}
+
+// Retorna o foco visual (seleção da bordinha) de volta para o canal da lista ao sair do Fullscreen
+document.addEventListener('fullscreenchange', autoFocusChannelOnExit);
+document.addEventListener('webkitfullscreenchange', autoFocusChannelOnExit);
+
+function autoFocusChannelOnExit() {
+   if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+       if (selectedChannel) {
+           const activeChEl = document.getElementById('chi_' + selectedChannel.id);
+           if (activeChEl) {
+               activeChEl.focus();
+               activeChEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+           }
+       }
    }
 }
 
