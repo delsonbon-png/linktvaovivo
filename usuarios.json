@@ -11,9 +11,9 @@
     "name": "pedro",
     "isAdmin": false,
     "idType": "celular",
-    "expiresAt": "",
+    "expiresAt": "2026-09-24T18:28",
     "isTrial": false,
-    "isUnlimited": true,
+    "isUnlimited": false,
     "savedExpiresAt": "2026-09-24T18:28"
   },
   {
