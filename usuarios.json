@@ -13,5 +13,14 @@
     "idType": "celular",
     "expiresAt": "2026-08-24T18:28",
     "isTrial": true
+  },
+  {
+    "cpf": "38999991234",
+    "password": "123456",
+    "name": "Joao",
+    "isAdmin": false,
+    "idType": "celular",
+    "expiresAt": "2026-08-24T22:22",
+    "isTrial": true
   }
 ]
