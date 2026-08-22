@@ -6,17 +6,6 @@
     "isAdmin": true
   },
   {
-    "cpf": "38999999999",
-    "password": "123456",
-    "name": "pedro",
-    "isAdmin": false,
-    "idType": "celular",
-    "expiresAt": "2026-09-24T18:28",
-    "isTrial": false,
-    "isUnlimited": false,
-    "savedExpiresAt": "2026-09-24T18:28"
-  },
-  {
     "cpf": "11111111111",
     "password": "123456",
     "name": "111",
