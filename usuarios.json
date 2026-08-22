@@ -17,15 +17,6 @@
     "savedExpiresAt": "2026-09-24T18:28"
   },
   {
-    "cpf": "38999991234",
-    "password": "123456",
-    "name": "Joao",
-    "isAdmin": false,
-    "idType": "celular",
-    "expiresAt": "2026-08-24T22:22",
-    "isTrial": true
-  },
-  {
     "cpf": "11111111111",
     "password": "123456",
     "name": "111",
