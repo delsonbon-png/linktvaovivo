@@ -11,8 +11,9 @@
     "name": "pedro",
     "isAdmin": false,
     "idType": "celular",
-    "expiresAt": "2026-08-24T18:28",
-    "isTrial": true
+    "expiresAt": "2026-09-24T18:28",
+    "isTrial": false,
+    "isUnlimited": false
   },
   {
     "cpf": "38999991234",
