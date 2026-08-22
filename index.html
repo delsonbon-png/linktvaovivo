@@ -323,7 +323,7 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/2b468e06-0590-41ba-9b69-d7a154773cbf"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/4975e9af-ca08-4461-81f7-65f43ec6ceae"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
@@ -567,6 +567,7 @@ let hls=null;
 let ghSha=null;
 let ghUsersSha=null;
 let currentCategory = 'Todos';
+let lastUserSelectedChannelId = null;
 
 let idType='cpf'; 
 
@@ -759,6 +760,7 @@ function logout(){
     clearSession();
     currentUser=null;
     selectedChannel=null;
+    lastUserSelectedChannelId=null;
     if(hls){hls.destroy();hls=null;}
     showScreen('authScreen');
     toast('Sessão encerrada.','ok');
@@ -788,7 +790,7 @@ async function loadChannels(){
   // Sempre toca o primeiro canal ao iniciar (ordem alfabética)
   if(channels.length){
     const sorted = [...channels].sort((a,b)=>a.name.localeCompare(b.name));
-    playChannel(sorted[0]);
+    playChannel(sorted[0], true);
     // Foca visualmente no primeiro canal da lista
     setTimeout(()=>{
       const firstEl = document.getElementById('chi_' + sorted[0].id);
@@ -865,16 +867,20 @@ function getYouTubeId(url){
   return m?m[1]:null;
 }
 
-function playChannel(ch){
+function playChannel(ch, isAutoPlay = false){
   if(typeof ch==='string')ch=JSON.parse(ch);
   
   // Solicita o Wake Lock para evitar que a TV durma
   requestWakeLock();
   
-  if (selectedChannel && selectedChannel.id === ch.id) {
-     // Segundo Enter no mesmo canal expande tela cheia
+  if (!isAutoPlay && lastUserSelectedChannelId === ch.id) {
+     // Segundo clique manual no mesmo canal expande tela cheia
      toggleFullScreenPlayer();
      return;
+  }
+  
+  if (!isAutoPlay) {
+     lastUserSelectedChannelId = ch.id;
   }
   
   selectedChannel=ch;
