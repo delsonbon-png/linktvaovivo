@@ -323,7 +323,7 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/115bc72a-94e0-483b-8ecc-9306c1069cec"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/2b468e06-0590-41ba-9b69-d7a154773cbf"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
@@ -629,9 +629,9 @@ window.addEventListener('popstate', (e) => {
   }
 });
 
-// Refoca no canal ativo na lista (sem reiniciar o canal)
+// Refoca no canal ativo na lista (sem reiniciar o canal) com múltiplas tentativas para contornar lentidão na renderização de TVs
 function refocusActiveChannel() {
-  setTimeout(() => {
+  const focusJob = () => {
     if (selectedChannel) {
       const el = document.getElementById('chi_' + selectedChannel.id);
       if (el) {
@@ -639,7 +639,13 @@ function refocusActiveChannel() {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
-  }, 150);
+  };
+  // Dispara imediato e agenda tentativas de segurança caso a transição da TV demore
+  focusJob();
+  setTimeout(focusJob, 50);
+  setTimeout(focusJob, 150);
+  setTimeout(focusJob, 300);
+  setTimeout(focusJob, 600);
 }
 
 // ── AUTH ──
@@ -1385,13 +1391,7 @@ document.addEventListener('webkitfullscreenchange', autoFocusChannelOnExit);
 
 function autoFocusChannelOnExit() {
    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-       if (selectedChannel) {
-           const activeChEl = document.getElementById('chi_' + selectedChannel.id);
-           if (activeChEl) {
-               activeChEl.focus();
-               activeChEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-           }
-       }
+       refocusActiveChannel();
    }
 }
 
