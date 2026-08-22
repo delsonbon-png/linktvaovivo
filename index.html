@@ -175,6 +175,24 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
   cursor:pointer;
   outline:none;
 }
+.cat-select:focus {
+  background-color: var(--primary) !important;
+  color: var(--text-on-primary) !important;
+  border-color: var(--text-on-primary) !important;
+}
+.cat-select option {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  font-weight: 700;
+  padding: 12px;
+}
+.cat-select option:checked,
+.cat-select option:hover,
+.cat-select option:focus,
+.cat-select option:active {
+  background-color: var(--primary) !important;
+  color: var(--text-on-primary) !important;
+}
 .cat-tv-btn{background:var(--bg-card);border:2px solid var(--border-med2);border-radius:20px;padding:8px 14px;color:var(--text-sec);font-weight:700;font-size:13px;cursor:pointer;transition:.2s;white-space:nowrap;flex-shrink:0;font-family:inherit;}
 .cat-tv-btn.active{background:var(--primary);color:var(--text-on-primary);border-color:var(--primary);}
 .cat-tv-btn:focus{outline:4px solid var(--primary)!important;border-color:var(--primary)!important;background:var(--bg-active)!important;color:var(--text-main)!important;transform:scale(1.08);box-shadow:0 0 0 4px var(--primary)44!important;}
@@ -305,7 +323,7 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/277498ae-0761-4c22-aed1-42030df1c720"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/115bc72a-94e0-483b-8ecc-9306c1069cec"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
@@ -844,6 +862,9 @@ function getYouTubeId(url){
 function playChannel(ch){
   if(typeof ch==='string')ch=JSON.parse(ch);
   
+  // Solicita o Wake Lock para evitar que a TV durma
+  requestWakeLock();
+  
   if (selectedChannel && selectedChannel.id === ch.id) {
      // Segundo Enter no mesmo canal expande tela cheia
      toggleFullScreenPlayer();
@@ -1351,6 +1372,7 @@ function toggleFullScreenPlayer() {
    if(!document.fullscreenElement) {
        if(pw.requestFullscreen) pw.requestFullscreen();
        else if(pw.webkitRequestFullscreen) pw.webkitRequestFullscreen();
+       requestWakeLock(); // Garante o wake lock ao entrar em tela cheia
    } else {
        if(document.exitFullscreen) document.exitFullscreen();
        else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
@@ -1421,13 +1443,21 @@ setInterval(() => {
 let wakeLock = null;
 async function requestWakeLock() {
   try {
-    if ('wakeLock' in navigator) {
+    if ('wakeLock' in navigator && !wakeLock) {
       wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => {
+        wakeLock = null;
+      });
     }
   } catch(e) {}
 }
 async function releaseWakeLock() {
-  if (wakeLock) { try { await wakeLock.release(); } catch(e){} wakeLock = null; }
+  if (wakeLock) {
+    try {
+      await wakeLock.release();
+    } catch(e){}
+    wakeLock = null;
+  }
 }
 // Reativa o wake lock ao voltar para a aba/app (pode ser solto ao minimizar)
 document.addEventListener('visibilitychange', () => {
