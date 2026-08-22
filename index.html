@@ -145,6 +145,26 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
 #toast.err{border-color:#ff6b6b66}
 #toast.loading{border-color:var(--primary)66}
 
+/* CUSTOM MODAL (substitui alert/confirm) */
+#customModal{display:none;position:fixed;inset:0;background:#00000088;z-index:9999;align-items:center;justify-content:center;}
+#customModal.show{display:flex;}
+#customModalBox{background:var(--bg-card);border:1px solid var(--border-med);border-radius:24px;padding:32px 28px;max-width:340px;width:90%;text-align:center;box-shadow:0 20px 60px #00000088;}
+#customModalTitle{font-size:16px;font-weight:700;margin-bottom:10px;color:var(--text-main);}
+#customModalMsg{font-size:14px;color:var(--text-sec);margin-bottom:24px;line-height:1.6;}
+.modal-btns{display:flex;gap:10px;justify-content:center;}
+.modal-btn{flex:1;padding:14px;border-radius:14px;border:none;font-weight:700;font-size:15px;cursor:pointer;transition:.2s;}
+.modal-btn.primary{background:var(--primary);color:var(--text-on-primary);}
+.modal-btn.secondary{background:var(--bg-input);color:var(--text-sec);border:1px solid var(--border-strong);}
+.modal-btn:focus{outline:4px solid var(--primary)!important;}
+
+/* CATEGORIA PILLS TV */
+#categoryRow{overflow-x:auto;gap:6px;scrollbar-width:none;-ms-overflow-style:none;}
+#categoryRow::-webkit-scrollbar{display:none;}
+.cat-tv-btn{background:var(--bg-card);border:2px solid var(--border-med2);border-radius:20px;padding:8px 14px;color:var(--text-sec);font-weight:700;font-size:13px;cursor:pointer;transition:.2s;white-space:nowrap;flex-shrink:0;font-family:inherit;}
+.cat-tv-btn.active{background:var(--primary);color:var(--text-on-primary);border-color:var(--primary);}
+.cat-tv-btn:focus{outline:4px solid var(--primary)!important;border-color:var(--primary)!important;background:var(--bg-active)!important;color:var(--text-main)!important;transform:scale(1.08);box-shadow:0 0 0 4px var(--primary)44!important;}
+.cat-tv-btn.active:focus{background:var(--primary)!important;color:var(--text-on-primary)!important;}
+
 /* LANDSCAPE FIX */
 @media (orientation: landscape) {
   #tvScreen.active {
@@ -270,34 +290,31 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/c08e9d81-3092-4956-9991-11b54793ff72"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/1cd496b0-bfbe-4dea-8567-bf8375f6d78c"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
     <span class="live-badge">AO VIVO</span>
     <span class="now-text" id="nowText">A&amp;E</span>
   </div>
-  <div id="categoryRow" style="display:flex;align-items:center;gap:10px;padding:10px 14px 4px;flex-shrink:0">
-    <span style="font-size:13px;color:var(--text-sec);font-weight:600;white-space:nowrap">📂 Categoria:</span>
-    <select id="categorySelect" onchange="setCategory(this.value)" style="flex:1;background:var(--bg-card);color:var(--text-main);border:1px solid var(--primary)33;border-radius:12px;padding:10px 14px;font-size:14px;font-weight:600;outline:none;cursor:pointer;font-family:inherit">
-      <option value="Todos">🔵 Todos</option>
-      <option value="Tv Aberta">📡 Tv Aberta</option>
-      <option value="Filmes">🎬 Filmes</option>
-      <option value="Filmes e Séries">🎬 Filmes e Séries</option>
-      <option value="Documentários">🎞 Documentários</option>
-      <option value="Esportes">⚽ Esportes</option>
-      <option value="Lutas/UFC">🥊 Lutas/UFC</option>
-      <option value="Kids">🧒 Kids</option>
-      <option value="Notícias">📰 Notícias</option>
-      <option value="Variedades">🎭 Variedades</option>
-      <option value="Religiosos">✝️ Religiosos</option>
-      <option value="Pay-Per-View">🔒 Pay-Per-View</option>
-      <option value="24H Infantis/Desenhos">🎨 24H Infantis/Desenhos</option>
-      <option value="24H Séries/Programas">📺 24H Séries/Programas</option>
-      <option value="24H Discovery+">🔍 24H Discovery+</option>
-      <option value="24H Doramas">🎌 24H Doramas</option>
-      <option value="Outros">📦 Outros</option>
-    </select>
+  <div id="categoryRow" style="display:flex;align-items:center;padding:10px 14px 4px;flex-shrink:0">
+    <button class="cat-tv-btn active" id="cat_Todos" tabindex="0" onclick="setCategory('Todos')">🔵 Todos</button>
+    <button class="cat-tv-btn" id="cat_Tv Aberta" tabindex="0" onclick="setCategory('Tv Aberta')">📡 TV Aberta</button>
+    <button class="cat-tv-btn" id="cat_Filmes" tabindex="0" onclick="setCategory('Filmes')">🎬 Filmes</button>
+    <button class="cat-tv-btn" id="cat_Filmes e Séries" tabindex="0" onclick="setCategory('Filmes e Séries')">🎬 Filmes e Séries</button>
+    <button class="cat-tv-btn" id="cat_Documentários" tabindex="0" onclick="setCategory('Documentários')">🎞 Documentários</button>
+    <button class="cat-tv-btn" id="cat_Esportes" tabindex="0" onclick="setCategory('Esportes')">⚽ Esportes</button>
+    <button class="cat-tv-btn" id="cat_Lutas/UFC" tabindex="0" onclick="setCategory('Lutas/UFC')">🥊 Lutas/UFC</button>
+    <button class="cat-tv-btn" id="cat_Kids" tabindex="0" onclick="setCategory('Kids')">🧒 Kids</button>
+    <button class="cat-tv-btn" id="cat_Notícias" tabindex="0" onclick="setCategory('Notícias')">📰 Notícias</button>
+    <button class="cat-tv-btn" id="cat_Variedades" tabindex="0" onclick="setCategory('Variedades')">🎭 Variedades</button>
+    <button class="cat-tv-btn" id="cat_Religiosos" tabindex="0" onclick="setCategory('Religiosos')">✝️ Religiosos</button>
+    <button class="cat-tv-btn" id="cat_Pay-Per-View" tabindex="0" onclick="setCategory('Pay-Per-View')">🔒 Pay-Per-View</button>
+    <button class="cat-tv-btn" id="cat_24H Infantis/Desenhos" tabindex="0" onclick="setCategory('24H Infantis/Desenhos')">🎨 24H Infantis</button>
+    <button class="cat-tv-btn" id="cat_24H Séries/Programas" tabindex="0" onclick="setCategory('24H Séries/Programas')">📺 24H Séries</button>
+    <button class="cat-tv-btn" id="cat_24H Discovery+" tabindex="0" onclick="setCategory('24H Discovery+')">🔍 24H Discovery+</button>
+    <button class="cat-tv-btn" id="cat_24H Doramas" tabindex="0" onclick="setCategory('24H Doramas')">🎌 24H Doramas</button>
+    <button class="cat-tv-btn" id="cat_Outros" tabindex="0" onclick="setCategory('Outros')">📦 Outros</button>
   </div>
   <div class="search-row">
     <div class="search-box">
@@ -408,7 +425,40 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
 
 <script>
 
-// ── THEME ──
+// ── CUSTOM ALERT / CONFIRM (sem URL no titulo) ──
+function showAlert(msg, title='DexPlay'){
+  return new Promise(resolve => {
+    document.getElementById('customModalTitle').textContent = title;
+    document.getElementById('customModalMsg').textContent = msg;
+    const btns = document.getElementById('modalBtns');
+    btns.innerHTML = '<button class="modal-btn primary" id="modalOkBtn">OK</button>';
+    document.getElementById('customModal').classList.add('show');
+    document.getElementById('modalOkBtn').focus();
+    document.getElementById('modalOkBtn').onclick = () => {
+      document.getElementById('customModal').classList.remove('show');
+      resolve(true);
+    };
+  });
+}
+function showConfirm(msg, title='DexPlay'){
+  return new Promise(resolve => {
+    document.getElementById('customModalTitle').textContent = title;
+    document.getElementById('customModalMsg').textContent = msg;
+    const btns = document.getElementById('modalBtns');
+    btns.innerHTML = '<button class="modal-btn secondary" id="modalCancelBtn">Cancelar</button><button class="modal-btn primary" id="modalConfirmBtn">Confirmar</button>';
+    document.getElementById('customModal').classList.add('show');
+    document.getElementById('modalConfirmBtn').focus();
+    document.getElementById('modalConfirmBtn').onclick = () => {
+      document.getElementById('customModal').classList.remove('show');
+      resolve(true);
+    };
+    document.getElementById('modalCancelBtn').onclick = () => {
+      document.getElementById('customModal').classList.remove('show');
+      resolve(false);
+    };
+  });
+}
+
 const SVG_MOON = '<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="20" width="20"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg>';
 const SVG_SUN = '<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="20" width="20"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>';
 
@@ -535,11 +585,27 @@ function showScreen(id, pushState = true){
 window.addEventListener('popstate', (e) => {
   if (e.state && e.state.screen) {
     showScreen(e.state.screen, false);
+    if (e.state.screen === 'tvScreen') refocusActiveChannel();
   } else {
-    if (currentUser) showScreen('tvScreen', false);
-    else showScreen('authScreen', false);
+    if (currentUser) {
+      showScreen('tvScreen', false);
+      refocusActiveChannel();
+    } else showScreen('authScreen', false);
   }
 });
+
+// Refoca no canal ativo na lista (sem reiniciar o canal)
+function refocusActiveChannel() {
+  setTimeout(() => {
+    if (selectedChannel) {
+      const el = document.getElementById('chi_' + selectedChannel.id);
+      if (el) {
+        el.focus();
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  }, 150);
+}
 
 // ── AUTH ──
 let authMode='login';
@@ -578,25 +644,25 @@ async function handleAuth(){
   const pass=document.getElementById('passInput').value;
   const minLen=idType==='cpf'?11:11;
   if(authMode==='login'){
-    if(!rawId||!pass){alert('Preencha todos os campos.');return;}
+    if(!rawId||!pass){await showAlert('Preencha todos os campos.');return;}
     let users=await fetchRemoteUsers();
     const user=users.find(u=>u.cpf===rawId&&u.password===pass);
-    if(!user){alert('Credenciais incorretas.');return;}
+    if(!user){await showAlert('Credenciais incorretas.');return;}
     saveSession(user);
     currentUser=user;
     enterApp();
   } else {
     const name=document.getElementById('nameInput').value.trim();
-    if(!rawId||!pass||!name){alert('Preencha os campos.');return;}
-    if(rawId.length<minLen){alert('CPF ou Celular inválido.');return;}
+    if(!rawId||!pass||!name){await showAlert('Preencha os campos.');return;}
+    if(rawId.length<minLen){await showAlert('CPF ou Celular inválido.');return;}
     let users=await fetchRemoteUsers();
-    if(users.find(u=>u.cpf===rawId)){alert('Usuário já existe.');return;}
+    if(users.find(u=>u.cpf===rawId)){await showAlert('Usuário já existe.');return;}
     const trialExpiry = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000);
     const tzoffset = trialExpiry.getTimezoneOffset() * 60000;
-    const trialStr = new Date(trialExpiry - tzoffset).toISOString().slice(0,16); // formato datetime-local
+    const trialStr = new Date(trialExpiry - tzoffset).toISOString().slice(0,16);
     users.push({cpf:rawId,password:pass,name,isAdmin:false,idType,expiresAt:trialStr, isTrial:true});
     saveUsers(users);
-    alert('Cadastrado com sucesso!');
+    await showAlert('Cadastrado com sucesso! Faça login para entrar.');
     autoSyncUsers(users);
     switchTab('login');
   }
@@ -638,22 +704,24 @@ function goProfile(){
 
 function goBack(){
   if (window.history.length > 1) {
-     history.back();
+     history.back(); // o popstate cuida do refocus
   } else {
      showScreen('tvScreen');
+     refocusActiveChannel();
   }
   filterChannels();
 }
 
 function logout(){
-  if(confirm('Deseja sair da conta?')){
+  showConfirm('Deseja sair da conta?').then(ok => {
+    if(!ok) return;
     clearSession();
     currentUser=null;
     selectedChannel=null;
     if(hls){hls.destroy();hls=null;}
     showScreen('authScreen');
     toast('Sessão encerrada.','ok');
-  }
+  });
 }
 
 // ── CHANNELS FRONTEND ──
@@ -690,8 +758,13 @@ async function loadChannels(){
 
 function setCategory(cat){
   currentCategory = cat;
-  const sel = document.getElementById('categorySelect');
-  if(sel && sel.value !== cat) sel.value = cat;
+  // Atualiza botões de categoria
+  document.querySelectorAll('.cat-tv-btn').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.getElementById('cat_' + cat);
+  if(activeBtn){
+    activeBtn.classList.add('active');
+    activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
   filterChannels();
 }
 
@@ -1007,18 +1080,21 @@ function adminSaveCh(id){
 }
 
 function adminDelCh(id){
-  if(!confirm('Certeza que deseja remover este canal?')) return;
-  channels=channels.filter(c=>c.id!==id);
-  saveChannels(channels);
-  if(selectedChannel?.id===id){selectedChannel=null;}
-  autoSync(channels);
-  loadAdminLocal();
-  filterChannels(); 
+  showConfirm('Certeza que deseja remover este canal?').then(ok => {
+    if(!ok) return;
+    channels=channels.filter(c=>c.id!==id);
+    saveChannels(channels);
+    if(selectedChannel?.id===id){selectedChannel=null;}
+    autoSync(channels);
+    loadAdminLocal();
+    filterChannels();
+  });
 }
 
 async function adminDelUser(cpf){
-  if(cpf===ADMIN_CPF){alert('Administrador raiz intocável.');return;}
-  if(!confirm('Remover usuário? Esta ação não pode ser desfeita.'))return;
+  if(cpf===ADMIN_CPF){await showAlert('Administrador raiz intocável.');return;}
+  const ok = await showConfirm('Remover usuário? Esta ação não pode ser desfeita.');
+  if(!ok) return;
   const users=getUsers().filter(u=>u.cpf!==cpf);
   saveUsers(users);
   autoSyncUsers(users);
@@ -1179,8 +1255,8 @@ async function publishAppToGithub(){
       method:'PUT', headers:{'Authorization':'token '+token,'Content-Type':'application/json'}, body:JSON.stringify(body)
     });
     
-    if(res.ok){ alert('App publicado!'); } else { alert('Erro ao publicar'); }
-  }catch(e){ alert('Erro de conexão'); }
+    if(res.ok){ toast('App publicado com sucesso!','ok'); } else { toast('Erro ao publicar.','err'); }
+  }catch(e){ toast('Erro de conexão.','err'); }
 }
 
 // ── TV REMOTE SUPPORT & SPATIAL NAVIGATION ──
@@ -1331,6 +1407,15 @@ setInterval(() => {
 </script>
 <!-- Toast Element -->
 <div id="toast"></div>
+
+<!-- Modal Customizado (substitui alert/confirm) -->
+<div id="customModal">
+  <div id="customModalBox">
+    <div id="customModalTitle"></div>
+    <div id="customModalMsg"></div>
+    <div class="modal-btns" id="modalBtns"></div>
+  </div>
+</div>
 
 
 </body></html>
