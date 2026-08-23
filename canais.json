@@ -283,5 +283,11 @@
     "name": "Tv Max",
     "url": "https://5cf4a2c2512a2.streamlock.net/tvmax/tvmax/playlist.m3u8",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787518405846",
+    "name": "SPORTV3 HD",
+    "url": "http://170.83.49.66:8083/SPORTV3HD/index.m3u8",
+    "category": "Esportes"
   }
 ]
