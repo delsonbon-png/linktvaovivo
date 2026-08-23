@@ -345,12 +345,12 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/d2552fa8-3ec7-45ba-af16-64a09ff30d53"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/ab3a9e93-0c30-4707-bf27-88872e124e7a"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
     <span class="live-badge">AO VIVO</span>
-    <span class="now-text" id="nowText">A&amp;E</span>
+    <span class="now-text" id="nowText">Warner Channel</span>
   </div>
   <div id="categoryRow" style="padding:8px 14px 4px;flex-shrink:0">
     <select id="categorySelect" class="cat-select" tabindex="0" onchange="setCategory(this.value)">
@@ -1374,6 +1374,15 @@ document.addEventListener('keydown', e => {
     return; // Deixa andar o cursor do teclado
   }
 
+  // Quando player está maximizado, setas ↑↓ navegam entre canais
+  const pw = document.getElementById('playerWrap');
+  const isFullscreen = pw && pw.classList.contains('web-fullscreen');
+  if (isFullscreen && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+    e.preventDefault();
+    navigateChannelInFullscreen(e.key === 'ArrowUp' ? -1 : 1);
+    return;
+  }
+
   if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
     e.preventDefault(); // Evita scroll na tv inteira
     spatialNav(e.key);
@@ -1384,6 +1393,45 @@ document.addEventListener('keydown', e => {
     }
   }
 });
+
+// Navega para o canal anterior (-1) ou próximo (+1) quando em fullscreen
+function navigateChannelInFullscreen(direction) {
+  // Pega a lista filtrada atual (a mesma que aparece na tela)
+  const q = document.getElementById('searchInput') ? document.getElementById('searchInput').value : '';
+  const f = q.trim().toLowerCase();
+  let list = channels.filter(c => {
+    let cat = c.category || 'Tv Aberta';
+    if (currentCategory !== 'Todos' && cat !== currentCategory) return false;
+    if (f && !c.name.toLowerCase().includes(f)) return false;
+    return true;
+  });
+  list.sort((a, b) => a.name.localeCompare(b.name));
+
+  if (!list.length) return;
+
+  // Acha índice do canal atual
+  const curIdx = selectedChannel ? list.findIndex(c => c.id === selectedChannel.id) : -1;
+  let nextIdx = curIdx + direction;
+  if (nextIdx < 0) nextIdx = list.length - 1;
+  if (nextIdx >= list.length) nextIdx = 0;
+
+  const nextCh = list[nextIdx];
+  if (!nextCh) return;
+
+  // Toca o canal sem fechar o fullscreen
+  lastUserSelectedChannelId = null; // reseta para não tratar como 2º clique
+  playChannel(nextCh, false);
+  lastUserSelectedChannelId = nextCh.id;
+
+  // Mostra toast com nome do canal
+  toast('📺 ' + nextCh.name, 'ok');
+
+  // Foca visualmente no item da lista
+  setTimeout(() => {
+    const el = document.getElementById('chi_' + nextCh.id);
+    if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+  }, 50);
+}
 
 function spatialNav(direction) {
   const focusables = Array.from(document.querySelectorAll('button, input, select, [tabindex="0"]')).filter(el => {
@@ -1525,7 +1573,7 @@ document.addEventListener('visibilitychange', () => {
 requestWakeLock();
 </script>
 <!-- Toast Element -->
-<div id="toast"></div>
+<div id="toast" class="">📺 Tv Sul de Minas</div>
 
 <!-- Modal Customizado (substitui alert/confirm) -->
 <div id="customModal">
