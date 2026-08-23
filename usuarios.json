@@ -11,7 +11,8 @@
     "name": "111",
     "isAdmin": false,
     "idType": "cpf",
-    "expiresAt": "2026-08-25T13:39",
-    "isTrial": true
+    "expiresAt": "2026-08-22T23:16",
+    "isTrial": false,
+    "isUnlimited": false
   }
 ]
