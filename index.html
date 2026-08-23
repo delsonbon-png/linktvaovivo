@@ -345,12 +345,12 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/ab3a9e93-0c30-4707-bf27-88872e124e7a"></video>
-    <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
+    <video id="videoEl" style="display:none" controls="" playsinline=""></video>
+    <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media"></iframe>
   </div>
-  <div class="now-playing" id="nowPlaying" style="display: none;">
+  <div class="now-playing" id="nowPlaying" style="display:none">
     <span class="live-badge">AO VIVO</span>
-    <span class="now-text" id="nowText">Warner Channel</span>
+    <span class="now-text" id="nowText"></span>
   </div>
   <div id="categoryRow" style="padding:8px 14px 4px;flex-shrink:0">
     <select id="categorySelect" class="cat-select" tabindex="0" onchange="setCategory(this.value)">
@@ -1219,8 +1219,11 @@ async function adminSetExpiry(cpf){
     u.isUnlimited=false;
     saveUsers(users);
     autoSyncUsers(users);
-    loadAdminLocal();
     toast(exp?'Limite salvo!':'Acesso sem limite salvo!','ok');
+    // Atualiza direto na memória para refletir imediatamente sem depender de releitura async
+    window._adminUsers = users;
+    document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
+    filterAdminUsers();
   }
 }
 
@@ -1236,7 +1239,10 @@ async function adminBlockImmediate(cpf) {
     saveUsers(users);
     autoSyncUsers(users);
     toast('Usuário bloqueado!','ok');
-    loadAdminLocal();
+    // Atualiza direto na memória para refletir imediatamente sem depender de releitura async
+    window._adminUsers = users;
+    document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
+    filterAdminUsers();
   }
 }
 
@@ -1257,7 +1263,10 @@ async function adminToggleUnlimited(cpf) {
     }
     saveUsers(users);
     autoSyncUsers(users);
-    loadAdminLocal();
+    // Atualiza direto na memória para refletir imediatamente sem depender de releitura async
+    window._adminUsers = users;
+    document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
+    filterAdminUsers();
   }
 }
 
@@ -1573,7 +1582,7 @@ document.addEventListener('visibilitychange', () => {
 requestWakeLock();
 </script>
 <!-- Toast Element -->
-<div id="toast" class="">📺 Tv Sul de Minas</div>
+<div id="toast"></div>
 
 <!-- Modal Customizado (substitui alert/confirm) -->
 <div id="customModal">
