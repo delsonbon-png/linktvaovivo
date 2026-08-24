@@ -79,7 +79,7 @@ input:focus{border-color:var(--primary)}
 .id-tab.active{background:var(--primary)22;color:var(--primary);border:1px solid var(--primary)33}
 
 /* Layout adaptado para TV em landscape (tela baixa) */
-@media (orientation: landscape) and (max-height: 600px) {
+@media (orientation: landscape) and (max-height: 600px), (min-aspect-ratio: 1/1) and (max-height: 600px) {
   #authScreen { padding: 12px; justify-content: center; }
   .logo-box { display: none; }
   .card { padding: 16px; max-width: 500px; }
@@ -221,7 +221,7 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
 .cat-tv-btn.active:focus{background:var(--primary)!important;color:var(--text-on-primary)!important;}
 
 /* LANDSCAPE FIX */
-@media (orientation: landscape) {
+@media (orientation: landscape), (min-aspect-ratio: 1/1) {
   #tvScreen.active {
     display: grid !important;
     grid-template-columns: minmax(260px, 30vw) 1fr;
@@ -345,7 +345,7 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/347715e4-c840-4a7f-bf7d-be8b0b544445"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/74be2c49-fe76-4f45-89b9-7f0eb021889c"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
