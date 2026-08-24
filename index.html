@@ -345,7 +345,7 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/5c9f25e8-5999-4db2-91bf-e0c51e922e49"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/347715e4-c840-4a7f-bf7d-be8b0b544445"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
@@ -650,10 +650,19 @@ window.addEventListener('popstate', (e) => {
       if (wantFullscreen) {
           pw.classList.add('web-fullscreen');
           if (window.ReactNativeWebView) window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'setFullscreen', value: true }));
-          try { if(screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(e=>{}); } catch(err){}
+          try { 
+              if (document.documentElement.requestFullscreen) {
+                  document.documentElement.requestFullscreen().then(() => {
+                      if(screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(e=>{});
+                  }).catch(e=>{});
+              } else {
+                  if(screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(e=>{});
+              }
+          } catch(err){}
       } else {
           pw.classList.remove('web-fullscreen');
           if (window.ReactNativeWebView) window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'setFullscreen', value: false }));
+          try { if (document.exitFullscreen) document.exitFullscreen().catch(e=>{}); } catch(err){}
           try { if(screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch(err){}
           refocusActiveChannel();
       }
@@ -680,6 +689,7 @@ window.handlePhysicalBack = function() {
      } else {
          pw.classList.remove('web-fullscreen');
          if (window.ReactNativeWebView) window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'setFullscreen', value: false }));
+         try { if (document.exitFullscreen) document.exitFullscreen().catch(e=>{}); } catch(err){}
          try { if(screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch(err){}
          refocusActiveChannel();
      }
@@ -1521,7 +1531,15 @@ function toggleFullScreenPlayer() {
    if (pw) {
        pw.classList.add('web-fullscreen');
        if (window.ReactNativeWebView) window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'setFullscreen', value: true }));
-       try { if(screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(e=>{}); } catch(err){}
+       try { 
+           if (document.documentElement.requestFullscreen) {
+               document.documentElement.requestFullscreen().then(() => {
+                   if(screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(e=>{});
+               }).catch(e=>{});
+           } else {
+               if(screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(e=>{});
+           }
+       } catch(err){}
    }
 }
 
