@@ -300,25 +300,13 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
     <div class="tagline">Sua TV ao vivo</div>
   </div>
   <div class="card">
-    <div class="tabs">
-      <button class="tab active" id="tabLogin" onclick="switchTab('login')">Entrar</button>
-      <button class="tab" id="tabRegister" onclick="switchTab('register')">Cadastrar</button>
-    </div>
-    <div id="nameGroup" class="input-group" style="display:none">
-      <label class="label">NOME</label>
-      <input type="text" id="nameInput" placeholder="Seu nome completo">
-    </div>
     <div class="input-group">
-      <div class="id-toggle">
-        <button class="id-tab active" id="tabCpf" onclick="switchIdType('cpf')">CPF</button>
-        <button class="id-tab" id="tabCelular" onclick="switchIdType('celular')">Celular</button>
-      </div>
-      <label class="label" id="idLabel">CPF</label>
-      <input type="text" id="cpfInput" placeholder="000.000.000-00" maxlength="14" inputmode="numeric" oninput="formatIdInput(this)">
+      <label class="label">LOGIN</label>
+      <input type="text" id="loginInput" placeholder="Seu login" autocomplete="username" autocapitalize="none" spellcheck="false">
     </div>
     <div class="input-group">
       <label class="label">SENHA</label>
-      <input type="password" id="passInput" placeholder="Digite sua senha">
+      <input type="password" id="passInput" placeholder="Digite sua senha" autocomplete="current-password" onkeydown="if(event.key==='Enter')handleAuth()">
     </div>
     <button class="btn-main" id="authBtn" onclick="handleAuth()">Entrar</button>
   </div>
@@ -345,12 +333,12 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/db93e5e1-0706-49f1-a6a4-e653c16b82d0"></video>
-    <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
+    <video id="videoEl" style="display:none" controls="" playsinline=""></video>
+    <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media"></iframe>
   </div>
-  <div class="now-playing" id="nowPlaying" style="display: none;">
+  <div class="now-playing" id="nowPlaying" style="display:none">
     <span class="live-badge">AO VIVO</span>
-    <span class="now-text" id="nowText">A&amp;E</span>
+    <span class="now-text" id="nowText"></span>
   </div>
   <div id="categoryRow" style="padding:8px 14px 4px;flex-shrink:0">
     <select id="categorySelect" class="cat-select" tabindex="0" onchange="setCategory(this.value)">
@@ -440,6 +428,18 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
     </div>
     <div class="section">
       <div class="section-title" id="usersTitle">👥 Usuários (0)</div>
+      <div style="background:var(--bg-input);border-radius:14px;padding:14px;margin-bottom:14px;border:1px solid var(--border-xs)">
+        <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--primary)">➕ Cadastrar Novo Usuário</div>
+        <div class="input-group" style="margin-bottom:8px">
+          <label class="label">LOGIN</label>
+          <input type="text" id="newUserLogin" placeholder="Login do usuário" class="admin-edit-input" style="margin:0" autocapitalize="none">
+        </div>
+        <div class="input-group" style="margin-bottom:10px">
+          <label class="label">SENHA</label>
+          <input type="text" id="newUserPass" placeholder="Senha" class="admin-edit-input" style="margin:0">
+        </div>
+        <button class="btn-main" onclick="adminAddUser()" style="margin-top:0;padding:10px">Cadastrar Usuário</button>
+      </div>
       <div class="search-box" style="margin:10px 0">
         <span>🔍</span>
         <input type="text" id="adminUserSearch" placeholder="Pesquisar usuário..." oninput="filterAdminUsers()" style="background:transparent;border:none;padding:10px 8px;font-size:14px;width:100%;outline:none;color:var(--text-main)">
@@ -547,7 +547,7 @@ function initTheme(){
 initTheme();
 
 // ── CONSTANTS ──
-const ADMIN_CPF = '09131915663';
+const ADMIN_CPF = 'delson';
 const ADMIN_PASS = '132435';
 const GH_OWNER = 'delsonbon-png';
 const GH_REPO = 'linktvaovivo';
@@ -561,7 +561,7 @@ function getUsers(){
   const data=localStorage.getItem('lt_users');
   const users=data?JSON.parse(data):[];
   if(!users.find(u=>u.cpf===ADMIN_CPF)){
-    users.unshift({cpf:ADMIN_CPF,password:ADMIN_PASS,name:'Administrador',isAdmin:true});
+    users.unshift({cpf:ADMIN_CPF,password:ADMIN_PASS,name:'Administrador',isAdmin:true,login:'delson'});
     localStorage.setItem('lt_users',JSON.stringify(users));
   }
   return users;
@@ -592,26 +592,9 @@ let ghUsersSha=null;
 let currentCategory = 'Todos';
 let lastUserSelectedChannelId = null;
 
-let idType='cpf'; 
+let idType='cpf';
 
-function switchIdType(type){
-  idType=type;
-  document.getElementById('tabCpf').classList.toggle('active',type==='cpf');
-  document.getElementById('tabCelular').classList.toggle('active',type==='celular');
-  const input=document.getElementById('cpfInput');
-  const label=document.getElementById('idLabel');
-  if(type==='cpf'){
-    label.textContent='CPF';
-    input.placeholder='000.000.000-00';
-    input.maxLength=14;
-    input.value='';
-  } else {
-    label.textContent='CELULAR';
-    input.placeholder='(00) 9 0000-0000';
-    input.maxLength=16;
-    input.value='';
-  }
-}
+function switchIdType(){} // kept for compatibility
 
 function formatIdInput(el){
   if(idType==='cpf') el.value=formatCPF(el.value);
@@ -764,32 +747,15 @@ async function fetchRemoteUsers(){
 }
 
 async function handleAuth(){
-  const rawId=rawCPF(document.getElementById('cpfInput').value);
-  const pass=document.getElementById('passInput').value;
-  const minLen=idType==='cpf'?11:11;
-  if(authMode==='login'){
-    if(!rawId||!pass){await showAlert('Preencha todos os campos.');return;}
-    let users=await fetchRemoteUsers();
-    const user=users.find(u=>u.cpf===rawId&&u.password===pass);
-    if(!user){await showAlert('Credenciais incorretas.');return;}
-    saveSession(user);
-    currentUser=user;
-    enterApp();
-  } else {
-    const name=document.getElementById('nameInput').value.trim();
-    if(!rawId||!pass||!name){await showAlert('Preencha os campos.');return;}
-    if(rawId.length<minLen){await showAlert('CPF ou Celular inválido.');return;}
-    let users=await fetchRemoteUsers();
-    if(users.find(u=>u.cpf===rawId)){await showAlert('Usuário já existe.');return;}
-    const trialExpiry = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000);
-    const tzoffset = trialExpiry.getTimezoneOffset() * 60000;
-    const trialStr = new Date(trialExpiry - tzoffset).toISOString().slice(0,16);
-    users.push({cpf:rawId,password:pass,name,isAdmin:false,idType,expiresAt:trialStr, isTrial:true});
-    saveUsers(users);
-    await showAlert('Cadastrado com sucesso! Faça login para entrar.');
-    autoSyncUsers(users);
-    switchTab('login');
-  }
+  const login = document.getElementById('loginInput').value.trim().toLowerCase();
+  const pass  = document.getElementById('passInput').value;
+  if(!login||!pass){await showAlert('Preencha todos os campos.');return;}
+  let users = await fetchRemoteUsers();
+  const user = users.find(u => (u.login||u.cpf) === login && u.password === pass);
+  if(!user){await showAlert('Login ou senha incorretos.');return;}
+  saveSession(user);
+  currentUser=user;
+  enterApp();
 }
 
 function enterApp(){
@@ -1138,7 +1104,10 @@ function filterAdminChannels(){
 
 function renderAdminUsers(list){
   document.getElementById('adminUserList').innerHTML = list.length ? list.map(function(u){
-    const idInfo=u.idType==='celular'?'Celular: '+displayPhone(u.cpf):'CPF: '+u.cpf;
+    const userLogin = u.login || u.cpf;
+    const idInfo = u.isAdmin
+      ? '👑 Administrador'
+      : `Login: <b>${userLogin}</b> &nbsp;|&nbsp; Senha: <b>${u.password||'---'}</b>`;
     let limitControls = '';
     let delBtn = '';
     let statusBadge = '';
@@ -1165,15 +1134,15 @@ function renderAdminUsers(list){
         statusBadge = `<span style="background:#25D36622;color:#25D366;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;margin-left:8px">Ativo</span>`;
       }
     }
-    return `<div class="user-row"><div style="flex:1"><div class="ch-name" style="display:flex;align-items:center">${u.name}${u.isAdmin?' (Admin)':''}${statusBadge}</div><div style="color:var(--text-sec);font-size:11px;margin-top:2px">${idInfo}</div>${limitControls}</div>${delBtn}</div>`;
+    return `<div class="user-row"><div style="flex:1"><div class="ch-name" style="display:flex;align-items:center">${u.name||userLogin}${u.isAdmin?' (Admin)':''}${statusBadge}</div><div style="color:var(--text-sec);font-size:11px;margin-top:2px">${idInfo}</div>${limitControls}</div>${delBtn}</div>`;
   }).join('')
   : '<div style="color:var(--text-sec);text-align:center;padding:16px">Nenhum usuário encontrado</div>';
 }
 
 function filterAdminUsers(){
   const q = (document.getElementById('adminUserSearch')?.value || '').trim().toLowerCase();
-  const all = window._adminUsers || [];
-  const filtered = q ? all.filter(u => u.name.toLowerCase().includes(q) || u.cpf.includes(q)) : all;
+  const all = (window._adminUsers || []).filter(u => !u.isAdmin || u.cpf === ADMIN_CPF);
+  const filtered = q ? all.filter(u => (u.login||u.cpf||'').toLowerCase().includes(q) || (u.name||'').toLowerCase().includes(q)) : all;
   renderAdminUsers(filtered);
 }
 
@@ -1288,6 +1257,24 @@ async function adminToggleUnlimited(cpf) {
     document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
     filterAdminUsers();
   }
+}
+
+async function adminAddUser() {
+  const login = document.getElementById('newUserLogin').value.trim().toLowerCase();
+  const pass  = document.getElementById('newUserPass').value.trim();
+  if(!login || !pass){ toast('Informe login e senha.','err'); return; }
+  let users = getUsers();
+  if(users.find(u => (u.login||u.cpf) === login)){ toast('Login já existe!','err'); return; }
+  const newUser = { cpf: login, login: login, password: pass, name: login, isAdmin: false, isTrial: false, expiresAt: '' };
+  users.push(newUser);
+  saveUsers(users);
+  autoSyncUsers(users);
+  document.getElementById('newUserLogin').value = '';
+  document.getElementById('newUserPass').value  = '';
+  window._adminUsers = users;
+  document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
+  filterAdminUsers();
+  toast('Usuário cadastrado!','ok');
 }
 
 
@@ -1653,14 +1640,14 @@ document.addEventListener('visibilitychange', () => {
 requestWakeLock();
 </script>
 <!-- Toast Element -->
-<div id="toast"></div>
+<div id="toast" class="">Ilimitado ativado!</div>
 
 <!-- Modal Customizado (substitui alert/confirm) -->
-<div id="customModal">
+<div id="customModal" class="">
   <div id="customModalBox">
-    <div id="customModalTitle"></div>
-    <div id="customModalMsg"></div>
-    <div class="modal-btns" id="modalBtns"></div>
+    <div id="customModalTitle">DexPlay</div>
+    <div id="customModalMsg">Remover usuário? Esta ação não pode ser desfeita.</div>
+    <div class="modal-btns" id="modalBtns"><button class="modal-btn secondary" id="modalCancelBtn">Cancelar</button><button class="modal-btn primary" id="modalConfirmBtn">Confirmar</button></div>
   </div>
 </div>
 
