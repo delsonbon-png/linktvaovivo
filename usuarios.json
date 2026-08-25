@@ -1,30 +1,28 @@
 [
   {
-    "cpf": "delson",
+    "cpf": "09131915663",
     "password": "132435",
     "name": "Administrador",
     "isAdmin": true
   },
   {
-    "cpf": "douglasbonfim",
-    "login": "douglasbonfim",
-    "password": "261548db",
-    "name": "douglasbonfim",
+    "cpf": "11111111111",
+    "password": "123456",
+    "name": "111",
     "isAdmin": false,
-    "isTrial": false,
+    "idType": "cpf",
     "expiresAt": "",
+    "isTrial": false,
     "isUnlimited": true,
-    "savedExpiresAt": "2026-08-25T00:17"
+    "savedExpiresAt": "2026-08-22T23:43"
   },
   {
-    "cpf": "delson2",
-    "login": "delson2",
+    "cpf": "22222222222",
     "password": "123456",
-    "name": "delson2",
+    "name": "222",
     "isAdmin": false,
-    "isTrial": false,
-    "expiresAt": "",
-    "savedExpiresAt": "2026-08-25T01:04",
-    "isUnlimited": true
+    "idType": "cpf",
+    "expiresAt": "2026-08-28T08:51",
+    "isTrial": true
   }
 ]
