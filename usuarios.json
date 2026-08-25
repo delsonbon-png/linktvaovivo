@@ -12,17 +12,6 @@
     "isAdmin": true
   },
   {
-    "cpf": "09131916635",
-    "password": "261548db",
-    "name": "Douglas  Bonfim",
-    "isAdmin": false,
-    "idType": "cpf",
-    "expiresAt": "",
-    "isTrial": false,
-    "savedExpiresAt": "2026-08-27T22:21",
-    "isUnlimited": true
-  },
-  {
     "cpf": "adao123",
     "login": "adao123",
     "password": "123456",
