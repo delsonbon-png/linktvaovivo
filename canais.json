@@ -272,7 +272,8 @@
     "id": "1787193559923",
     "name": "Rede Tv",
     "url": "https://tv01.zas.media:1936/redetvparana/redetvparana/playlist.m3u8",
-    "category": "Tv Aberta"
+    "category": "Tv Aberta",
+    "logo": "https://i.imgur.com/EgKx2J1.png"
   },
   {
     "id": "1787194160251",
