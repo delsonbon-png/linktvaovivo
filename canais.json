@@ -328,5 +328,12 @@
     "logo": "https://i.imgur.com/CkoAvYH.png",
     "url": "https://s2.micineovs.com/ESPN1/index.m3u8?token=16FOTt9Ae2m8",
     "category": "Esportes"
+  },
+  {
+    "id": "1787663386442",
+    "name": "ESPN 4",
+    "logo": "https://i.imgur.com/ErWFVO3.png",
+    "url": "http://45.162.64.114:80/ESPN_4/index.m3u8",
+    "category": "Esportes"
   }
 ]
