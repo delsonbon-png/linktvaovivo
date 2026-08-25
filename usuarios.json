@@ -32,14 +32,5 @@
     "expiresAt": "",
     "savedExpiresAt": "",
     "isUnlimited": true
-  },
-  {
-    "cpf": "joao",
-    "login": "joao",
-    "password": "123456",
-    "name": "joao",
-    "isAdmin": false,
-    "isTrial": false,
-    "expiresAt": ""
   }
 ]
