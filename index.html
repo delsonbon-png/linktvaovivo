@@ -333,7 +333,7 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/2dcfe719-0564-4af5-ab1d-31ab445cd2a9"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/ee5bc598-dde0-4cf7-ae19-67c7dfb96a41"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
@@ -1348,7 +1348,8 @@ async function autoSync(list){
 async function publishAppToGithub(){
   const token=getGhToken();
   if(!token){toast('GitHub Token não encontrado.','err');return;}
-  if(!confirm('Pública nova versão html?'))return;
+  const ok = await showConfirm('Pública nova versão html?');
+  if(!ok)return;
   try{
     const clone = document.documentElement.cloneNode(true);
     clone.querySelectorAll('.screen').forEach(s => { s.classList.remove('active'); s.style.cssText = ''; });
@@ -1641,13 +1642,13 @@ document.addEventListener('visibilitychange', () => {
 requestWakeLock();
 </script>
 <!-- Toast Element -->
-<div id="toast" class="">Sessão encerrada.</div>
+<div id="toast"></div>
 
 <!-- Modal Customizado (substitui alert/confirm) -->
 <div id="customModal" class="">
   <div id="customModalBox">
     <div id="customModalTitle">DexPlay</div>
-    <div id="customModalMsg">Deseja sair da conta?</div>
+    <div id="customModalMsg">Pública nova versão html?</div>
     <div class="modal-btns" id="modalBtns"><button class="modal-btn secondary" id="modalCancelBtn">Cancelar</button><button class="modal-btn primary" id="modalConfirmBtn">Confirmar</button></div>
   </div>
 </div>
