@@ -307,5 +307,12 @@
     "name": "Televisa",
     "url": "https://televisa-televisa-1-it.samsung.wurl.tv/playlist.m3u8?ManoTV",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787662706410",
+    "name": "SPORTV3",
+    "logo": "https://i.imgur.com/ttHpdGp.png",
+    "url": "http://170.83.49.66:8083/SPORTV3HD/index.m3u8",
+    "category": "Esportes"
   }
 ]
