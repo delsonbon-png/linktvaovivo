@@ -345,7 +345,7 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/148e6c34-da68-4570-9f15-3977a40f8ca8"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/db93e5e1-0706-49f1-a6a4-e653c16b82d0"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
@@ -982,7 +982,7 @@ function playChannel(ch, isAutoPlay = false){
   ytFrame.src='';
   playerEmpty.style.display='none';
   
-  if(!currentUser?.isAdmin && currentUser?.expiresAt && new Date(currentUser.expiresAt).getTime() < Date.now()){
+  if(!currentUser?.isAdmin && !currentUser?.isUnlimited && currentUser?.expiresAt && new Date(currentUser.expiresAt).getTime() < Date.now()){
     playerBlocked.style.display='block';
     nowPlaying.style.display='none';
     filterChannels();
@@ -1565,9 +1565,12 @@ setInterval(() => {
        toast('Seu acesso foi removido pelo administrador.', 'err');
        return;
     }
-    if (updatedUser) { currentUser.expiresAt = updatedUser.expiresAt; }
+    if (updatedUser) {
+      currentUser.expiresAt = updatedUser.expiresAt;
+      currentUser.isUnlimited = updatedUser.isUnlimited;
+    }
     
-    if (currentUser.expiresAt && new Date(currentUser.expiresAt).getTime() < Date.now()) {
+    if (!currentUser.isUnlimited && currentUser.expiresAt && new Date(currentUser.expiresAt).getTime() < Date.now()) {
       const playerBlocked = document.getElementById('playerBlocked');
       const nowPlaying = document.getElementById('nowPlaying');
       const playerEmpty = document.getElementById('playerEmpty');
