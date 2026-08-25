@@ -26,5 +26,14 @@
     "expiresAt": "",
     "savedExpiresAt": "",
     "isUnlimited": true
+  },
+  {
+    "cpf": "delson123",
+    "login": "delson123",
+    "password": "123456",
+    "name": "delson123",
+    "isAdmin": false,
+    "isTrial": false,
+    "expiresAt": ""
   }
 ]
