@@ -18,6 +18,8 @@
     "name": "douglasbonfim",
     "isAdmin": false,
     "isTrial": false,
-    "expiresAt": ""
+    "expiresAt": "",
+    "savedExpiresAt": "",
+    "isUnlimited": true
   }
 ]
