@@ -85,7 +85,8 @@
     "id": "1787022783511",
     "name": "Record",
     "url": "https://tvconquistalrv.duckdns.org:3334/hls/tvconquistalrv.m3u8?ManoTV",
-    "category": "Tv Aberta"
+    "category": "Tv Aberta",
+    "logo": "https://i.imgur.com/lyQ1v9M.png"
   },
   {
     "id": "1787022928297",
