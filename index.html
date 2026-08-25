@@ -81,7 +81,7 @@ input:focus{border-color:var(--primary)}
 /* Layout adaptado para TV em landscape (tela baixa) */
 @media (orientation: landscape) and (max-height: 600px), (min-aspect-ratio: 1/1) and (max-height: 600px) {
   #authScreen { padding: 12px; justify-content: center; }
-  .logo-box { display: none; }
+  /* .logo-box { display: none; } removido para exibir a logo na TV */
   .card { padding: 16px; max-width: 500px; }
   .tabs { margin-bottom: 10px; }
   .input-group { margin-bottom: 8px; }
@@ -333,12 +333,12 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display:none" controls="" playsinline=""></video>
-    <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media"></iframe>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/8c4595f9-63b3-49bc-b038-b3bf2262fbb1"></video>
+    <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
-  <div class="now-playing" id="nowPlaying" style="display:none">
+  <div class="now-playing" id="nowPlaying" style="display: none;">
     <span class="live-badge">AO VIVO</span>
-    <span class="now-text" id="nowText"></span>
+    <span class="now-text" id="nowText">A&amp;E</span>
   </div>
   <div id="categoryRow" style="padding:8px 14px 4px;flex-shrink:0">
     <select id="categorySelect" class="cat-select" tabindex="0" onchange="setCategory(this.value)">
@@ -467,7 +467,7 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
       </div>
       <div class="ch-row">
         <div class="ch-row-info">
-          <div class="ch-name" id="profIdLabel">CPF</div>
+          <div class="ch-name" id="profIdLabel">Senha</div>
           <div id="profCpf" style="color:var(--primary);font-size:13px;margin-top:2px"></div>
         </div>
       </div>
@@ -770,8 +770,8 @@ function goProfile(){
   } else {
     document.getElementById('profName').textContent=currentUser?.name||'Usuário';
     const uIdType=currentUser?.idType||'cpf';
-    document.getElementById('profIdLabel').textContent=uIdType==='celular'?'Celular':'CPF';
-    document.getElementById('profCpf').textContent=uIdType==='celular'?displayPhone(currentUser?.cpf||''):formatCPF(currentUser?.cpf||'');
+    document.getElementById('profIdLabel').textContent='Senha';
+    document.getElementById('profCpf').textContent=currentUser?.password||'';
     
     const expiryEl = document.getElementById('profExpiry');
     const expiryRow = document.getElementById('profExpiryRow');
@@ -1640,14 +1640,14 @@ document.addEventListener('visibilitychange', () => {
 requestWakeLock();
 </script>
 <!-- Toast Element -->
-<div id="toast" class="">Ilimitado ativado!</div>
+<div id="toast"></div>
 
 <!-- Modal Customizado (substitui alert/confirm) -->
-<div id="customModal" class="">
+<div id="customModal">
   <div id="customModalBox">
-    <div id="customModalTitle">DexPlay</div>
-    <div id="customModalMsg">Remover usuário? Esta ação não pode ser desfeita.</div>
-    <div class="modal-btns" id="modalBtns"><button class="modal-btn secondary" id="modalCancelBtn">Cancelar</button><button class="modal-btn primary" id="modalConfirmBtn">Confirmar</button></div>
+    <div id="customModalTitle"></div>
+    <div id="customModalMsg"></div>
+    <div class="modal-btns" id="modalBtns"></div>
   </div>
 </div>
 
