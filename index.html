@@ -333,12 +333,12 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/ee5bc598-dde0-4cf7-ae19-67c7dfb96a41"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/10e3f66d-014b-4091-95ae-f43bbf7abde3"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
     <span class="live-badge">AO VIVO</span>
-    <span class="now-text" id="nowText">A&amp;E</span>
+    <span class="now-text" id="nowText">SPORTV3</span>
   </div>
   <div id="categoryRow" style="padding:8px 14px 4px;flex-shrink:0">
     <select id="categorySelect" class="cat-select" tabindex="0" onchange="setCategory(this.value)">
@@ -973,7 +973,9 @@ function playChannel(ch, isAutoPlay = false){
     let originalUrl = ch.url;
     
     // Auto-upgrade insecure HTTP into HTTPS se rodando no Github (https) pra evitar Mixed Content Block
-    if (window.location.protocol === 'https:' && originalUrl.startsWith('http://')) {
+    // Ignora o upgrade no WebView do App (React Native) pois ele usa mixedContentMode="always" 
+    // e forçar HTTPS em servidores IPTV costuma dar erro de certificado SSL no Android.
+    if (!window.ReactNativeWebView && window.location.protocol === 'https:' && originalUrl.startsWith('http://')) {
         try {
             let tempU = new URL(originalUrl);
             if(tempU.port === '80') tempU.port = ''; // remove porta 80 explícita
