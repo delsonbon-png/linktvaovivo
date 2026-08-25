@@ -333,7 +333,7 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/8c4595f9-63b3-49bc-b038-b3bf2262fbb1"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/2dcfe719-0564-4af5-ab1d-31ab445cd2a9"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
@@ -1113,12 +1113,13 @@ function renderAdminUsers(list){
     let statusBadge = '';
     if(!u.isAdmin){
       const expVal = u.isUnlimited ? '' : (u.expiresAt||'');
-      delBtn = `<button onclick="adminDelUser('${u.cpf}')" style="background:#ff444433;border:1px solid #ff444455;border-radius:10px;padding:8px 12px;color:#ff6b6b;font-size:16px;cursor:pointer;flex-shrink:0" title="Apagar Usuário">🗑️</button>`;
+      const uniqueId = u.login || u.cpf;
+      delBtn = `<button onclick="adminDelUser('${uniqueId}')" style="background:#ff444433;border:1px solid #ff444455;border-radius:10px;padding:8px 12px;color:#ff6b6b;font-size:16px;cursor:pointer;flex-shrink:0" title="Apagar Usuário">🗑️</button>`;
       limitControls = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center">
-        <input type="datetime-local" id="exp_${u.cpf}" value="${expVal}" class="admin-edit-input" style="margin:0;font-size:11.5px;padding:4px;flex:1" ${u.isUnlimited?'disabled':''}>
-        <button onclick="adminSetExpiry('${u.cpf}')" style="background:var(--bg-active);border:1px solid var(--primary)33;border-radius:6px;padding:4px 8px;color:var(--text-main);font-size:11px;cursor:pointer;font-weight:600" ${u.isUnlimited?'disabled':''}>Salvar Limite</button>
-        <button onclick="adminBlockImmediate('${u.cpf}')" style="background:#ff444422;border:1px solid #ff444455;border-radius:6px;padding:4px 8px;color:#ff6b6b;font-size:11px;cursor:pointer;font-weight:600">Bloquear</button>
-        <button onclick="adminToggleUnlimited('${u.cpf}')" style="background:${u.isUnlimited?'#25D36622':'var(--bg-active)'};border:1px solid ${u.isUnlimited?'#25D36655':'var(--primary)33'};border-radius:6px;padding:4px 8px;color:${u.isUnlimited?'#25D366':'var(--text-main)'};font-size:11px;cursor:pointer;font-weight:600">${u.isUnlimited?'★ Ilimitado':'☆ Ilimitado'}</button>
+        <input type="datetime-local" id="exp_${uniqueId}" value="${expVal}" class="admin-edit-input" style="margin:0;font-size:11.5px;padding:4px;flex:1" ${u.isUnlimited?'disabled':''}>
+        <button onclick="adminSetExpiry('${uniqueId}')" style="background:var(--bg-active);border:1px solid var(--primary)33;border-radius:6px;padding:4px 8px;color:var(--text-main);font-size:11px;cursor:pointer;font-weight:600" ${u.isUnlimited?'disabled':''}>Salvar Limite</button>
+        <button onclick="adminBlockImmediate('${uniqueId}')" style="background:#ff444422;border:1px solid #ff444455;border-radius:6px;padding:4px 8px;color:#ff6b6b;font-size:11px;cursor:pointer;font-weight:600">Bloquear</button>
+        <button onclick="adminToggleUnlimited('${uniqueId}')" style="background:${u.isUnlimited?'#25D36622':'var(--bg-active)'};border:1px solid ${u.isUnlimited?'#25D36655':'var(--primary)33'};border-radius:6px;padding:4px 8px;color:${u.isUnlimited?'#25D366':'var(--text-main)'};font-size:11px;cursor:pointer;font-weight:600">${u.isUnlimited?'★ Ilimitado':'☆ Ilimitado'}</button>
       </div>`;
       if(u.isUnlimited){
         statusBadge = `<span style="background:#25D36622;color:#25D366;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;margin-left:8px">Ativo Ilimitado</span>`;
@@ -1141,7 +1142,7 @@ function renderAdminUsers(list){
 
 function filterAdminUsers(){
   const q = (document.getElementById('adminUserSearch')?.value || '').trim().toLowerCase();
-  const all = (window._adminUsers || []).filter(u => !u.isAdmin || u.cpf === ADMIN_CPF);
+  const all = (window._adminUsers || []).filter(u => !u.isAdmin || (u.login||u.cpf) === ADMIN_CPF);
   const filtered = q ? all.filter(u => (u.login||u.cpf||'').toLowerCase().includes(q) || (u.name||'').toLowerCase().includes(q)) : all;
   renderAdminUsers(filtered);
 }
@@ -1192,7 +1193,7 @@ async function adminDelUser(cpf){
   if(cpf===ADMIN_CPF){await showAlert('Administrador raiz intocável.');return;}
   const ok = await showConfirm('Remover usuário? Esta ação não pode ser desfeita.');
   if(!ok) return;
-  const users=getUsers().filter(u=>u.cpf!==cpf);
+  const users=getUsers().filter(u=>(u.login||u.cpf)!==cpf);
   saveUsers(users);
   autoSyncUsers(users);
   loadAdminLocal();
@@ -1201,7 +1202,7 @@ async function adminDelUser(cpf){
 async function adminSetExpiry(cpf){
   const exp=document.getElementById('exp_'+cpf).value;
   const users=getUsers();
-  const u=users.find(x=>x.cpf===cpf);
+  const u=users.find(x=>(x.login||x.cpf)===cpf);
   if(u){
     u.expiresAt=exp;
     u.isTrial=false;
@@ -1218,7 +1219,7 @@ async function adminSetExpiry(cpf){
 
 async function adminBlockImmediate(cpf) {
   const users=getUsers();
-  const u=users.find(x=>x.cpf===cpf);
+  const u=users.find(x=>(x.login||x.cpf)===cpf);
   if(u) {
     const tzoffset = (new Date()).getTimezoneOffset() * 60000;
     const nowStr = new Date(Date.now() - tzoffset - 1000).toISOString().slice(0,16); 
@@ -1237,7 +1238,7 @@ async function adminBlockImmediate(cpf) {
 
 async function adminToggleUnlimited(cpf) {
   const users=getUsers();
-  const u=users.find(x=>x.cpf===cpf);
+  const u=users.find(x=>(x.login||x.cpf)===cpf);
   if(u) {
     if(!u.isUnlimited) {
        u.savedExpiresAt = u.expiresAt;
@@ -1640,14 +1641,14 @@ document.addEventListener('visibilitychange', () => {
 requestWakeLock();
 </script>
 <!-- Toast Element -->
-<div id="toast"></div>
+<div id="toast" class="">Sessão encerrada.</div>
 
 <!-- Modal Customizado (substitui alert/confirm) -->
-<div id="customModal">
+<div id="customModal" class="">
   <div id="customModalBox">
-    <div id="customModalTitle"></div>
-    <div id="customModalMsg"></div>
-    <div class="modal-btns" id="modalBtns"></div>
+    <div id="customModalTitle">DexPlay</div>
+    <div id="customModalMsg">Deseja sair da conta?</div>
+    <div class="modal-btns" id="modalBtns"><button class="modal-btn secondary" id="modalCancelBtn">Cancelar</button><button class="modal-btn primary" id="modalConfirmBtn">Confirmar</button></div>
   </div>
 </div>
 
