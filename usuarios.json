@@ -38,6 +38,7 @@
     "name": "douglasbonfim",
     "isAdmin": false,
     "isTrial": false,
-    "expiresAt": ""
+    "expiresAt": "2026-08-25T00:17",
+    "isUnlimited": false
   }
 ]
