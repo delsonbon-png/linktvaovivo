@@ -29,6 +29,8 @@
     "name": "delson2",
     "isAdmin": false,
     "isTrial": false,
-    "expiresAt": ""
+    "expiresAt": "",
+    "savedExpiresAt": "",
+    "isUnlimited": true
   }
 ]
