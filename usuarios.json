@@ -1,5 +1,11 @@
 [
   {
+    "cpf": "delson",
+    "password": "132435",
+    "name": "Administrador",
+    "isAdmin": true
+  },
+  {
     "cpf": "09131915663",
     "password": "132435",
     "name": "Administrador",
@@ -15,14 +21,5 @@
     "isTrial": false,
     "isUnlimited": true,
     "savedExpiresAt": "2026-08-22T23:43"
-  },
-  {
-    "cpf": "22222222222",
-    "password": "123456",
-    "name": "222",
-    "isAdmin": false,
-    "idType": "cpf",
-    "expiresAt": "2026-08-28T08:51",
-    "isTrial": true
   }
 ]
