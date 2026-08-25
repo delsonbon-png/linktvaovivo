@@ -10,16 +10,5 @@
     "password": "132435",
     "name": "Administrador",
     "isAdmin": true
-  },
-  {
-    "cpf": "11111111111",
-    "password": "123456",
-    "name": "111",
-    "isAdmin": false,
-    "idType": "cpf",
-    "expiresAt": "",
-    "isTrial": false,
-    "isUnlimited": true,
-    "savedExpiresAt": "2026-08-22T23:43"
   }
 ]
