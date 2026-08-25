@@ -22,8 +22,9 @@
     "name": "adao",
     "isAdmin": false,
     "idType": "cpf",
-    "expiresAt": "2026-08-24T23:05",
+    "expiresAt": "",
     "isTrial": false,
-    "isUnlimited": false
+    "isUnlimited": true,
+    "savedExpiresAt": "2026-08-24T23:05"
   }
 ]
