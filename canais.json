@@ -344,5 +344,12 @@
     "logo": "https://i.imgur.com/nCJNjyN.png",
     "url": "https://5b7f3c45ab7c2.streamlock.net/arapuan/ngrp:arapuan_all/chunklist.m3u8",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787703121944",
+    "name": "Sportv",
+    "logo": "",
+    "url": "http://5.79.68.138:8081/look/sportv/playlist.m3u8",
+    "category": "Esportes"
   }
 ]
