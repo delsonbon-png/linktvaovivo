@@ -339,13 +339,6 @@
     "category": "Esportes"
   },
   {
-    "id": "1787664833542",
-    "name": "Band",
-    "logo": "https://i.imgur.com/nCJNjyN.png",
-    "url": "https://5b7f3c45ab7c2.streamlock.net/arapuan/ngrp:arapuan_all/chunklist.m3u8",
-    "category": "Tv Aberta"
-  },
-  {
     "id": "1787703121944",
     "name": "Sportv",
     "logo": "",
@@ -363,7 +356,7 @@
     "id": "1787835347418",
     "name": "Band Sports",
     "logo": "https://i.imgur.com/LSZ5VKi.png",
-    "url": "https://streamer.sattvacabo.com.br/BAND_SPORTS_HD/index.m3u8?token=TLGacFXd0gIXIuo2u8Zj7f4FE5J2vtgf",
+    "url": "http://streamer.sattvacabo.com.br/BAND_SPORTS_HD/index.m3u8?token=TLGacFXd0gIXIuo2u8Zj7f4FE5J2vtgf",
     "category": "Esportes"
   }
 ]
