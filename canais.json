@@ -8,7 +8,9 @@
   {
     "id": "1786746468268",
     "name": "Canal Gov",
-    "url": "https://canalgov-stream.ebc.com.br/index.m3u8"
+    "url": "https://canalgov-stream.ebc.com.br/index.m3u8",
+    "category": "Tv Aberta",
+    "logo": "https://github.com/tv-logo/tv-logos/blob/main/countries/brazil/canal-gov-br.png?raw=true"
   },
   {
     "id": "1786746983690",
