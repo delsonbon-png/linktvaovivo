@@ -387,5 +387,12 @@
     "logo": "https://i.imgur.com/18X62CK.png",
     "url": "https://megaflix.mgfiles.lat/077c160a812094baf4c5bf84761cfb60/file.m3u8",
     "category": "Filmes"
+  },
+  {
+    "id": "1787855344264",
+    "name": "HBO+ HD",
+    "logo": "https://i.imgur.com/VGBP9wj.png",
+    "url": "https://megaflix.mgfiles.lat/e56157d5c00f4c1459de2bb07741e362/file.m3u8",
+    "category": "Filmes"
   }
 ]
