@@ -380,5 +380,12 @@
     "logo": "https://i.imgur.com/viw732w.png",
     "url": "https://megaflix.mgfiles.lat/16c80e1a9ae560d747ffecbc3d47d7b5/file.m3u8",
     "category": "Filmes"
+  },
+  {
+    "id": "1787854995633",
+    "name": "Sony Channel HD",
+    "logo": "https://i.imgur.com/18X62CK.png",
+    "url": "https://megaflix.mgfiles.lat/077c160a812094baf4c5bf84761cfb60/file.m3u8",
+    "category": "Tv Aberta"
   }
 ]
