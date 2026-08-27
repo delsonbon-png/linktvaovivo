@@ -155,7 +155,8 @@
     "id": "1787026963159",
     "name": "Warner Channel",
     "url": "http://streamer.sattvacabo.com.br/WARNER_HD/index.m3u8?token=TLGacFXd0gIXIuo2u8Zj7f4FE5J2vtgf",
-    "category": "Filmes"
+    "category": "Filmes",
+    "logo": "https://github.com/tv-logo/tv-logos/blob/main/countries/brazil/warner-channel-br.png?raw=true"
   },
   {
     "id": "1787027112026",
