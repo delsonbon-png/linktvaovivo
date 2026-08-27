@@ -175,9 +175,10 @@
   },
   {
     "id": "1787027277158",
-    "name": "Telecine Premium",
-    "url": "http://s2.micineovs.com/TELECINEPREMIUM/index.m3u8?token=16FOTt9Ae2m8",
-    "category": "Filmes"
+    "name": "Telecine Cult HD",
+    "url": "https://megaflix.mgfiles.lat/e8bec5b304af83c9c610d5f16a7a97f2/file.m3u8",
+    "category": "Filmes",
+    "logo": "https://i.imgur.com/Tavo4Zl.png"
   },
   {
     "id": "1787027801813",
