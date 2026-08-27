@@ -394,5 +394,12 @@
     "logo": "https://i.imgur.com/VGBP9wj.png",
     "url": "https://megaflix.mgfiles.lat/e56157d5c00f4c1459de2bb07741e362/file.m3u8",
     "category": "Filmes"
+  },
+  {
+    "id": "1787855385112",
+    "name": "HBO Family HD",
+    "logo": "https://imgur.com/2dINPFY.png",
+    "url": "https://megaflix.mgfiles.lat/14d1a9db2e0088ec597b5b75ce37731f/file.m3u8",
+    "category": "Filmes"
   }
 ]
