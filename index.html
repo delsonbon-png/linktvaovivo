@@ -333,12 +333,12 @@ button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:
       <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
       <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
     </div>
-    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/e765e1d5-02b7-488a-bcca-47b3b2466d5a"></video>
+    <video id="videoEl" style="display: none;" controls="" playsinline="" src="blob:null/ac6691b4-11eb-4d99-8682-7ea1add3ce66"></video>
     <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen="" allow="autoplay; encrypted-media" src=""></iframe>
   </div>
   <div class="now-playing" id="nowPlaying" style="display: none;">
     <span class="live-badge">AO VIVO</span>
-    <span class="now-text" id="nowText">A</span>
+    <span class="now-text" id="nowText">A&amp;E</span>
   </div>
   <div id="categoryRow" style="padding:8px 14px 4px;flex-shrink:0">
     <select id="categorySelect" class="cat-select" tabindex="0" onchange="setCategory(this.value)">
@@ -1047,8 +1047,21 @@ function playChannel(ch, isAutoPlay = false){
          });
          hls.loadSource(originalUrl);
          hls.attachMedia(video);
-         hls.on(Hls.Events.MANIFEST_PARSED,()=>video.play().catch(()=>{}));
+         hls.on(Hls.Events.MANIFEST_PARSED,()=>video.play().catch(()=>{
+           video.src = originalUrl;
+           video.play().catch(()=>{});
+         }));
+         hls.on(Hls.Events.ERROR, (event, data) => {
+           if (data.fatal) {
+             if(hls){hls.destroy();hls=null;}
+             video.src = originalUrl;
+             video.play().catch(()=>{});
+           }
+         });
        }else if(video.canPlayType('application/vnd.apple.mpegurl')){
+         video.src=originalUrl;
+         video.play().catch(()=>{});
+       }else{
          video.src=originalUrl;
          video.play().catch(()=>{});
        }
