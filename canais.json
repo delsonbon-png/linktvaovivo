@@ -415,5 +415,12 @@
     "logo": "https://i.imgur.com/kOAujW1.png",
     "url": "https://megaflix.mgfiles.lat/1d96de15641923956b27337187bb9b2d/file.m3u8",
     "category": "Filmes"
+  },
+  {
+    "id": "1787855495706",
+    "name": "HBO POP HD",
+    "logo": "https://i.imgur.com/UnA8duG.png",
+    "url": "https://megaflix.mgfiles.lat/492c6dc59e017826bd28d34ffdddf046/file.m3u8",
+    "category": "Filmes"
   }
 ]
