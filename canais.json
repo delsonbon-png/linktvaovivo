@@ -358,5 +358,12 @@
     "logo": "https://i.imgur.com/nCJNjyN.png",
     "url": "https://video09.logicahost.com.br/tvmodelo/tvmodelo/chunklist_w146878062.m3u8",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787835347418",
+    "name": "Band Sports",
+    "logo": "",
+    "url": "https://185.152.67.187:14474/",
+    "category": "Esportes"
   }
 ]
