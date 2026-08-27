@@ -364,5 +364,12 @@
     "logo": "https://i.imgur.com/t97qwNh.png",
     "url": "https://megaflix.mgfiles.lat/c87d9b108890cb2ce9de619034d886dd/file.m3u8",
     "category": "Tv Aberta"
+  },
+  {
+    "id": "1787851820432",
+    "name": "Trace Brasil",
+    "logo": "https://i.imgur.com/IE8xwt4.png",
+    "url": "https://trace-brazuca-lg-br.amagi.tv/hls/amagi_hls_data_tracetvAA-trace-brazuca-lg-br/CDN/master.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.coppa=0&ads.targetad=[TARGETAD_ALLOWED]&fck=[FCK]&viewsize=[VIEWSIZE]&givn=[NONCE]",
+    "category": "Tv Aberta"
   }
 ]
