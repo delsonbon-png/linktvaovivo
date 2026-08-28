@@ -45,6 +45,8 @@
     "name": "monica",
     "isAdmin": false,
     "isTrial": false,
-    "expiresAt": ""
+    "expiresAt": "",
+    "savedExpiresAt": "",
+    "isUnlimited": true
   }
 ]
