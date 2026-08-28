@@ -249,9 +249,10 @@
   },
   {
     "id": "1787104183046",
-    "name": "Conbatv",
+    "name": "COMBATV",
     "url": "https://aym-cbtv.otteravision.com/aym/cbtv/cbtv_480p.m3u8",
-    "category": "Esportes"
+    "category": "Esportes",
+    "logo": "https://imgur.com/kVyHCec.png"
   },
   {
     "id": "1787104260704",
