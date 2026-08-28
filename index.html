@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DexPlay</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/mpegts.js@1.7.3/dist/mpegts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+
+:root {
+  --bg-main: #ffffff;
+  --bg-card: #ffffff;
+  --bg-input: #f2f2f2;
+  --bg-tabs: #f2f2f2;
+  --bg-active: #f0f0f0;
+  --text-main: #0f0f0f;
+  --text-sec: #606060;
+  --text-on-primary: #ffffff;
+  --primary: #0f0f0f;
+  --shadow-primary: #00000022;
+  --border-primary: #0f0f0f;
+  --border-light: #e5e5e5;
+  --border-med: #e5e5e5;
+  --border-med2: #e5e5e5;
+  --border-strong: #cccccc;
+  --border-input: #cccccc;
+  --border-xs: #f2f2f2;
+  --bg-admin-exit: #f2f2f2;
+  --toast-bg: #0f0f0f;
+}
+
+[data-theme="dark"] {
+  --bg-main: #0a0a0f;
+  --bg-card: #13131f;
+  --bg-input: #0d0d1a;
+  --bg-tabs: #0a0a14;
+  --bg-active: #1a1a2e;
+  --text-main: #ffffff;
+  --text-sec: #aaaaaa;
+  --text-on-primary: #ffffff;
+  --primary: #7c6aff;
+  --shadow-primary: #7c6aff22;
+  --border-primary: #7c6aff55;
+  --border-light: #ffffff0a;
+  --border-med: #ffffff12;
+  --border-med2: #ffffff14;
+  --border-strong: #ffffff15;
+  --border-input: #ffffff18;
+  --border-xs: #ffffff08;
+  --bg-admin-exit: #1a0a0a;
+  --toast-bg: #1e1e2e;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif}
+body{background:var(--bg-main);color:var(--text-main);min-height:100vh}
+.screen{display:none!important;min-height:100vh;max-height:100vh;overflow:hidden}
+.screen.active{display:flex!important;flex-direction:column}
+
+/* AUTH */
+#authScreen{justify-content:flex-start;align-items:center;padding:16px;background:var(--bg-main);overflow-y:auto;}
+.logo-box{text-align:center;margin-bottom:16px}
+.logo-emoji{font-size:48px}
+.app-name{font-size:28px;font-weight:800;color:var(--text-main);letter-spacing:2px;margin-top:6px}
+.tagline{font-size:13px;color:var(--primary);margin-top:2px}
+.card{background:var(--bg-card);border-radius:20px;padding:20px;width:100%;max-width:420px;border:1px solid var(--border-med);box-shadow:0 0 40px var(--border-strong)}
+.tabs{display:flex;background:var(--bg-tabs);border-radius:14px;padding:4px;margin-bottom:16px}
+.tab{flex:1;padding:8px;border-radius:12px;border:none;background:transparent;color:var(--text-sec);font-weight:600;font-size:14px;cursor:pointer;transition:.3s}
+.tab.active{background:var(--primary);color:var(--text-on-primary)}
+.input-group{margin-bottom:12px}
+.label{color:var(--text-sec);font-size:12px;margin-bottom:4px;font-weight:600;letter-spacing:1px;display:block}
+input{background:var(--bg-input);border-radius:10px;padding:11px;color:var(--text-main);font-size:15px;border:1px solid var(--border-input);width:100%;outline:none;font-family:inherit}
+input:focus{border-color:var(--primary)}
+.btn-main{background:var(--primary);border-radius:12px;padding:13px;width:100%;border:none;color:var(--text-on-primary);font-weight:700;font-size:15px;cursor:pointer;margin-top:6px;box-shadow:0 4px 20px var(--primary)22;transition:.3s}
+.btn-main:active{opacity:.8}
+.btn-main.green{background:#25D366;box-shadow:0 4px 20px #25D36644}
+.id-toggle{display:flex;background:var(--bg-tabs);border-radius:10px;padding:3px;margin-bottom:10px;gap:2px}
+.id-tab{flex:1;padding:6px;border-radius:8px;border:none;background:transparent;color:var(--text-sec);font-weight:600;font-size:12px;cursor:pointer;transition:.3s}
+.id-tab.active{background:var(--primary)22;color:var(--primary);border:1px solid var(--primary)33}
+
+/* Layout adaptado para TV em landscape (tela baixa) */
+@media (orientation: landscape) and (max-height: 600px), (min-aspect-ratio: 1/1) and (max-height: 600px) {
+  #authScreen { padding: 12px; justify-content: center; }
+  /* .logo-box { display: none; } removido para exibir a logo na TV */
+  .card { padding: 16px; max-width: 500px; }
+  .tabs { margin-bottom: 10px; }
+  .input-group { margin-bottom: 8px; }
+  input { padding: 9px 11px; font-size: 14px; }
+  .btn-main { padding: 10px; font-size: 14px; }
+}
+
+/* CATEGORIES */
+.category-bar{display:flex;gap:8px;padding:12px 14px 4px;overflow-x:auto;white-space:nowrap;flex-shrink:0}
+.category-bar::-webkit-scrollbar{display:none}
+.cat-pill{background:var(--bg-card);border:1px solid var(--border-med2);border-radius:20px;padding:8px 16px;color:var(--text-sec);font-weight:600;font-size:13px;cursor:pointer;transition:.2s}
+.cat-pill.active{background:var(--primary);color:var(--text-on-primary);border-color:var(--primary)}
+.cat-select{background:var(--bg-input);border-radius:12px;padding:12px 14px;color:var(--text-main);font-size:15px;border:1px solid var(--border-input);width:100%;outline:none;font-family:inherit;cursor:pointer;font-weight:600;}
+.cat-badge{font-size:9px;background:var(--bg-active);color:var(--primary);padding:1px 5px;border-radius:4px;display:inline-block;margin-top:2px;font-weight:700}
+.admin-edit-input{background:var(--bg-input);border:1px solid var(--border-med2);border-radius:8px;color:var(--text-main);padding:8px 10px;font-size:14px;width:100%;margin-bottom:6px;outline:none}
+.admin-edit-input:focus{border-color:var(--primary)}
+.admin-edit-select{background:var(--bg-input);border:1px solid var(--border-med2);border-radius:8px;color:var(--primary);padding:6px 10px;font-size:13px;width:100%;outline:none}
+
+/* TOP BAR */
+.top-bar{background:var(--bg-input);padding:16px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border-light);padding-top:env(safe-area-inset-top,16px);flex-shrink:0}
+.top-title{font-size:20px;font-weight:800;letter-spacing:2px}
+.icon-btn{background:var(--bg-card);border:1px solid var(--border-med);border-radius:10px;font-size:22px;cursor:pointer;padding:8px 10px;transition:.2s;}
+.icon-btn:focus{outline:4px solid var(--primary)!important;border-color:var(--primary)!important;transform:scale(1.08);box-shadow:0 0 0 4px var(--primary)44!important;}
+
+/* TV SCREEN */
+#tvScreen{background:var(--bg-main);height:100vh;max-height:100vh;overflow:hidden}
+.player-wrap{background:var(--bg-main);width:100%;aspect-ratio:16/9;position:relative;display:flex;justify-content:center;align-items:center;flex-shrink:0;overflow:hidden}
+.player-wrap.web-fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: 100vh !important;
+  z-index: 99999 !important;
+  background: #000 !important;
+}
+video{width:100%;height:100%;object-fit:contain}
+.now-playing{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg-input);border-bottom:1px solid var(--border-xs);flex-shrink:0}
+.live-badge{background:#ff4444;color:var(--text-main);padding:2px 8px;border-radius:50px;font-size:10px;font-weight:800;letter-spacing:1px;animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 #ff444466}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.now-text{font-size:13px;color:var(--text-sec);flex:1}
+.search-row{display:flex;gap:8px;padding:8px 14px 4px;flex-shrink:0}
+.search-box{flex:1;display:flex;align-items:center;background:var(--bg-card);border-radius:12px;padding:0 12px;border:1px solid var(--border-med2)}
+.search-box input{background:transparent;border:none;padding:10px 8px;font-size:14px}
+.channel-list{flex:1;overflow-y:auto;padding:4px 8px 12px;scrollbar-width:none;-ms-overflow-style:none}
+.channel-list::-webkit-scrollbar{display:none}
+.channel-item{display:flex;align-items:center;background:var(--bg-card);border-radius:10px;padding:6px 8px;margin-bottom:4px;border:1px solid var(--border-light);cursor:pointer;gap:8px;transition:.2s}
+.channel-item:active,.channel-item.active{border-color:var(--primary);background:var(--bg-main)}
+.ch-icon{width:34px;height:34px;border-radius:8px;background:var(--bg-input);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;overflow:hidden;padding:2px;box-sizing:border-box}
+.ch-icon img{width:100%;height:100%;object-fit:contain;object-position:center;border-radius:6px}
+.channel-item.active .ch-icon{background:var(--bg-active)}
+.ch-info{flex:1;min-width:0}
+.ch-name{font-weight:600;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.del-btn{background:none;border:none;font-size:14px;cursor:pointer;padding:3px}
+.dot{width:7px;height:7px;border-radius:4px;background:var(--primary);flex-shrink:0}
+.empty{text-align:center;padding:40px 20px;color:var(--text-sec);font-size:15px}
+.loading-spin{display:flex;justify-content:center;padding:40px}
+.spinner{width:40px;height:40px;border:4px solid var(--border-strong);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* TV REMOTE FOCUS */
+:focus { outline: none; }
+button:focus, input:focus, select:focus, .tab:focus, .id-tab:focus, #playerWrap:focus { outline: 4px solid var(--primary) !important; outline-offset: 2px !important; border-radius: inherit; transform: scale(1.02); z-index: 9; position: relative; transition: .2s; box-shadow: 0 4px 15px var(--primary)33; }
+.channel-item:focus { border-color: var(--primary) !important; background: var(--bg-active) !important; outline: 4px solid var(--primary) !important; outline-offset: 2px !important; transform: scale(1.02); z-index: 10; position: relative; box-shadow: 0 4px 15px var(--primary)33; }
+#playerWrap:focus { transform: none !important; outline-offset: -4px !important; box-shadow: inset 0 0 20px var(--primary) !important; }
+
+/* ADMIN & PROFILE */
+#adminScreen,#userProfileScreen{background:var(--bg-main);overflow-y:auto}
+.scroll-content{padding:16px;padding-bottom:40px}
+.section{background:var(--bg-card);border-radius:20px;padding:18px;margin-bottom:16px;border:1px solid var(--border-light)}
+.section-title{font-weight:700;font-size:15px;margin-bottom:14px}
+.row{display:flex;gap:10px}
+.hint{color:#666;font-size:12px;line-height:1.6;margin-bottom:12px}
+.ch-row{display:flex;align-items:center;background:var(--bg-input);border-radius:14px;padding:12px;margin-bottom:10px;border:1px solid var(--border-xs);gap:12px}
+.ch-row-info{flex:1;min-width:0}
+.back-btn{display:flex;align-items:center;gap:4px;background:none;border:none;color:var(--primary);font-size:14px;font-weight:600;cursor:pointer}
+.user-row{display:flex;align-items:center;background:var(--bg-input);border-radius:10px;padding:12px;margin-bottom:8px;border:1px solid var(--border-xs);gap:10px}
+
+/* TOAST */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--toast-bg);color:var(--text-main);padding:12px 20px;border-radius:50px;font-size:14px;font-weight:500;border:1px solid var(--border-strong);box-shadow:0 8px 32px #00000055;transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .4s;opacity:0;z-index:999;white-space:nowrap}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+#toast.ok{border-color:#55efc466}
+#toast.err{border-color:#ff6b6b66}
+#toast.loading{border-color:var(--primary)66}
+
+/* CUSTOM MODAL (substitui alert/confirm) */
+#customModal{display:none;position:fixed;inset:0;background:#00000088;z-index:9999;align-items:center;justify-content:center;}
+#customModal.show{display:flex;}
+#customModalBox{background:var(--bg-card);border:1px solid var(--border-med);border-radius:24px;padding:32px 28px;max-width:340px;width:90%;text-align:center;box-shadow:0 20px 60px #00000088;}
+#customModalTitle{font-size:16px;font-weight:700;margin-bottom:10px;color:var(--text-main);}
+#customModalMsg{font-size:14px;color:var(--text-sec);margin-bottom:24px;line-height:1.6;}
+.modal-btns{display:flex;gap:10px;justify-content:center;}
+.modal-btn{flex:1;padding:14px;border-radius:14px;border:none;font-weight:700;font-size:15px;cursor:pointer;transition:.2s;}
+.modal-btn.primary{background:var(--primary);color:var(--text-on-primary);}
+.modal-btn.secondary{background:var(--bg-input);color:var(--text-sec);border:1px solid var(--border-strong);}
+.modal-btn:focus{outline:4px solid var(--primary)!important;}
+
+/* CATEGORIA SELECT */
+#categoryRow{display:block!important;overflow:visible;flex-shrink:0;}
+.cat-select{
+  display:block!important;
+  width:100%!important;
+  min-height:46px;
+  background:var(--bg-card)!important;
+  color:var(--text-main)!important;
+  border:2px solid var(--primary)!important;
+  border-radius:12px;
+  padding:11px 14px;
+  font-size:15px;
+  font-weight:700;
+  font-family:inherit;
+  cursor:pointer;
+  outline:none;
+}
+.cat-select:focus {
+  background-color: var(--primary) !important;
+  color: var(--text-on-primary) !important;
+  border-color: var(--text-on-primary) !important;
+}
+.cat-select option {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  font-weight: 700;
+  padding: 12px;
+}
+.cat-select option:checked,
+.cat-select option:hover,
+.cat-select option:focus,
+.cat-select option:active {
+  background-color: var(--primary) !important;
+  color: var(--text-on-primary) !important;
+}
+.cat-tv-btn{background:var(--bg-card);border:2px solid var(--border-med2);border-radius:20px;padding:8px 14px;color:var(--text-sec);font-weight:700;font-size:13px;cursor:pointer;transition:.2s;white-space:nowrap;flex-shrink:0;font-family:inherit;}
+.cat-tv-btn.active{background:var(--primary);color:var(--text-on-primary);border-color:var(--primary);}
+.cat-tv-btn:focus{outline:4px solid var(--primary)!important;border-color:var(--primary)!important;background:var(--bg-active)!important;color:var(--text-main)!important;transform:scale(1.08);box-shadow:0 0 0 4px var(--primary)44!important;}
+.cat-tv-btn.active:focus{background:var(--primary)!important;color:var(--text-on-primary)!important;}
+
+/* LANDSCAPE FIX */
+@media (orientation: landscape), (min-aspect-ratio: 1/1) {
+  #tvScreen.active {
+    display: grid !important;
+    grid-template-columns: minmax(260px, 30vw) 1fr;
+    grid-template-rows: auto auto auto 1fr;
+    grid-template-areas: 
+      "topbar player"
+      "category player"
+      "search player"
+      "list player";
+    height: 100vh !important;
+    width: 100vw !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden;
+    background: var(--bg-main) !important;
+  }
+  
+  .top-bar { grid-area: topbar; border-right: 1px solid var(--border-light); }
+  #categoryRow { grid-area: category; border-right: 1px solid var(--border-light); }
+  .search-row { grid-area: search; border-right: 1px solid var(--border-light); }
+  #channelListEl { grid-area: list; border-right: 1px solid var(--border-light); padding-bottom: 20px; }
+  
+  .player-wrap {
+    grid-area: player;
+    position: relative !important;
+    width: 100% !important;
+    height: 100vh !important;
+    max-width: none !important;
+    max-height: 100vh !important;
+    aspect-ratio: auto !important;
+    background: #000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .player-wrap video {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    object-fit: contain !important;
+  }
+  
+  .player-wrap #ytFrame {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  #nowPlaying { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="authScreen" class="screen active">
+  <div class="logo-box">
+    <div class="logo-emoji" style="color:var(--primary)">▶️</div>
+    <div class="app-name">DexPlay</div>
+    <div class="tagline">Sua TV ao vivo</div>
+  </div>
+  <div class="card">
+    <div class="input-group">
+      <label class="label">LOGIN</label>
+      <input type="text" id="loginInput" placeholder="Seu login" autocomplete="username" autocapitalize="none" spellcheck="false">
+    </div>
+    <div class="input-group">
+      <label class="label">SENHA</label>
+      <input type="password" id="passInput" placeholder="Digite sua senha" autocomplete="current-password" onkeydown="if(event.key==='Enter')handleAuth()">
+    </div>
+    <button class="btn-main" id="authBtn" onclick="handleAuth()">Entrar</button>
+  </div>
+</div>
+
+<!-- TV SCREEN -->
+<div id="tvScreen" class="screen">
+  <div class="top-bar">
+    <span class="top-title">DexPlay</span>
+    
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="icon-btn" onclick="toggleTheme()" id="themeToggleBtn" tabindex="0" title="Mudar Tema" style="color:var(--text-sec);display:flex;align-items:center;"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="20" width="20"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></button>
+      <button class="icon-btn" onclick="goProfile()" tabindex="0" title="Perfil">👤</button>
+    </div>
+
+  </div>
+  <div class="player-wrap" id="playerWrap" tabindex="0" onclick="toggleFullScreenPlayer()">
+    <div id="playerEmpty" style="text-align:center;color:var(--text-main)">
+      <div style="font-size:48px">📺</div>
+      <div style="color:var(--text-sec);margin-top:8px">Selecione um canal</div>
+    </div>
+    <div id="playerBlocked" style="display:none;text-align:center;color:#ff4444;background:var(--bg-card);padding:40px;border-radius:20px;border:1px solid #ff444455">
+      <div style="font-size:48px">🔒</div>
+      <div style="margin-top:12px;font-weight:700;font-size:18px">Acesso Bloqueado / Expirado</div>
+      <div style="color:var(--text-sec);font-size:13px;margin-top:8px">Contate o administrador para renovar.</div>
+    </div>
+    <video id="videoEl" style="display:none" controls playsinline></video>
+    <iframe id="ytFrame" style="display:none;width:100%;height:100%;border:none" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+  </div>
+  <div class="now-playing" id="nowPlaying" style="display:none">
+    <span class="live-badge">AO VIVO</span>
+    <span class="now-text" id="nowText"></span>
+  </div>
+  <div id="categoryRow" style="padding:8px 14px 4px;flex-shrink:0">
+    <select id="categorySelect" class="cat-select" tabindex="0" onchange="setCategory(this.value)">
+      <option value="Todos">🔵 Todos</option>
+      <option value="Tv Aberta">📡 TV Aberta</option>
+      <option value="Filmes">🎬 Filmes</option>
+      <option value="Filmes e Séries">🎬 Filmes e Séries</option>
+      <option value="Documentários">🎞 Documentários</option>
+      <option value="Esportes">⚽ Esportes</option>
+      <option value="Lutas/UFC">🥊 Lutas/UFC</option>
+      <option value="Kids">🧒 Kids</option>
+      <option value="Notícias">📰 Notícias</option>
+      <option value="Variedades">🎭 Variedades</option>
+      <option value="Religiosos">✝️ Religiosos</option>
+      <option value="Pay-Per-View">🔒 Pay-Per-View</option>
+      <option value="24H Infantis/Desenhos">🎨 24H Infantis/Desenhos</option>
+      <option value="24H Séries/Programas">📺 24H Séries/Programas</option>
+      <option value="24H Discovery+">🔍 24H Discovery+</option>
+      <option value="24H Doramas">🎌 24H Doramas</option>
+      <option value="Outros">📦 Outros</option>
+    </select>
+  </div>
+  <div class="search-row">
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" id="searchInput" placeholder="Pesquisar canal..." oninput="onSearchInput(this.value)">
+    </div>
+  </div>
+  <div class="channel-list" id="channelListEl"></div>
+</div>
+
+<!-- ADMIN SCREEN -->
+<div id="adminScreen" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="goBack()">‹ Voltar</button>
+    <span class="top-title" style="font-size:16px">Painel Admin</span>
+    <button class="icon-btn" onclick="logout()" title="Sair" style="font-size:14px;color:#ff6b6b;font-weight:700;background:var(--bg-admin-exit);border:1px solid #ff6b6b33;border-radius:10px;padding:6px 10px">🚪 Sair</button>
+  </div>
+  <div class="scroll-content">
+    <!-- Publicar na Web removido -->
+    <div class="section">
+      <div class="section-title">➕ Adicionar Canal</div>
+      <div class="input-group"><label class="label">NOME DO CANAL</label><input type="text" id="newChName" placeholder="Ex: Globo HD"></div>
+      <div class="input-group"><label class="label">LOGO (Opcional - link da imagem)</label><input type="text" id="newChLogo" placeholder="Ex: https://.../logo.png" inputmode="url" autocapitalize="none"></div>
+      <div class="input-group"><label class="label">LINK</label><input type="text" id="newChUrl" placeholder="https://" inputmode="url" autocapitalize="none"></div>
+      <div class="input-group">
+        <label class="label">CATEGORIA</label>
+        <select id="newChCat" class="cat-select" style="padding-right: 32px; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%230F0F0F%22 height=%2224%22 viewBox=%220 0 24 24%22 width=%2224%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position-x: 96%; background-position-y: center;">
+          <option value="Tv Aberta">Tv Aberta</option>
+          <option value="Filmes">Filmes</option>
+          <option value="Filmes e Séries">Filmes e Séries</option>
+          <option value="Documentários">Documentários</option>
+          <option value="Esportes">Esportes</option>
+          <option value="Lutas/UFC">Lutas/UFC</option>
+          <option value="Kids">Kids</option>
+          <option value="Notícias">Notícias</option>
+          <option value="Variedades">Variedades</option>
+          <option value="Religiosos">Religiosos</option>
+          <option value="Pay-Per-View">Pay-Per-View</option>
+          <option value="24H Infantis/Desenhos">24H Infantis/Desenhos</option>
+          <option value="24H Séries/Programas">24H Séries/Programas</option>
+          <option value="24H Discovery+">24H Discovery+</option>
+          <option value="24H Doramas">24H Doramas</option>
+          <option value="Outros">Outros</option>
+        </select>
+      </div>
+      <button class="btn-main" onclick="addChannel()">Adicionar Canal</button>
+    </div>
+    <div class="section">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div class="section-title" style="margin:0" id="chCountTitle">📋 Canais (0)</div>
+        <button onclick="loadAdminData()" style="background:none;border:none;color:var(--primary);font-size:13px;cursor:pointer">Atualizar</button>
+      </div>
+      <div class="search-box" style="margin-bottom:10px">
+        <span>🔍</span>
+        <input type="text" id="adminChSearch" placeholder="Pesquisar canal..." oninput="filterAdminChannels()" style="background:transparent;border:none;padding:10px 8px;font-size:14px;width:100%;outline:none;color:var(--text-main)">
+      </div>
+      <div id="adminChList" style="max-height:520px;overflow-y:auto"></div>
+    </div>
+    <div class="section">
+      <div class="section-title" id="usersTitle">👥 Usuários (0)</div>
+      <div style="background:var(--bg-input);border-radius:14px;padding:14px;margin-bottom:14px;border:1px solid var(--border-xs)">
+        <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--primary)">➕ Cadastrar Novo Usuário</div>
+        <div class="input-group" style="margin-bottom:8px">
+          <label class="label">LOGIN</label>
+          <input type="text" id="newUserLogin" placeholder="Login do usuário" class="admin-edit-input" style="margin:0" autocapitalize="none">
+        </div>
+        <div class="input-group" style="margin-bottom:10px">
+          <label class="label">SENHA</label>
+          <input type="text" id="newUserPass" placeholder="Senha" class="admin-edit-input" style="margin:0">
+        </div>
+        <button class="btn-main" onclick="adminAddUser()" style="margin-top:0;padding:10px">Cadastrar Usuário</button>
+      </div>
+      <div class="search-box" style="margin:10px 0">
+        <span>🔍</span>
+        <input type="text" id="adminUserSearch" placeholder="Pesquisar usuário..." oninput="filterAdminUsers()" style="background:transparent;border:none;padding:10px 8px;font-size:14px;width:100%;outline:none;color:var(--text-main)">
+      </div>
+      <div id="adminUserList" style="max-height:520px;overflow-y:auto"></div>
+    </div>
+  </div>
+</div>
+
+<!-- USER PROFILE SCREEN -->
+<div id="userProfileScreen" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="showScreen('tvScreen')">‹ Voltar</button>
+    <span class="top-title" style="font-size:16px">Meu Perfil</span>
+    <button onclick="logout()" style="font-size:14px;color:#ff6b6b;font-weight:700;background:var(--bg-admin-exit);border:1px solid #ff6b6b33;border-radius:10px;padding:6px 10px;cursor:pointer;border-style:solid">🚪 Sair</button>
+  </div>
+  <div class="scroll-content">
+    <div class="section">
+      <div class="section-title">👤 Minhas Informações</div>
+      <div class="ch-row">
+        <div class="ch-row-info">
+          <div class="ch-name">Nome</div>
+          <div id="profName" style="color:var(--primary);font-size:13px;margin-top:2px"></div>
+        </div>
+      </div>
+      <div class="ch-row">
+        <div class="ch-row-info">
+          <div class="ch-name" id="profIdLabel">Senha</div>
+          <div id="profCpf" style="color:var(--primary);font-size:13px;margin-top:2px"></div>
+        </div>
+      </div>
+      <div class="ch-row" id="profExpiryRow">
+        <div class="ch-row-info">
+          <div class="ch-name">⏳ Validade do Acesso</div>
+          <div id="profExpiry" style="font-size:13px;margin-top:4px;font-weight:700"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+// ── TOAST ──
+function toast(msg, type='ok', dur=3000){
+  const t=document.getElementById('toast');
+  if(!t) return;
+  t.textContent=msg;
+  t.className='show '+(type==='err'?'err':type==='loading'?'loading':'ok');
+  clearTimeout(t._tid);
+  t._tid=setTimeout(()=>t.className='',dur);
+}
+
+// ── CUSTOM ALERT / CONFIRM (sem URL no titulo) ──
+function showAlert(msg, title='DexPlay'){
+  return new Promise(resolve => {
+    document.getElementById('customModalTitle').textContent = title;
+    document.getElementById('customModalMsg').textContent = msg;
+    const btns = document.getElementById('modalBtns');
+    btns.innerHTML = '<button class="modal-btn primary" id="modalOkBtn">OK</button>';
+    document.getElementById('customModal').classList.add('show');
+    document.getElementById('modalOkBtn').focus();
+    document.getElementById('modalOkBtn').onclick = () => {
+      document.getElementById('customModal').classList.remove('show');
+      resolve(true);
+    };
+  });
+}
+function showConfirm(msg, title='DexPlay'){
+  return new Promise(resolve => {
+    document.getElementById('customModalTitle').textContent = title;
+    document.getElementById('customModalMsg').textContent = msg;
+    const btns = document.getElementById('modalBtns');
+    btns.innerHTML = '<button class="modal-btn secondary" id="modalCancelBtn">Cancelar</button><button class="modal-btn primary" id="modalConfirmBtn">Confirmar</button>';
+    document.getElementById('customModal').classList.add('show');
+    document.getElementById('modalConfirmBtn').focus();
+    document.getElementById('modalConfirmBtn').onclick = () => {
+      document.getElementById('customModal').classList.remove('show');
+      resolve(true);
+    };
+    document.getElementById('modalCancelBtn').onclick = () => {
+      document.getElementById('customModal').classList.remove('show');
+      resolve(false);
+    };
+  });
+}
+
+const SVG_MOON = '<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="20" width="20"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg>';
+const SVG_SUN = '<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="20" width="20"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>';
+
+function toggleTheme(){
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme') || 'light';
+  const btn = document.getElementById('themeToggleBtn');
+  if(current === 'dark'){
+    html.setAttribute('data-theme', 'light');
+    localStorage.setItem('lt_theme', 'light');
+    if(btn) btn.innerHTML = SVG_MOON;
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    localStorage.setItem('lt_theme', 'dark');
+    if(btn) btn.innerHTML = SVG_SUN;
+  }
+}
+function initTheme(){
+  const saved = localStorage.getItem('lt_theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+  }
+  const btn = document.getElementById('themeToggleBtn');
+  if(btn) {
+      btn.innerHTML = (saved === 'dark') ? SVG_SUN : SVG_MOON;
+  }
+}
+initTheme();
+
+// ── CONSTANTS ──
+const ADMIN_CPF = 'delson';
+const ADMIN_PASS = '132435';
+
+
+
+
+const SUPABASE_URL = 'https://dcpwhdhxideayhghlmqn.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_Es5ExPtRRp_hWAhyzD0QFw_AJ7RXyfh';
+const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+const DEFAULT_CHANNELS = [];
+
+// ── STORAGE ──
+function getUsers(){
+  const data=localStorage.getItem('lt_users');
+  const users=data?JSON.parse(data):[];
+  if(!users.find(u=>u.cpf===ADMIN_CPF)){
+    users.unshift({cpf:ADMIN_CPF,password:ADMIN_PASS,name:'Administrador',isAdmin:true,login:'delson'});
+    localStorage.setItem('lt_users',JSON.stringify(users));
+  }
+  return users;
+}
+function saveUsers(u){localStorage.setItem('lt_users',JSON.stringify(u));}
+function getSession(){const d=localStorage.getItem('lt_session');return d?JSON.parse(d):null;}
+function saveSession(u){localStorage.setItem('lt_session',JSON.stringify(u));}
+function clearSession(){localStorage.removeItem('lt_session');}
+function getChannels(){
+  const d=localStorage.getItem('lt_channels');
+  if(d===null) return DEFAULT_CHANNELS;
+  return JSON.parse(d);
+}
+function saveChannels(c){localStorage.setItem('lt_channels',JSON.stringify(c));}
+
+
+
+
+
+
+// ── HELPERS ──
+let currentUser=null;
+let channels=[];
+let selectedChannel=null;
+let hls=null;
+let currentCategory = 'Todos';
+let lastUserSelectedChannelId = null;
+
+let idType='cpf';
+
+function switchIdType(){} // kept for compatibility
+
+function formatIdInput(el){
+  if(idType==='cpf') el.value=formatCPF(el.value);
+  else el.value=formatPhone(el.value);
+}
+function formatCPF(v){
+  const d=v.replace(/\D/g,'').slice(0,11);
+  return d.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})\.(\d{3})(\d)/,'$1.$2.$3').replace(/(\d{3})\.(\d{3})\.(\d{3})(\d)/,'$1.$2.$3-$4');
+}
+function formatPhone(v){
+  const d=v.replace(/\D/g,'').slice(0,11);
+  if(d.length<=2) return d.replace(/(\d{2})/,'($1)');
+  if(d.length<=6) return d.replace(/(\d{2})(\d+)/,'($1) $2');
+  if(d.length<=11) return d.replace(/(\d{2})(\d{5})(\d+)/,'($1) $2-$3');
+  return d.replace(/(\d{2})(\d{5})(\d{4})/,'($1) $2-$3');
+}
+function displayPhone(raw){ return formatPhone(raw); }
+function rawCPF(v){return v.replace(/\D/g,'');}
+
+function showScreen(id, pushState = true){
+  document.querySelectorAll('.screen').forEach(s=>{ s.classList.remove('active'); s.style.cssText=''; });
+  const el=document.getElementById(id);
+  if(el) el.classList.add('active');
+  
+  if (pushState) {
+    history.pushState({ screen: id }, '', '#' + id);
+  }
+}
+
+window.addEventListener('popstate', (e) => {
+  const pw = document.getElementById('playerWrap');
+  const isCurrentlyFullscreen = pw ? pw.classList.contains('web-fullscreen') : false;
+  const wantFullscreen = e.state ? !!e.state.isFullscreen : false;
+  
+  if (pw && isCurrentlyFullscreen !== wantFullscreen) {
+      if (wantFullscreen) {
+          pw.classList.add('web-fullscreen');
+          if (window.ReactNativeWebView) window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'setFullscreen', value: true }));
+          try { 
+              if (document.documentElement.requestFullscreen) {
+                  document.documentElement.requestFullscreen().then(() => {
+                      if(screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(e=>{});
+                  }).catch(e=>{});
+              } else {
+                  if(screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(e=>{});
+              }
+          } catch(err){}
+      } else {
+          pw.classList.remove('web-fullscreen');
+          if (window.ReactNativeWebView) window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'setFullscreen', value: false }));
+          try { if (document.exitFullscreen) document.exitFullscreen().catch(e=>{}); } catch(err){}
+          try { if(screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch(err){}
+          refocusActiveChannel();
+      }
+      return; 
+  }
+
+  if (e.state && e.state.screen) {
+    showScreen(e.state.screen, false);
+    if (e.state.screen === 'tvScreen') refocusActiveChannel();
+  } else {
+    if (currentUser) {
+      showScreen('tvScreen', false);
+      refocusActiveChannel();
+    } else showScreen('authScreen', false);
+  }
+});
+
+window.handlePhysicalBack = function() {
+  const pw = document.getElementById('playerWrap');
+  if (pw && pw.classList.contains('web-fullscreen')) {
+     // Se está em tela cheia, remove a tela cheia voltando no histórico
+     if (window.location.hash === '#tvScreen-fullscreen') {
+         history.back();
+     } else {
+         pw.classList.remove('web-fullscreen');
+         if (window.ReactNativeWebView) window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'setFullscreen', value: false }));
+         try { if (document.exitFullscreen) document.exitFullscreen().catch(e=>{}); } catch(err){}
+         try { if(screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch(err){}
+         refocusActiveChannel();
+     }
+     return;
+  }
+  
+  const activeScreen = document.querySelector('.screen.active');
+  
+  // Se está na tela de login (authScreen) ou na tela principal de canais (tvScreen), fecha o aplicativo nativo
+  if (!activeScreen || activeScreen.id === 'authScreen' || activeScreen.id === 'tvScreen') {
+     if (window.ReactNativeWebView) {
+         window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'exitApp' }));
+     }
+     return;
+  }
+  
+  // Se está em outras telas (ex: perfil do usuário ou painel admin), volta para a tela de lista de canais
+  goBack();
+};
+
+// Refoca no canal ativo na lista (sem reiniciar o canal) com múltiplas tentativas para contornar lentidão na renderização de TVs
+function refocusActiveChannel() {
+  const focusJob = () => {
+    if (selectedChannel) {
+      const el = document.getElementById('chi_' + selectedChannel.id);
+      if (el) {
+        el.focus();
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  };
+  // Dispara imediato e agenda tentativas de segurança caso a transição da TV demore
+  focusJob();
+  setTimeout(focusJob, 50);
+  setTimeout(focusJob, 150);
+  setTimeout(focusJob, 300);
+  setTimeout(focusJob, 600);
+}
+
+// ── AUTH ──
+let authMode='login';
+function switchTab(mode){
+  authMode=mode;
+  document.getElementById('tabLogin').classList.toggle('active',mode==='login');
+  document.getElementById('tabRegister').classList.toggle('active',mode==='register');
+  document.getElementById('nameGroup').style.display=mode==='register'?'block':'none';
+  document.getElementById('authBtn').textContent=mode==='login'?'Entrar':'Criar conta';
+}
+
+async function fetchRemoteUsers(){
+  try{
+    if(supabaseClient){
+      const { data, error } = await supabaseClient.from('app_users').select('*').order('created_at', { ascending: true });
+      if(!error && Array.isArray(data) && data.length > 0){
+        const mappedUsers = data.map(u => ({
+          id: u.id, login: u.login, cpf: u.login, password: u.password, name: u.name || u.login,
+          isAdmin: !!u.is_admin, isTrial: !!u.is_trial, isUnlimited: !!u.is_unlimited, expiresAt: u.expires_at || ''
+        }));
+        if(!mappedUsers.find(u=>(u.login||u.cpf)===ADMIN_CPF)){
+          mappedUsers.unshift({login:ADMIN_CPF,cpf:ADMIN_CPF,password:ADMIN_PASS,name:'Administrador',isAdmin:true,isUnlimited:true});
+        }
+        saveUsers(mappedUsers);
+        return mappedUsers;
+      }
+    }
+  }catch(e){
+    console.error("Erro no fetchRemoteUsers:", e);
+  }
+  return getUsers();
+}
+
+async function handleAuth(){
+  try {
+    const login = document.getElementById('loginInput').value.trim().toLowerCase();
+    const pass  = document.getElementById('passInput').value;
+    if(!login||!pass){ await showAlert('Preencha todos os campos.'); return;}
+    if(login === ADMIN_CPF && pass === ADMIN_PASS){
+      const adminUser = {cpf:ADMIN_CPF,password:ADMIN_PASS,name:'Administrador',isAdmin:true,login:ADMIN_CPF,isUnlimited:true};
+      saveSession(adminUser);
+      currentUser = adminUser;
+      enterApp();
+      return;
+    }
+    let users = await fetchRemoteUsers();
+    const user = users.find(u => {
+      const dbLogin = (u.login || u.cpf || '').toLowerCase();
+      return dbLogin === login && u.password === pass;
+    });
+    if(!user){
+      await showAlert('Login ou senha incorretos.');
+      return;
+    }
+    saveSession(user);
+    currentUser=user;
+    enterApp();
+  } catch(e) {
+    await showAlert("Erro ao conectar: " + e.message);
+  }
+}
+
+function enterApp(){
+  showScreen('tvScreen');
+  loadChannels();
+}
+
+function goProfile(){
+  if(currentUser?.isAdmin){
+    loadAdminData();
+    showScreen('adminScreen');
+  } else {
+    document.getElementById('profName').textContent=currentUser?.name||'Usuário';
+    const uIdType=currentUser?.idType||'cpf';
+    document.getElementById('profIdLabel').textContent='Senha';
+    document.getElementById('profCpf').textContent=currentUser?.password||'';
+    
+    const expiryEl = document.getElementById('profExpiry');
+    const expiryRow = document.getElementById('profExpiryRow');
+    if (currentUser?.expiresAt) {
+      const expDate = new Date(currentUser.expiresAt);
+      const now = Date.now();
+      const expired = expDate.getTime() < now;
+      const formatted = expDate.toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+      expiryEl.textContent = expired ? '❌ EXPIRADO em ' + formatted : '✅ Ativo até ' + formatted;
+      expiryEl.style.color = expired ? '#ff4444' : '#25D366';
+      expiryRow.style.display = 'flex';
+    } else {
+      expiryEl.textContent = '✅ Acesso Ilimitado';
+      expiryEl.style.color = '#25D366';
+      expiryRow.style.display = 'flex';
+    }
+    showScreen('userProfileScreen');
+  }
+}
+
+function goBack(){
+  if (window.history.length > 1) {
+     history.back(); // o popstate cuida do refocus
+  } else {
+     showScreen('tvScreen');
+     refocusActiveChannel();
+  }
+  filterChannels();
+}
+
+function logout(){
+  showConfirm('Deseja sair da conta?').then(ok => {
+    if(!ok) return;
+    clearSession();
+    currentUser=null;
+    selectedChannel=null;
+    lastUserSelectedChannelId=null;
+    if(hls){hls.destroy();hls=null;}
+    showScreen('authScreen');
+    toast('Sessão encerrada.','ok');
+  });
+}
+
+// ── CHANNELS FRONTEND ──
+async function loadChannels(){
+  const listEl=document.getElementById('channelListEl');
+  listEl.innerHTML='<div class="loading-spin"><div class="spinner"></div></div>';
+  try{
+    if(supabaseClient){
+      const { data, error } = await supabaseClient.from('channels').select('*').order('name', { ascending: true });
+      if(!error && Array.isArray(data) && data.length > 0){
+        channels = data.map(c => ({ id: String(c.id), name: c.name, logo: c.logo||'', url: c.url, category: c.category||'Tv Aberta' }));
+        saveChannels(channels);
+      } else { channels = getChannels(); }
+    } else { channels = getChannels(); }
+  }catch(e){
+    console.warn("Erro ao buscar canais no Supabase:", e);
+    channels=getChannels();
+  }
+
+  
+  filterChannels();
+  // Sempre toca o primeiro canal ao iniciar (ordem alfabética)
+  if(channels.length){
+    const sorted = [...channels].sort((a,b)=>a.name.localeCompare(b.name));
+    playChannel(sorted[0], true);
+    // Foca visualmente no primeiro canal da lista
+    setTimeout(()=>{
+      const firstEl = document.getElementById('chi_' + sorted[0].id);
+      if(firstEl){ firstEl.focus(); firstEl.scrollIntoView({behavior:'smooth', block:'start'}); }
+    }, 300);
+  }
+}
+
+function setCategory(cat){
+  currentCategory = cat;
+  const sel = document.getElementById('categorySelect');
+  if(sel && sel.value !== cat) sel.value = cat;
+  filterChannels();
+}
+
+function onSearchInput(q){
+  filterChannels();
+}
+
+function filterChannels(){
+  const q = document.getElementById('searchInput').value;
+  const f = q.trim().toLowerCase();
+  
+  let list = channels.filter(c => {
+    // Fallback pra canais velhos sem categoria (são Tv Aberta por padrão visual e lógica)
+    let cat = c.category || 'Tv Aberta';
+    if(currentCategory !== 'Todos' && cat !== currentCategory) return false;
+    if(f && !c.name.toLowerCase().includes(f)) return false;
+    return true;
+  });
+  
+  // Ordem Alfabética
+  list.sort((a,b) => a.name.localeCompare(b.name));
+  
+  renderChannelsRaw(list);
+}
+
+function renderChannelsRaw(list){
+  const el=document.getElementById('channelListEl');
+  const isAdmin=currentUser?.isAdmin;
+  
+  // Salva elemento que tinha foco (para nao rebater o scroll para cima no primeiro enter)
+  const prevFocusId = document.activeElement ? document.activeElement.id : null;
+  
+  if(!list.length){el.innerHTML='<div class="empty">📺 Nenhum canal encontrado</div>';return;}
+  
+  // Limitação de exibição no DOM (Virtualization rudimentar)
+  const renderList = list.slice(0, 100);
+  
+  el.innerHTML = renderList.map(ch=>{
+    const cat = ch.category || 'Tv Aberta';
+    return `
+    <div class="channel-item ${selectedChannel?.id===ch.id?'active':''}" id="chi_${ch.id}" tabindex="0" onclick="playChannel(${JSON.stringify(ch).replace(/"/g,'&quot;')})">
+      <div class="ch-icon">${ch.logo ? `<img src="${ch.logo}">` : '📺'}</div>
+      <div class="ch-info">
+        <div class="ch-name">${ch.name}</div>
+        <div class="cat-badge">${cat}</div>
+      </div>
+      ${isAdmin?`<button class="del-btn" onclick="event.stopPropagation();adminDelCh('${ch.id}')">🗑️</button>`:''}
+      ${selectedChannel?.id===ch.id&&!isAdmin?'<div class="dot"></div>':''}
+    </div>`
+  }).join('') + (list.length > 100 ? `<div style="text-align:center;padding:12px;color:var(--text-sec);font-size:13px">Mostrando os 100 primeiros resultados de ${list.length}. Use a barra de pesquisa para achar mais!</div>` : '');
+  
+  // Retorna o foco pro cara editado/clicado simulando state reativo
+  if (prevFocusId) {
+    const toFocus = document.getElementById(prevFocusId);
+    if (toFocus) toFocus.focus();
+  }
+}
+
+function getYouTubeId(url){
+  const rx=/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|live\/|embed\/)|youtu\.be\/)([\w-]{11})/;
+  const m=url.match(rx);
+  return m?m[1]:null;
+}
+
+function playChannel(ch, isAutoPlay = false){
+  if(typeof ch==='string')ch=JSON.parse(ch);
+  
+  // Solicita o Wake Lock para evitar que a TV durma
+  requestWakeLock();
+  
+  if (!isAutoPlay && lastUserSelectedChannelId === ch.id) {
+     // Segundo clique manual no mesmo canal expande tela cheia
+     toggleFullScreenPlayer();
+     return;
+  }
+  
+  if (!isAutoPlay) {
+     lastUserSelectedChannelId = ch.id;
+  }
+  
+  selectedChannel=ch;
+  
+  const video=document.getElementById('videoEl');
+  const ytFrame=document.getElementById('ytFrame');
+  const nowPlaying=document.getElementById('nowPlaying');
+  const playerEmpty=document.getElementById('playerEmpty');
+  const playerBlocked=document.getElementById('playerBlocked');
+
+  if(hls){hls.destroy();hls=null;}
+  if(window.mpegtsPlayer){window.mpegtsPlayer.destroy();window.mpegtsPlayer=null;}
+  
+  video.style.display='none';
+  video.src='';
+  ytFrame.style.display='none';
+  ytFrame.src='';
+  playerEmpty.style.display='none';
+  
+  if(!currentUser?.isAdmin && !currentUser?.isUnlimited && currentUser?.expiresAt && new Date(currentUser.expiresAt).getTime() < Date.now()){
+    playerBlocked.style.display='block';
+    nowPlaying.style.display='none';
+    filterChannels();
+    return;
+  }
+  
+  playerBlocked.style.display='none';
+  nowPlaying.style.display='flex';
+  document.getElementById('nowText').textContent=ch.name;
+
+  const ytId=getYouTubeId(ch.url);
+  if(ytId){
+    video.style.display='none';
+    video.src='';
+    ytFrame.style.display='block';
+    ytFrame.src='https://www.youtube.com/embed/'+ytId+'?autoplay=1&rel=0&playsinline=1';
+  } else {
+    ytFrame.style.display='none';
+    ytFrame.src='';
+    video.style.display='block';
+    
+    let originalUrl = ch.url;
+    
+    // Auto-upgrade insecure HTTP into HTTPS se rodando no Github (https) pra evitar Mixed Content Block
+    // Ignora o upgrade no WebView do App (React Native) pois ele usa mixedContentMode="always" 
+    // e forçar HTTPS em servidores IPTV costuma dar erro de certificado SSL no Android.
+    if (!window.ReactNativeWebView && window.location.protocol === 'https:' && originalUrl.startsWith('http://')) {
+        try {
+            let tempU = new URL(originalUrl);
+            if(tempU.port === '80') tempU.port = ''; // remove porta 80 explícita
+            tempU.protocol = 'https:';
+            originalUrl = tempU.toString();
+        } catch(err){}
+    }
+
+    let isTs = originalUrl.split('?')[0].toLowerCase().endsWith('.ts');
+
+    if (isTs) {
+      // Tenta reproduzir direto via video.src (sem XHR, evita CORS em alguns browsers/WebViews Android)
+      video.src = originalUrl;
+      const directPlayPromise = video.play();
+      if (directPlayPromise !== undefined) {
+        directPlayPromise.catch(() => {
+          // Se falhar, tenta mpegts.js
+          video.src = '';
+          
+          const doFallbackHls = () => {
+             // Ultimo fallback: converte para .m3u8
+             if(window.mpegtsPlayer){window.mpegtsPlayer.destroy();window.mpegtsPlayer=null;}
+             let streamUrl = originalUrl.replace(/\.ts(\?|$)/i, '.m3u8$1');
+             try {
+               let u = new URL(streamUrl);
+               if (/^\/[^/]+\/[^/]+\/\d+\.m3u8$/.test(u.pathname)) { u.pathname = '/live' + u.pathname; streamUrl = u.toString(); }
+             } catch(e) {}
+             if(Hls.isSupported()){ hls=new Hls({enableWorker:true,lowLatencyMode:true,liveSyncDurationCount:2,liveMaxLatencyDurationCount:5,startLevel:-1}); hls.loadSource(streamUrl); hls.attachMedia(video); hls.on(Hls.Events.MANIFEST_PARSED,()=>video.play().catch(()=>{})); }
+             else if(video.canPlayType('application/vnd.apple.mpegurl')){ video.src=streamUrl; video.play().catch(()=>{}); }
+          };
+
+          if (typeof mpegts !== 'undefined' && mpegts.getFeatureList().mseLivePlayback) {
+            window.mpegtsPlayer = mpegts.createPlayer({ type: 'mpegts', isLive: true, url: originalUrl });
+            window.mpegtsPlayer.attachMediaElement(video);
+            
+            // Adiciona o Event Listener para erros de rede (ex: falhas de CORS típicas em webviews)
+            window.mpegtsPlayer.on(mpegts.Events.ERROR, () => doFallbackHls());
+            
+            window.mpegtsPlayer.load();
+            window.mpegtsPlayer.play().catch(() => doFallbackHls());
+          } else {
+            doFallbackHls();
+          }
+        });
+      }
+    } else {
+       if(Hls.isSupported()){
+         hls=new Hls({
+           enableWorker: true,
+           lowLatencyMode: true,
+           liveSyncDurationCount: 2,
+           liveMaxLatencyDurationCount: 5,
+           startLevel: -1
+         });
+         hls.loadSource(originalUrl);
+         hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED,()=>video.play().catch(()=>{}));
+          hls.on(Hls.Events.ERROR, (event, data) => {
+            if (data.fatal) {
+              switch (data.type) {
+                case Hls.ErrorTypes.NETWORK_ERROR:
+                  hls.startLoad();
+                  break;
+                case Hls.ErrorTypes.MEDIA_ERROR:
+                  hls.recoverMediaError();
+                  break;
+                default:
+                  if(hls){hls.destroy();hls=null;}
+                  if(window.ReactNativeWebView){
+                    video.src = originalUrl;
+                    video.play().catch(()=>{});
+                  }
+                  break;
+              }
+            }
+          });
+        }else if(video.canPlayType('application/vnd.apple.mpegurl')){
+          video.src=originalUrl;
+          video.play().catch(()=>{});
+        }
+     }
+  }
+  filterChannels(); // re-render para mostrar dot do canal ativo
+}
+
+// ── ADMIN ──
+async function loadAdminData(){
+      if(supabaseClient){ const { data } = await supabaseClient.from('channels').select('*').order('name',{ascending:true}); if(data && data.length){ channels = data.map(c=>({id:String(c.id),name:c.name,logo:c.logo||'',url:c.url,category:c.category||'Tv Aberta'})); saveChannels(channels); } else { channels=getChannels(); } } else { channels=getChannels(); } // resync from supabase
+  
+  document.getElementById('chCountTitle').textContent=`📋 Canais (${channels.length})`;
+  
+  // salva canais ordenados globalmente para filtro posterior
+  window._adminSortedChannels = [...channels].sort((a,b) => a.name.localeCompare(b.name));
+  filterAdminChannels();
+  
+  const users=await fetchRemoteUsers();
+  window._adminUsers = users;
+  document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
+  filterAdminUsers();
+}
+
+function renderAdminChannels(list){
+  document.getElementById('adminChList').innerHTML=list.length ? list.map(c=>{
+    const cat = c.category || 'Tv Aberta';
+    return `
+    <div class="ch-row">
+      <div class="ch-row-info">
+        <input type="text" id="edit_name_${c.id}" value="${c.name}" class="admin-edit-input" placeholder="Nome">
+        <div style="display:flex;gap:6px">
+          <select id="edit_cat_${c.id}" class="admin-edit-select">
+            <option value="Tv Aberta" ${cat=='Tv Aberta'?'selected':''}>Tv Aberta</option>
+            <option value="Filmes" ${cat=='Filmes'?'selected':''}>Filmes</option>
+            <option value="Filmes e Séries" ${cat=='Filmes e Séries'?'selected':''}>Filmes e Séries</option>
+            <option value="Documentários" ${cat=='Documentários'?'selected':''}>Documentários</option>
+            <option value="Esportes" ${cat=='Esportes'?'selected':''}>Esportes</option>
+            <option value="Lutas/UFC" ${cat=='Lutas/UFC'?'selected':''}>Lutas/UFC</option>
+            <option value="Kids" ${cat=='Kids'?'selected':''}>Kids</option>
+            <option value="Notícias" ${cat=='Notícias'?'selected':''}>Notícias</option>
+            <option value="Variedades" ${cat=='Variedades'?'selected':''}>Variedades</option>
+            <option value="Religiosos" ${cat=='Religiosos'?'selected':''}>Religiosos</option>
+            <option value="Pay-Per-View" ${cat=='Pay-Per-View'?'selected':''}>Pay-Per-View</option>
+            <option value="24H Infantis/Desenhos" ${cat=='24H Infantis/Desenhos'?'selected':''}>24H Infantis/Desenhos</option>
+            <option value="24H Séries/Programas" ${cat=='24H Séries/Programas'?'selected':''}>24H Séries/Programas</option>
+            <option value="24H Discovery+" ${cat=='24H Discovery+'?'selected':''}>24H Discovery+</option>
+            <option value="24H Doramas" ${cat=='24H Doramas'?'selected':''}>24H Doramas</option>
+            <option value="Outros" ${cat=='Outros'?'selected':''}>Outros</option>
+          </select>
+          <button onclick="adminSaveCh('${c.id}')" style="background:var(--bg-active);border:1px solid var(--primary)33;border-radius:8px;padding:4px 12px;color:var(--text-main);font-size:16px;cursor:pointer" title="Salvar Alterações">💾</button>
+        </div>
+        <input type="text" id="edit_logo_${c.id}" value="${c.logo || ''}" class="admin-edit-input" placeholder="Link da Logo (Opcional)" style="margin-top:6px;font-size:12px;color:var(--text-sec);margin-bottom:0">
+        <input type="text" id="edit_url_${c.id}" value="${c.url}" class="admin-edit-input" placeholder="Link do Canal" style="margin-top:6px;font-size:12px;color:var(--text-sec);margin-bottom:0">
+      </div>
+      <button onclick="adminDelCh('${c.id}')" style="background:#ff444433;border:1px solid #ff444455;border-radius:10px;padding:8px 12px;color:#ff6b6b;font-size:16px;cursor:pointer;flex-shrink:0" title="Apagar">🗑</button>
+    </div>`;
+  }).join('')
+  : '<div style="color:var(--text-sec);text-align:center;padding:16px">Nenhum canal encontrado</div>';
+}
+
+function filterAdminChannels(){
+  const q = (document.getElementById('adminChSearch')?.value || '').trim().toLowerCase();
+  const all = window._adminSortedChannels || [];
+  const filtered = q ? all.filter(c => c.name.toLowerCase().includes(q)) : all;
+  renderAdminChannels(filtered);
+}
+
+function renderAdminUsers(list){
+  document.getElementById('adminUserList').innerHTML = list.length ? list.map(function(u){
+    const userLogin = u.login || u.cpf;
+    const idInfo = u.isAdmin
+      ? '👑 Administrador'
+      : `Login: <b>${userLogin}</b> &nbsp;|&nbsp; Senha: <b>${u.password||'---'}</b>`;
+    let limitControls = '';
+    let delBtn = '';
+    let statusBadge = '';
+    if(!u.isAdmin){
+      const expVal = u.isUnlimited ? '' : (u.expiresAt||'');
+      const uniqueId = u.login || u.cpf;
+      delBtn = `<button onclick="adminDelUser('${uniqueId}')" style="background:#ff444433;border:1px solid #ff444455;border-radius:10px;padding:8px 12px;color:#ff6b6b;font-size:16px;cursor:pointer;flex-shrink:0" title="Apagar Usuário">🗑️</button>`;
+      limitControls = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center">
+        <input type="datetime-local" id="exp_${uniqueId}" value="${expVal}" class="admin-edit-input" style="margin:0;font-size:11.5px;padding:4px;flex:1" ${u.isUnlimited?'disabled':''}>
+        <button onclick="adminSetExpiry('${uniqueId}')" style="background:var(--bg-active);border:1px solid var(--primary)33;border-radius:6px;padding:4px 8px;color:var(--text-main);font-size:11px;cursor:pointer;font-weight:600" ${u.isUnlimited?'disabled':''}>Salvar Limite</button>
+        <button onclick="adminBlockImmediate('${uniqueId}')" style="background:#ff444422;border:1px solid #ff444455;border-radius:6px;padding:4px 8px;color:#ff6b6b;font-size:11px;cursor:pointer;font-weight:600">Bloquear</button>
+        <button onclick="adminToggleUnlimited('${uniqueId}')" style="background:${u.isUnlimited?'#25D36622':'var(--bg-active)'};border:1px solid ${u.isUnlimited?'#25D36655':'var(--primary)33'};border-radius:6px;padding:4px 8px;color:${u.isUnlimited?'#25D366':'var(--text-main)'};font-size:11px;cursor:pointer;font-weight:600">${u.isUnlimited?'★ Ilimitado':'☆ Ilimitado'}</button>
+      </div>`;
+      if(u.isUnlimited){
+        statusBadge = `<span style="background:#25D36622;color:#25D366;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;margin-left:8px">Ativo Ilimitado</span>`;
+      } else if(u.expiresAt){
+        if(new Date(u.expiresAt).getTime() < Date.now()){
+          statusBadge = `<span style="background:#ff444422;color:#ff4444;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;margin-left:8px">Bloqueado</span>`;
+        } else if(u.isTrial) {
+          statusBadge = `<span style="background:#25D36622;color:#25D366;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;margin-left:8px">Em Teste</span>`;
+        } else {
+          statusBadge = `<span style="background:#25D36622;color:#25D366;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;margin-left:8px">Ativo</span>`;
+        }
+      } else {
+        statusBadge = `<span style="background:#25D36622;color:#25D366;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;margin-left:8px">Ativo</span>`;
+      }
+    }
+    return `<div class="user-row"><div style="flex:1"><div class="ch-name" style="display:flex;align-items:center">${u.name||userLogin}${u.isAdmin?' (Admin)':''}${statusBadge}</div><div style="color:var(--text-sec);font-size:11px;margin-top:2px">${idInfo}</div>${limitControls}</div>${delBtn}</div>`;
+  }).join('')
+  : '<div style="color:var(--text-sec);text-align:center;padding:16px">Nenhum usuário encontrado</div>';
+}
+
+function filterAdminUsers(){
+  const q = (document.getElementById('adminUserSearch')?.value || '').trim().toLowerCase();
+  const all = (window._adminUsers || []).filter(u => !u.isAdmin || (u.login||u.cpf) === ADMIN_CPF);
+  const filtered = q ? all.filter(u => (u.login||u.cpf||'').toLowerCase().includes(q) || (u.name||'').toLowerCase().includes(q)) : all;
+  renderAdminUsers(filtered);
+}
+
+function loadAdminLocal(){
+  channels = getChannels();
+  document.getElementById('chCountTitle').textContent=`📋 Canais (${channels.length})`;
+  window._adminSortedChannels = [...channels].sort((a,b) => a.name.localeCompare(b.name));
+  filterAdminChannels();
+
+  const users = getUsers();
+  window._adminUsers = users;
+  document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
+  filterAdminUsers();
+}
+
+async function adminSaveCh(id){
+  const name = document.getElementById('edit_name_'+id).value.trim();
+  const cat = document.getElementById('edit_cat_'+id).value;
+  const logo = document.getElementById('edit_logo_'+id).value.trim();
+  const url = document.getElementById('edit_url_'+id).value.trim();
+  if(!name||!url){toast('Preencha nome e link.','err');return;}
+  if(supabaseClient){
+    const { error } = await supabaseClient.from('channels').update({ name, category: cat, logo, url }).eq('id', id);
+    if(error){ toast('Erro ao salvar canal.','err'); console.error(error); return; }
+  }
+  const idx = channels.findIndex(c=>c.id===id);
+  if(idx > -1){
+    channels[idx].name = name; channels[idx].category = cat;
+    channels[idx].logo = logo; channels[idx].url = url;
+    saveChannels(channels);
+  }
+  toast('Canal salvo!','ok');
+  loadAdminLocal();
+}
+
+function adminDelCh(id){
+  showConfirm('Certeza que deseja remover este canal?').then(async ok => {
+    if(!ok) return;
+    if(supabaseClient){
+      const { error } = await supabaseClient.from('channels').delete().eq('id', id);
+      if(error){ toast('Erro ao remover canal.','err'); console.error(error); return; }
+    }
+    channels=channels.filter(c=>c.id!==id);
+    saveChannels(channels);
+    if(selectedChannel?.id===id){selectedChannel=null;}
+    loadAdminLocal();
+    filterChannels();
+    toast('Canal removido!','ok');
+  });
+}
+
+async function adminSetExpiry(cpf){
+  const exp=document.getElementById('exp_'+cpf).value;
+  const users=getUsers();
+  const u=users.find(x=>(x.login||x.cpf)===cpf);
+  if(u){
+    u.expiresAt=exp;
+    u.isTrial=false;
+    u.isUnlimited=false;
+    if(supabaseClient){
+      const expiresAt = exp ? new Date(exp).toISOString() : null;
+      await supabaseClient.from('app_users').update({ expires_at: expiresAt, is_trial: false, is_unlimited: false }).eq('login', cpf);
+    }
+    saveUsers(users);
+    toast(exp?'Limite salvo!':'Acesso sem limite salvo!','ok');
+    window._adminUsers = users;
+    document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
+    filterAdminUsers();
+  }
+}
+
+async function adminDelUser(cpf){
+  if(cpf===ADMIN_CPF){await showAlert('Administrador raiz intocável.');return;}
+  const ok = await showConfirm('Remover usuário? Esta ação não pode ser desfeita.');
+  if(!ok) return;
+  if(supabaseClient){
+    const { error } = await supabaseClient.from('app_users').delete().eq('login', cpf);
+    if(error){ toast('Erro ao remover usuário.','err'); console.error(error); return; }
+  }
+  const users=getUsers().filter(u=>(u.login||u.cpf)!==cpf);
+  saveUsers(users);
+  window._adminUsers = users;
+  document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
+  filterAdminUsers();
+  toast('Usuário removido!','ok');
+}
+
+async function adminBlockImmediate(cpf) {
+  const users=getUsers();
+  const u=users.find(x=>(x.login||x.cpf)===cpf);
+  if(u) {
+    const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+    const nowStr = new Date(Date.now() - tzoffset - 1000).toISOString().slice(0,16); 
+    u.expiresAt = nowStr;
+    u.isTrial = false;
+    u.isUnlimited = false;
+    if(supabaseClient){
+      const nowIso = new Date(Date.now() - 1000).toISOString();
+      await supabaseClient.from('app_users').update({ expires_at: nowIso, is_trial: false, is_unlimited: false }).eq('login', cpf);
+    }
+    saveUsers(users);
+    
+    toast('Usuário bloqueado!','ok');
+    // Atualiza direto na memória para refletir imediatamente sem depender de releitura async
+    window._adminUsers = users;
+    document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
+    filterAdminUsers();
+  }
+}
+
+async function adminToggleUnlimited(cpf) {
+  const users=getUsers();
+  const u=users.find(x=>(x.login||x.cpf)===cpf);
+  if(u) {
+    if(!u.isUnlimited) {
+       u.savedExpiresAt = u.expiresAt;
+       u.expiresAt = "";
+       u.isUnlimited = true;
+       u.isTrial = false;
+       toast('Ilimitado ativado!','ok');
+    } else {
+       u.expiresAt = u.savedExpiresAt || "";
+       u.isUnlimited = false;
+       toast('Ilimitado desativado!','ok');
+    }
+    if(supabaseClient){
+      await supabaseClient.from('app_users').update({ is_unlimited: u.isUnlimited, expires_at: u.expiresAt ? new Date(u.expiresAt).toISOString() : null }).eq('login', cpf);
+    }
+    saveUsers(users);
+    
+    // Atualiza direto na memória para refletir imediatamente sem depender de releitura async
+    window._adminUsers = users;
+    document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
+    filterAdminUsers();
+  }
+}
+
+async function adminAddUser() {
+  const login = document.getElementById('newUserLogin').value.trim().toLowerCase();
+  const pass  = document.getElementById('newUserPass').value.trim();
+  if(!login || !pass){ toast('Informe login e senha.','err'); return; }
+  let users = await fetchRemoteUsers();
+  if(users.find(u => (u.login||u.cpf) === login)){ toast('Login já existe!','err'); return; }
+  if(supabaseClient){
+    const { error } = await supabaseClient.from('app_users').insert([{ login, password: pass, name: login, is_admin: false, is_trial: false }]);
+    if(error){ toast('Erro ao cadastrar usuário.','err'); console.error(error); return; }
+  }
+  const newUser = { cpf: login, login: login, password: pass, name: login, isAdmin: false, isTrial: false, expiresAt: '' };
+  users.push(newUser);
+  saveUsers(users);
+  
+  document.getElementById('newUserLogin').value = '';
+  document.getElementById('newUserPass').value  = '';
+  window._adminUsers = users;
+  document.getElementById('usersTitle').textContent=`👥 Usuários (${users.length})`;
+  filterAdminUsers();
+  toast('Usuário cadastrado!','ok');
+}
+
+
+async function addChannel(){
+  const name=document.getElementById('newChName').value.trim();
+  const logo=document.getElementById('newChLogo').value.trim();
+  const url=document.getElementById('newChUrl').value.trim();
+  const category=document.getElementById('newChCat').value;
+  
+  if(!name||!url){toast('Informe nome e link.','err');return;}
+  if(!url.startsWith('http')){toast('Link inválido.','err');return;}
+  
+  if(supabaseClient){
+    const { data, error } = await supabaseClient.from('channels').insert([{ name, logo, url, category }]).select().single();
+    if(error){ toast('Erro ao adicionar canal.','err'); console.error(error); return; }
+    if(data){ channels.push({ id: String(data.id), name: data.name, logo: data.logo||'', url: data.url, category: data.category||'Tv Aberta' }); saveChannels(channels); }
+  } else {
+    const chs=getChannels();
+    chs.push({id:Date.now().toString(), name, logo, url, category});
+    saveChannels(chs);
+    channels=chs;
+  }
+  
+  document.getElementById('newChName').value='';
+  document.getElementById('newChLogo').value='';
+  document.getElementById('newChUrl').value='';
+  loadAdminLocal();
+  filterChannels();
+  toast('Canal Adicionado!','ok');
+}
+
+
+
+// ── TV REMOTE SUPPORT & SPATIAL NAVIGATION ──
+document.addEventListener('keydown', e => {
+  // Ignora navegação espacial se estiver digitando num input
+  if (document.activeElement && document.activeElement.tagName === 'INPUT' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+    return; // Deixa andar o cursor do teclado
+  }
+
+  // Quando player está maximizado, setas ↑↓ navegam entre canais
+  const pw = document.getElementById('playerWrap');
+  const isFullscreen = pw && pw.classList.contains('web-fullscreen');
+  if (isFullscreen && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+    e.preventDefault();
+    navigateChannelInFullscreen(e.key === 'ArrowUp' ? -1 : 1);
+    return;
+  }
+
+  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+    e.preventDefault(); // Evita scroll na tv inteira
+    spatialNav(e.key);
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    const active = document.activeElement;
+    if (active && typeof active.click === 'function') {
+      active.click();
+    }
+  }
+});
+
+// Navega para o canal anterior (-1) ou próximo (+1) quando em fullscreen
+function navigateChannelInFullscreen(direction) {
+  // Pega a lista filtrada atual (a mesma que aparece na tela)
+  const q = document.getElementById('searchInput') ? document.getElementById('searchInput').value : '';
+  const f = q.trim().toLowerCase();
+  let list = channels.filter(c => {
+    let cat = c.category || 'Tv Aberta';
+    if (currentCategory !== 'Todos' && cat !== currentCategory) return false;
+    if (f && !c.name.toLowerCase().includes(f)) return false;
+    return true;
+  });
+  list.sort((a, b) => a.name.localeCompare(b.name));
+
+  if (!list.length) return;
+
+  // Acha índice do canal atual
+  const curIdx = selectedChannel ? list.findIndex(c => c.id === selectedChannel.id) : -1;
+  let nextIdx = curIdx + direction;
+  if (nextIdx < 0) nextIdx = list.length - 1;
+  if (nextIdx >= list.length) nextIdx = 0;
+
+  const nextCh = list[nextIdx];
+  if (!nextCh) return;
+
+  // Toca o canal sem fechar o fullscreen
+  lastUserSelectedChannelId = null; // reseta para não tratar como 2º clique
+  playChannel(nextCh, false);
+  lastUserSelectedChannelId = nextCh.id;
+
+  // Mostra toast com nome do canal
+  toast('📺 ' + nextCh.name, 'ok');
+
+  // Foca visualmente no item da lista
+  setTimeout(() => {
+    const el = document.getElementById('chi_' + nextCh.id);
+    if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+  }, 50);
+}
+
+function spatialNav(direction) {
+  const focusables = Array.from(document.querySelectorAll('button, input, select, [tabindex="0"]')).filter(el => {
+    return el.offsetWidth > 0 && el.offsetHeight > 0 && window.getComputedStyle(el).visibility !== 'hidden';
+  });
+  if (!focusables.length) return;
+  
+  let current = document.activeElement;
+  if (!current || !focusables.includes(current)) {
+    // Foca primeiro canal ou primeiro elemento iterativo iteravel, conferindo se esta invisivel
+    let firstCh = Array.from(document.querySelectorAll('.channel-item')).find(el => el.offsetWidth > 0);
+    if(firstCh) firstCh.focus();
+    else focusables[0].focus();
+    return;
+  }
+  
+  const curRect = current.getBoundingClientRect();
+  const curCx = curRect.left + curRect.width / 2;
+  const curCy = curRect.top + curRect.height / 2;
+  
+  let best = null;
+  let minDist = Infinity;
+
+  focusables.forEach(target => {
+    if (target === current) return;
+    const tRect = target.getBoundingClientRect();
+    const tCx = tRect.left + tRect.width / 2;
+    const tCy = tRect.top + tRect.height / 2;
+    
+    let isCandidate = false;
+    let dx = Math.abs(tCx - curCx);
+    let dy = Math.abs(tCy - curCy);
+    let dist = 0;
+    
+    // Calcula distancia Linear (Manhattan) aplicando grande peso quando tenta cruzar na diagonal (Off-Axis)
+    if (direction === 'ArrowUp' && tCy < curCy - 5) {
+       isCandidate = true; dist = dy + (dx * 10);
+    } else if (direction === 'ArrowDown' && tCy > curCy + 5) {
+       isCandidate = true; dist = dy + (dx * 10);
+    } else if (direction === 'ArrowLeft' && tCx < curCx - 5) {
+       isCandidate = true; dist = dx + (dy * 10);
+    } else if (direction === 'ArrowRight' && tCx > curCx + 5) {
+       isCandidate = true; dist = dx + (dy * 10);
+    }
+    
+    if (isCandidate && dist < minDist) {
+      minDist = dist;
+      best = target;
+    }
+  });
+  
+  if (best) {
+    best.focus();
+    best.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function toggleFullScreenPlayer() {
+   const pw = document.getElementById('playerWrap');
+   const isCurrentlyFs = pw ? pw.classList.contains('web-fullscreen') : false;
+   if (isCurrentlyFs) {
+       return; // Se já está em tela cheia, ignore o clique/Enter para não fechar acidentalmente
+   }
+   
+   requestWakeLock();
+   history.pushState({ screen: 'tvScreen', isFullscreen: true }, '', '#tvScreen-fullscreen');
+   if (pw) {
+       pw.classList.add('web-fullscreen');
+       if (window.ReactNativeWebView) window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'setFullscreen', value: true }));
+       try { 
+           if (document.documentElement.requestFullscreen) {
+               document.documentElement.requestFullscreen().then(() => {
+                   if(screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(e=>{});
+               }).catch(e=>{});
+           } else {
+               if(screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(e=>{});
+           }
+       } catch(err){}
+   }
+}
+
+// ── EXPIRATION HEARTBEAT & REMOTE SYNC ──
+async function checkUserStatus() {
+  if (!currentUser || currentUser.isAdmin) return;
+  
+  // Busca status atualizado do Supabase
+  let updatedUser = null;
+  if (supabaseClient) {
+    try {
+      const { data } = await supabaseClient.from('app_users').select('*').eq('login', currentUser.login || currentUser.cpf).single();
+      if (data) {
+        updatedUser = { 
+          ...currentUser,
+          expiresAt: data.expires_at || '',
+          isUnlimited: !!data.is_unlimited,
+          isTrial: !!data.is_trial
+        };
+        // Atualiza localStorage com dados remotos
+        const users = getUsers();
+        const idx = users.findIndex(u => (u.login||u.cpf) === (currentUser.login||currentUser.cpf));
+        if (idx > -1) { users[idx] = {...users[idx], ...updatedUser}; saveUsers(users); }
+      } else {
+        // Usuário removido do Supabase
+        clearSession(); currentUser=null; selectedChannel=null; lastUserSelectedChannelId=null;
+        if(typeof hls!=='undefined'&&hls){hls.destroy();hls=null;}
+        if(window.mpegtsPlayer){window.mpegtsPlayer.destroy();window.mpegtsPlayer=null;}
+        const video=document.getElementById('videoEl'); if(video){video.pause();video.src='';video.style.display='none';}
+        const ytFrame=document.getElementById('ytFrame'); if(ytFrame){ytFrame.src='';ytFrame.style.display='none';}
+        showScreen('authScreen'); toast('Seu acesso foi removido pelo administrador.','err'); return;
+      }
+    } catch(e) {
+      // Fallback para localStorage se Supabase falhar
+      const localUsers = getUsers();
+      updatedUser = localUsers.find(u => (u.login||u.cpf) === (currentUser.login||currentUser.cpf));
+      if (!updatedUser) {
+        clearSession(); currentUser=null; selectedChannel=null; lastUserSelectedChannelId=null;
+        if(typeof hls!=='undefined'&&hls){hls.destroy();hls=null;}
+        if(window.mpegtsPlayer){window.mpegtsPlayer.destroy();window.mpegtsPlayer=null;}
+        const video=document.getElementById('videoEl'); if(video){video.pause();video.src='';video.style.display='none';}
+        showScreen('authScreen'); toast('Seu acesso foi removido.','err'); return;
+      }
+    }
+  } else {
+    const localUsers = getUsers();
+    updatedUser = localUsers.find(u => (u.login||u.cpf) === (currentUser.login||currentUser.cpf));
+    if (!updatedUser) {
+      clearSession(); currentUser=null; showScreen('authScreen'); toast('Acesso removido.','err'); return;
+    }
+  }
+  
+  if (updatedUser) {
+    currentUser.expiresAt = updatedUser.expiresAt;
+    currentUser.isUnlimited = updatedUser.isUnlimited;
+  }
+  
+  const playerBlocked = document.getElementById('playerBlocked');
+  const nowPlaying = document.getElementById('nowPlaying');
+  const playerEmpty = document.getElementById('playerEmpty');
+  
+  if (!currentUser.isUnlimited && currentUser.expiresAt && new Date(currentUser.expiresAt).getTime() < Date.now()) {
+    if (playerBlocked && playerBlocked.style.display !== 'block' && playerEmpty && playerEmpty.style.display !== 'block') {
+       if(typeof hls!=='undefined'&&hls){hls.destroy();hls=null;}
+       if(window.mpegtsPlayer){window.mpegtsPlayer.destroy();window.mpegtsPlayer=null;}
+       const video=document.getElementById('videoEl'); if(video){video.pause();video.src='';video.style.display='none';}
+       const ytFrame=document.getElementById('ytFrame'); if(ytFrame){ytFrame.src='';ytFrame.style.display='none';}
+       if(nowPlaying) nowPlaying.style.display='none';
+       playerBlocked.style.display='block';
+    }
+  } else {
+    if (playerBlocked && playerBlocked.style.display === 'block') {
+       playerBlocked.style.display = 'none';
+       toast('Acesso restaurado!', 'ok');
+       if (selectedChannel) { playChannel(selectedChannel, true); }
+       else if(playerEmpty) { playerEmpty.style.display='block'; }
+    }
+  }
+}
+
+setInterval(checkUserStatus, 8000);
+
+async function fetchRemoteChannelsSilently(){
+  try{
+    if(supabaseClient){
+      const { data, error } = await supabaseClient.from('channels').select('*').order('name', { ascending: true });
+      if(!error && Array.isArray(data) && data.length > 0){
+        const mapped = data.map(c => ({ id: String(c.id), name: c.name, logo: c.logo||'', url: c.url, category: c.category||'Tv Aberta' }));
+        if(JSON.stringify(mapped) !== JSON.stringify(channels)){
+          channels = mapped;
+          if(channels.length < 5000) saveChannels(channels);
+          filterChannels();
+          if(currentUser && currentUser.isAdmin) loadAdminLocal();
+        }
+      }
+    }
+  }catch(e){}
+}
+
+// Sincroniza canais em tempo real a cada 15 segundos
+setInterval(() => {
+  if (currentUser) fetchRemoteChannelsSilently();
+}, 15000);
+
+// ── INIT ──
+(function init(){
+  const session=getSession();
+  if(session){
+    currentUser=session;
+    const hash = window.location.hash.replace('#', '');
+    if(['tvScreen', 'adminScreen', 'userProfileScreen'].includes(hash)) {
+       showScreen(hash, false);
+       if(hash === 'tvScreen') loadChannels();
+       else if(hash === 'adminScreen' && currentUser.isAdmin) loadAdminData();
+    } else {
+       enterApp();
+    }
+  } else {
+    showScreen('authScreen', false);
+  }
+})();
+
+// ── WAKE LOCK (evita a TV hibernar) ──
+let wakeLock = null;
+async function requestWakeLock() {
+  try {
+    if ('wakeLock' in navigator && !wakeLock) {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => {
+        wakeLock = null;
+      });
+    }
+  } catch(e) {}
+}
+async function releaseWakeLock() {
+  if (wakeLock) {
+    try {
+      await wakeLock.release();
+    } catch(e){}
+    wakeLock = null;
+  }
+}
+// Reativa o wake lock ao voltar para a aba/app (pode ser solto ao minimizar)
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && currentUser) requestWakeLock();
+});
+// Ativa imediatamente assim que o pagina carrega
+requestWakeLock();
+</script>
+<!-- Toast Element -->
+<div id="toast"></div>
+
+<!-- Modal Customizado (substitui alert/confirm) -->
+<div id="customModal">
+  <div id="customModalBox">
+    <div id="customModalTitle"></div>
+    <div id="customModalMsg"></div>
+    <div class="modal-btns" id="modalBtns"></div>
+  </div>
+</div>
+</body>
+</html>
