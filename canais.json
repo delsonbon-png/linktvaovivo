@@ -15,7 +15,9 @@
   {
     "id": "1786746983690",
     "name": "Canal Educação",
-    "url": "https://canaleducacao-stream.ebc.com.br/index.m3u8"
+    "url": "https://canaleducacao-stream.ebc.com.br/index.m3u8",
+    "category": "Tv Aberta",
+    "logo": "https://i.imgur.com/LMeLMRn.png"
   },
   {
     "id": "1786792759513",
