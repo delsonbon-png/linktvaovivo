@@ -467,7 +467,7 @@
     "id": "1787885423308",
     "name": "FOX",
     "logo": "https://minhalista.nyc3.digitaloceanspaces.com/iptv-list.jpg",
-    "url": "https://cdn11.pxstream.tv/hls/fox-hd/playlist.m3u8?md5=UfGDaTV51oP7RhiHYpffog&expires=1542610347",
+    "url": "https://cdn11.pxstream.tv/hls/fox-hd/playlist.m3u8?",
     "category": "Filmes"
   }
 ]
