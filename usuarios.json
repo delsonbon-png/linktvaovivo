@@ -37,5 +37,14 @@
     "expiresAt": "",
     "savedExpiresAt": "",
     "isUnlimited": true
+  },
+  {
+    "cpf": "monica",
+    "login": "monica",
+    "password": "123456",
+    "name": "monica",
+    "isAdmin": false,
+    "isTrial": false,
+    "expiresAt": ""
   }
 ]
