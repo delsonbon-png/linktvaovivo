@@ -474,7 +474,7 @@
     "id": "1787883330086",
     "name": "Esporte Interativo",
     "logo": "",
-    "url": "https://mdstrm1-a.akamaihd.net/live-stream-secure/5801261189b415d108f9603c/publish/media_2500.m3u8?dnt=true&es=mdstrm1-a.akamaihd.net&proto=https#ffmpeg",
+    "url": "https://github.com/paulooosrj/khan-stream/blob/master/public/sources/lista-iptv.txt",
     "category": "Esportes"
   }
 ]
