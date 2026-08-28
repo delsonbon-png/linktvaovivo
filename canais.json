@@ -462,19 +462,5 @@
     "logo": "https://i.imgur.com/1Hm6dQU.png",
     "url": "https://megaflix.mgfiles.lat/4f9b45a8d9320c4f545c1b19f30a5037/file.m3u8",
     "category": "Documentários"
-  },
-  {
-    "id": "1787882562959",
-    "name": "PREMIERE",
-    "logo": "https://i.imgur.com/T6VmjYB.png",
-    "url": "https://cr7v.short.gy/Canal3/index.m3u8",
-    "category": "Esportes"
-  },
-  {
-    "id": "1787883029659",
-    "name": "Tv Aparecida",
-    "logo": "http://i.imgur.com/xg5VYB9.jpg",
-    "url": "http://69.46.0.170:1935/tvaparecida/tvaparecida.stream/live.m3u8",
-    "category": "Tv Aberta"
   }
 ]
