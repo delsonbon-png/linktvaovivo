@@ -34,9 +34,9 @@
     "name": "delson123",
     "isAdmin": false,
     "isTrial": false,
-    "expiresAt": "2026-08-27T22:49",
-    "savedExpiresAt": "",
-    "isUnlimited": false
+    "expiresAt": "",
+    "savedExpiresAt": "2026-08-27T22:49",
+    "isUnlimited": true
   },
   {
     "cpf": "monica",
