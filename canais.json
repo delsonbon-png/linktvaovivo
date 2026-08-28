@@ -450,13 +450,6 @@
     "category": "Documentários"
   },
   {
-    "id": "1787883128973",
-    "name": "Tv Aparecida",
-    "logo": "https://i.imgur.com/xg5VYB9.jpg",
-    "url": "https://69.46.0.170:1935/tvaparecida/tvaparecida.stream/live.m3u8",
-    "category": "Tv Aberta"
-  },
-  {
     "id": "1787883330086",
     "name": "Premier Sports 1",
     "logo": "https://i.imgur.com/eOybZMU.png",
