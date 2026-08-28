@@ -469,5 +469,12 @@
     "logo": "https://i.imgur.com/T6VmjYB.png",
     "url": "https://cr7v.short.gy/Canal3/index.m3u8",
     "category": "Esportes"
+  },
+  {
+    "id": "1787883029659",
+    "name": "Tv Aparecida",
+    "logo": "http://i.imgur.com/xg5VYB9.jpg",
+    "url": "http://69.46.0.170:1935/tvaparecida/tvaparecida.stream/live.m3u8",
+    "category": "Tv Aberta"
   }
 ]
