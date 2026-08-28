@@ -462,5 +462,12 @@
     "logo": "https://i.imgur.com/Fx1n84p.png",
     "url": "https://7nyaler.streamhostingcdn.top/stream/5/index.m3u8",
     "category": "Esportes"
+  },
+  {
+    "id": "1787885423308",
+    "name": "FOX",
+    "logo": "https://minhalista.nyc3.digitaloceanspaces.com/iptv-list.jpg",
+    "url": "https://cdn11.pxstream.tv/hls/fox-hd/playlist.m3u8?md5=UfGDaTV51oP7RhiHYpffog&expires=1542610347",
+    "category": "Filmes"
   }
 ]
