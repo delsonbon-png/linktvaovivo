@@ -423,5 +423,12 @@
     "logo": "https://i.imgur.com/UnA8duG.png",
     "url": "https://megaflix.mgfiles.lat/492c6dc59e017826bd28d34ffdddf046/file.m3u8",
     "category": "Filmes"
+  },
+  {
+    "id": "1787876040006",
+    "name": "A",
+    "logo": "",
+    "url": "http://giantofthefuture.gleeze.com:25461/live/colepty1679/Hbplloxye/1676.ts",
+    "category": "Tv Aberta"
   }
 ]
