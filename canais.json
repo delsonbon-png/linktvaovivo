@@ -467,7 +467,7 @@
     "id": "1787883128973",
     "name": "Tv Aparecida",
     "logo": "http://i.imgur.com/xg5VYB9.jpg",
-    "url": "http://69.46.0.170:1935/tvaparecida/tvaparecida.stream/live.m3u8",
+    "url": "https://69.46.0.170:1935/tvaparecida/tvaparecida.stream/live.m3u8",
     "category": "Tv Aberta"
   }
 ]
